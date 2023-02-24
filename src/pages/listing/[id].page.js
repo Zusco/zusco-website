@@ -145,7 +145,7 @@ const ApartmentDetailsHome = ({ metadata }) => {
   };
 
   const metaTitle = metadata?.name
-    ? `Zuszo | ${metadata?.name}, ${metadata?.city}`
+    ? `Zusco | ${metadata?.name}, ${metadata?.city}`
     : "Zusco | Your online marketplace for short-let homes.";
   const metaDescription = metadata?.description
     ? `${metadata?.description}`
