@@ -25,7 +25,6 @@ const AvatarPhoto = ({
   useEffect(() => {
     const fileSize = (file?.size || 0) / 1024 ** 2;
     if (fileSize > 50) return setError(true);
-    console.log("effect file", file);
     setError(false);
   }, [file]);
 
