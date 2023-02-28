@@ -22,40 +22,39 @@ export default function App({ Component, pageProps }) {
   }, [router?.pathname]);
   return (
     <div>
-      <Head>
-        <title>Zusco | Your online marketplace for short-let homes.</title>
-        <meta
-          name="description"
-          content="Forget multiyear leases, tacky decor and constant moving. Zusco offers an easy, flexible option with no long term commitment!"
-        />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:title"
-          content="Zusco | Your online marketplace for short-let homes."
-        />
-        <meta
-          property="og:description"
-          content="Forget multiyear leases, tacky decor and constant moving. Zusco offers an easy, flexible option with no long term commitment!"
-        />
+      {router?.pathname?.includes("/listing/") && (
+        <Head>
+          <title>Zusco | Your online marketplace for short-let homes.</title>
+          <meta
+            name="description"
+            content="Forget multiyear leases, tacky decor and constant moving. Zusco offers an easy, flexible option with no long term commitment!"
+          />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:title"
+            content="Zusco | Your online marketplace for short-let homes."
+          />
+          <meta
+            property="og:description"
+            content="Forget multiyear leases, tacky decor and constant moving. Zusco offers an easy, flexible option with no long term commitment!"
+          />
 
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:site" content="@bani" />
+          <meta name="twitter:creator" content="@bani" />
+          <meta
+            name="twitter:title"
+            content="Zusco | Your online marketplace for short-let homes."
+          />
+          <meta
+            name="twitter:description"
+            content="Forget multiyear leases, tacky decor and constant moving. Zusco offers an easy, flexible option with no long term commitment!"
+          />
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@bani" />
-        <meta name="twitter:creator" content="@bani" />
-        <meta
-          name="twitter:title"
-          content="Zusco | Your online marketplace for short-let homes."
-        />
-        <meta
-          name="twitter:description"
-          content="Forget multiyear leases, tacky decor and constant moving. Zusco offers an easy, flexible option with no long term commitment!"
-        />
-
-       
-       
-        <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+          <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+      )}
       <Toast />
       <div ref={topRef} />
       <Component {...pageProps} />
