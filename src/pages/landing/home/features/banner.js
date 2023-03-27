@@ -14,9 +14,9 @@ const Banner = observer(() => {
         <div className="flex flex-col md:flex-row pl-0 md:pl-[42px] lg:pl-[62px] xl:pl-[72px]">
           <div className="flex flex-col justify-start items-between md:items-start text-center md:pl-0 md:pr-10 md:text-left md:w-[55%] lg:w-[45%] w-full h-full z-[5] !ml-0 !mt-0 space-y-12">
             <div className="items-center flex flex-col gap-4  md:gap-8 px-6 sm:px-0">
-              <h2 className="text-black  regular-font zusco-heading">
-                Your online marketplace for short-let homes. Nextjs
-              </h2>
+              <h1 className="text-black  regular-font zusco-heading">
+                Your online marketplace for short-let homes.
+              </h1>
               <p className="zusco-title text-gray-500 regular-font">
                 Forget multiyear leases, tacky decor and constant moving. Zusco
                 offers an easy, flexible option with no long term commitment!
