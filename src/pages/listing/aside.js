@@ -210,7 +210,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
       </div>
 
       <div className="px-4 flex flex-col gap-4">
-        <h1 className="text-[#8B8E93] text-xs uppercase">Number of Guest</h1>
+        <p className="text-[#8B8E93] text-xs uppercase">Number of Guest</p>
         <Counter
           decrementClick={() =>
             handleChange("number_of_guests", form.number_of_guests, "-")
@@ -228,7 +228,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
       </div>
 
       <div className="px-4 flex flex-col gap-4">
-        <h1 className="text-[#8B8E93] text-xs uppercase">Price Details</h1>
+        <p className="text-[#8B8E93] text-xs uppercase">Price Details</p>
         <div className="flex flex-col gap-y-3 text-black">
           <div className="flex justify-between">
             <p className="font-light">
@@ -259,7 +259,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
 
       {!bookingdetails?.paid && (
         <div className="px-4 flex flex-col gap-4">
-          <h1 className="text-[#8B8E93] text-xs uppercase">Payment Method</h1>
+          <p className="text-[#8B8E93] text-xs uppercase">Payment Method</p>
           <div className="flex items-center gap-x-8">
             <fieldset>
               {shortletdetails?.card && (
