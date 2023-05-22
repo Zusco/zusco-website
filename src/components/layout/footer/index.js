@@ -1,29 +1,29 @@
 import React from "react";
 import Link from "next/link";
 
-import  Call from "assets/icons/landing/phoneIcon.svg";
-import  Facebook from "assets/icons/landing/fbIcon.svg";
-import  Twitter from "assets/icons/landing/twIcon.svg";
-import  Linkedin from "assets/icons/landing/liIcon.svg";
+import Call from "assets/icons/landing/phoneIcon.svg";
+import Facebook from "assets/icons/landing/fbIcon.svg";
+import Twitter from "assets/icons/landing/twIcon.svg";
+import Linkedin from "assets/icons/landing/liIcon.svg";
 
 const CommonFooter = () => {
   return (
     <footer className="hidden sm:flex justify-between items-center w-full py-2 relative md:fixed left-0 right-0 bottom-0 border-t-1/2 border-grey-border z-[99] h-fit md:h-[50px] bg-white">
       <div className="relative flex flex-col md:flex-row gap-3 justify-between items-center mx-auto w-full px-6 md:px-20 mb-6 md:mb-0">
         <p className="text-base text-black text-left">
-          © 2022 Zusco, All Rights Reserved
+          © {new Date().getFullYear()} Zusco, All Rights Reserved
         </p>
 
         <div className="flex justify-start items-center  w-fit space-x-3">
-          <a
+          <Link
             className="flex justify-start items-center text-base text-black text-left w-full whitespace-nowrap"
-            href="https://facebook.com/"
+            href="tel:09099887767"
             target="_blank"
             rel="noreferrer"
           >
             <Call className="mr-2" />
             Contact Us
-          </a>
+          </Link>
           <div className="flex justify-start items-center  w-fit space-x-4">
             <a href="https://facebook.com/" target="_blank" rel="noreferrer">
               <Facebook className="h-[14px] w-[14px]" />
@@ -45,7 +45,10 @@ const CommonFooter = () => {
             Privacy Policy
           </Link>
 
-          <Link className="text-base text-black text-left" href="/platform/terms">
+          <Link
+            className="text-base text-black text-left"
+            href="/platform/terms"
+          >
             Terms & Condition
           </Link>
         </div>

@@ -4,6 +4,7 @@ import { VscChevronRight } from "react-icons/vsc";
 import Link from "next/link";
 
 import { images } from "utils/images";
+import AuthStore from "store/auth";
 import Button from "../../../components/general/button/button";
 
 const Footer = () => {
@@ -17,6 +18,8 @@ const Footer = () => {
     ZuscoIconBlue,
     FooterImg,
   } = images;
+
+  const { isAuthenticated } = AuthStore;
   return (
     <footer>
       <div className="w-full bg-black text-white text-center sm:text-left px-6 sm:px-10 md:px-[4rem] lg:px-[6rem] pt-[3rem] pb-[2rem] flex flex-col sm:flex-row gap-10 justify-between">
@@ -47,7 +50,7 @@ const Footer = () => {
             Zusco helps you, as a homeowner, to rent or lease out your spare
             rooms, so that you can earn more with little to no hassle!
           </p>
-          <a href="https://host.getzusco.com/" target="_blank" rel="noreferrer">
+          <a href="https://host.zusco.ng/" target="_blank" rel="noreferrer">
             <Button
               whiteBg
               text="Become a Host"
@@ -66,61 +69,100 @@ const Footer = () => {
             <ZuscoIconBlue className="mb-2 sm:mb-0" />
           </div>
           <div className="flex flex-col justify-between h-full text-black space-y-3 sm:space-y-0 ">
-            <p className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start">
+            <Link
+              href={isAuthenticated ? "/dashboard/explore" : "/"}
+              className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start"
+            >
               Zusco
               <span>
                 <VscChevronRight className="items-center h-full" size={20} />
               </span>
-            </p>
-            <p className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start">
+            </Link>
+            <Link
+              href="/rent"
+              className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start"
+            >
               Rent for a Stay
               <span>
                 <VscChevronRight className="items-center h-full" size={20} />
               </span>
-            </p>
-            <p className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start">
+            </Link>
+            <Link
+              href="/rent"
+              className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start"
+            >
               Rent a Home
               <span>
                 <VscChevronRight className="items-center h-full" size={20} />
               </span>
-            </p>
-            <p className="flex sm:hidden text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start">
+            </Link>
+            <Link
+              href="/#faqs"
+              scroll={false}
+              className="flex sm:hidden text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start"
+            >
               F.A.Q
               <span>
                 <VscChevronRight className="items-center h-full" size={20} />
               </span>
-            </p>
+            </Link>
 
             <div className="flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0">
-              <p className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start">
+              <a
+                href="https://host.zusco.ng/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start"
+              >
                 Become a Host
                 <span>
                   <VscChevronRight className="items-center h-full" size={20} />
                 </span>
-              </p>
-              <div className="flex gap-2 hover:text-blue-alt cursor-pointer">
+              </a>
+              <Link
+                href="tel:09099887767"
+                target="_blank"
+                rel="noreferrer"
+                className="flex gap-2 hover:text-blue-alt cursor-pointer"
+              >
                 <Phone />
                 <p className="font-normal underline">Contact Us</p>
-              </div>
+              </Link>
             </div>
 
             <div className="flex justify-between">
-              <p className="hidden sm:flex text-base font-light hover:text-blue-alt cursor-pointer">
+              <a
+                href="/#faqs"
+                scroll={false}
+                className="hidden sm:flex text-base font-light hover:text-blue-alt cursor-pointer"
+              >
                 F.A.Q
                 <span>
                   <VscChevronRight className="items-center h-full" size={20} />
                 </span>
-              </p>
+              </a>
               <div className="flex justify-between w-[5rem] pt-2 sm:pt-0">
-                <div>
-                  <Facebook />
-                </div>
-                <div>
-                  <Twitter />
-                </div>
-                <div>
-                  <LinkedIn />
-                </div>
+                <a
+                  href="https://facebook.com/zusco"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Facebook className="h-[14px] w-[14px]" />
+                </a>
+                <a
+                  href="https://twitter.com/zusco"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Twitter className="h-[14px] w-[14px]" />
+                </a>
+                <a
+                  href="https://linkedin.com/zusco"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <LinkedIn className="h-[14px] w-[14px]" />
+                </a>
               </div>
             </div>
           </div>
@@ -133,7 +175,7 @@ const Footer = () => {
 
       <div className="font-light border-t text-black border-grey-light mx-6 sm:mx-10 lg:mx-14 flex flex-col-reverse md:flex-row justify-between py-6">
         <p className="text-[14px] poppins mt-2 md:mt-0">
-          © 2022 Zusco, All Rights Reserved
+          © {new Date().getFullYear()} Zusco, All Rights Reserved
         </p>
         <div className="flex gap-[80px]  mmd:gap-[40px]  msm:gap-[20px]">
           <Link href="/platform/privacy-policy" className="text-[14px]">

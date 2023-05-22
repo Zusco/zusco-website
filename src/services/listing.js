@@ -31,7 +31,7 @@ const apartments = {
       body: data,
     }),
 
-  getFavouriteListings: (shortlet_id) =>
+  getFavouriteListings: () =>
     apiInstance2(`user/shortlet/favourite`, {
       internal: true,
     }),
@@ -45,6 +45,11 @@ const apartments = {
     apiInstance2(`internal/shortlet/one/${shortlet_id}`, {
       method: "GET",
       internal: true,
+    }),
+  reportAgent: (agent_id, data) =>
+    apiInstance2(`agent/report/${agent_id}`, {
+      method: "POST",
+      body: data,
     }),
 };
 

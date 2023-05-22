@@ -65,7 +65,11 @@ const Button = ({
           <Loader className="animate-spin" />
         </div>
       ) : (
-        <div className={`space-x-3 ${buttonClass} ${btnClass}`}>
+        <div
+          className={`${
+            iconAfter ? "space-x-3 md:space-x-1 lg:space-x-3" : "space-x-3"
+          } ${buttonClass} ${btnClass}`}
+        >
           {icon && <div>{icon}</div>}
           {text && <span className={`${textClass}`}>{text}</span>}
           {iconAfter && <div>{iconAfter}</div>}

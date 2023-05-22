@@ -7,12 +7,14 @@ import { images } from "utils/images";
 import Toast from "components/general/toast/toast";
 import Button from "components/general/button/button";
 import Modal from "components/general/modal/modal/modal";
+import { useAuth } from "hooks/auth";
 import Hamburger from "../hamburger";
 
 const Header = ({}) => {
-  const { ZuscoLogo ,SignUp} = images;
+  const { ZuscoLogo, SignUp } = images;
   const router = useRouter();
   const [sidenavOpen, setSidenavOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
   const headerLinks = [
     {
       title: "Home",
@@ -24,18 +26,18 @@ const Header = ({}) => {
     },
     {
       title: "Become a Host",
-      url: "https://host.getzusco.com/",
+      url: "https://host.zusco.ng/",
     },
     {
       title: "Contact",
-      link: "/contact",
+      link: "mailto:info@lvg.com.ng",
     },
   ];
   return (
     <header className="flex flex-row justify-between items-center w-full h-[65px] px-6 md:px-12 py-2 z-[99] bg-white border-b-1/2 fixed top-0 left-0 right-0">
       <div className="relative flex flex-row justify-between items-center mx-auto w-full">
         <Toast />
-        <Link href="/">
+        <Link href={isAuthenticated ? "/dashboard/explore" : "/"}>
           <ZuscoLogo className="w-[100px]  h-[28px]" />
         </Link>
         <div className="hidden md:flex justify-end items-center pl-6 w-fit space-x-12 transition-all duration-150 ease-in-out">
@@ -113,7 +115,7 @@ const Header = ({}) => {
               </a>
             )
           )}
-          {!router?.pathname?.includes("otp") && (
+          {!router?.pathname?.includes("otp") && !isAuthenticated && (
             <>
               <Link href="/otp/send">
                 <button>
@@ -137,7 +139,7 @@ const Header = ({}) => {
           )}
         </div>
 
-        {!router?.pathname?.includes("otp") && (
+        {!router?.pathname?.includes("otp") && !isAuthenticated && (
           <div className="hidden md:flex flex-row justify-start items-center space-x-2">
             <Link href="/otp/send">
               <Button

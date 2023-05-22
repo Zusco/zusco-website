@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { DateRange } from "react-date-range";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
@@ -15,17 +15,14 @@ import { formatter } from "utils/functions";
 import AuthModal from "pages/otp/features/authModal";
 import AuthStore from "store/auth";
 import { PENDING_BOOKING_DATA } from "utils/storage";
+import ShareListingModal from "./shareListingModal";
 
 const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
-  const { bookListing, bookListingLoading } = ListingStore;
-  const {
-    showAuthModal,
-    setShowAuthModal,
-    showPaymentModal,
-    setShowPaymentModal,
-  } = AuthStore;
+  const { bookListing, bookListingLoading, showShareModal, setShowShareModal } =
+    ListingStore;
+  const { showPaymentModal, setShowPaymentModal } = AuthStore;
   let pendingBookingData;
 
   useEffect(() => {
@@ -34,6 +31,8 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
   pendingBookingData = pendingBookingData && JSON.parse(pendingBookingData);
   const pendingBookingForm = pendingBookingData?.pendingBookingForm;
   const pendingExtraData = pendingBookingData?.extraData;
+
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const [state, setState] = useState([
     {
@@ -189,7 +188,6 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
       JSON.stringify(pendingBookingData)
     );
   };
-
   return (
     <div className="w-full py-4 px-3 flex flex-col gap-y-8">
       <div>
@@ -320,16 +318,22 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
           bookingForm={form}
         />
       )}
-      {showAuthModal && (
-        <AuthModal
-          toggleModal={() => setShowAuthModal(false)}
-          saveFormToStorage={saveFormToStorage}
-          handleLoginSuccess={() => {
-            setShowAuthModal(false);
-            setShowPaymentModal(true);
-          }}
-        />
-      )}
+
+      <AuthModal
+        active={showAuthModal}
+        toggleModal={() => setShowAuthModal(false)}
+        saveFormToStorage={saveFormToStorage}
+        handleLoginSuccess={() => {
+          setShowAuthModal(false);
+          setShowPaymentModal(true);
+        }}
+      />
+      <ShareListingModal
+        handleOk={() => setShowShareModal(false)}
+        data={shortletdetails}
+        active={showShareModal}
+      />
+
       <div></div>
     </div>
   );

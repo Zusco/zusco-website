@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi";
 
 import Select from "components/general/input/select";
 import ListingStore from "store/listing";
 import List from "components/general/list";
 import CircleLoader from "components/general/circleLoader/circleLoader";
-import  BlueLike from "assets/icons/dashboard/blueLike.svg";
+import BlueLike from "assets/icons/dashboard/blueLike.svg";
 import Card1 from "components/layout/cards/Card1";
 import HostCard from "components/layout/cards/hostCard";
 import { useAuth } from "hooks/auth";
@@ -50,7 +50,7 @@ const ContentHeader = ({
 
   const goToListing = () => {
     if (searchQuery?.value) {
-   router.push(`listing/${searchQuery?.value}`);
+      router.push(`listing/${searchQuery?.value}`);
     }
   };
 
@@ -109,7 +109,7 @@ const ContentHeader = ({
 
             <p
               onClick={() => {
-             router.push("/dashboard/bookings/favorite/shortlets");
+                router.push("/dashboard/bookings/favorite/shortlets");
               }}
               className="text-blue-alt text-[20px] flex items-center gap-1 underline cursor-pointer"
             >
@@ -125,7 +125,7 @@ const ContentHeader = ({
           <div className="flex flex-col space-y-6">
             <p
               onClick={() => {
-             router.push("/dashboard/bookings");
+                router.push("/dashboard/bookings");
               }}
               className="flex items-center gap-1 cursor-pointer text-black"
             >
@@ -136,7 +136,7 @@ const ContentHeader = ({
             <div className="flex border-b-[0.5px] border-[#8B8E93]">
               <p
                 onClick={() =>
-               router.push("/dashboard/bookings/favorite/shortlets")
+                  router.push("/dashboard/bookings/favorite/shortlets")
                 }
                 className={`${
                   router.pathname.includes("shortlets")
@@ -147,7 +147,9 @@ const ContentHeader = ({
                 Shortlets
               </p>
               <p
-                onClick={() => router.push("/dashboard/bookings/favorite/hosts")}
+                onClick={() =>
+                  router.push("/dashboard/bookings/favorite/hosts")
+                }
                 className={`${
                   router.pathname.includes("hosts")
                     ? "text-black font-medium border-black border-b-[1.5px]"

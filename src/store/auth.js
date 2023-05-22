@@ -6,7 +6,7 @@ import { makeAutoObservable } from "mobx";
 import apis from "services/auth";
 
 import { successToast } from "components/general/toast/toast";
-import { saveToStorage } from "utils/storage";
+import { TOKEN, saveToStorage } from "utils/storage";
 
 class AuthStore {
   // ====================================================
@@ -20,6 +20,8 @@ class AuthStore {
   loadingVerify = false;
   showAuthModal = false;
   showPaymentModal = false;
+  isAuthenticated = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -28,17 +30,21 @@ class AuthStore {
   // Computed views
   // ====================================================
   // While MobX promotes OOP, we can still benefit from using FP where it's appropriate
-  get isAuthenticated() {
-    try {
-      return !!this.user?.token;
-    } catch (err) {
-      return false;
-    }
-  }
+  // get isAuthenticated() {
+  //   try {
+  //     return !!localStorage.getItem(TOKEN);
+  //   } catch (err) {
+  //     return false;
+  //   }
+  // }
 
   // ====================================================
   // Actions
   // ====================================================
+
+  setisAuthenticated = (item) => {
+    this.isAuthenticated = item;
+  };
   setShowAuthModal = (payload) => {
     this.showAuthModal = payload;
   };
@@ -75,6 +81,7 @@ class AuthStore {
       }
       this.setCurrentUser(res);
       logUserIn(res, "", isModal);
+      this.isAuthenticated = true;
       isModal && handleLoginSuccess();
       const message = "You have successfully logged into your zusco account";
       successToast(`Successfully logged in`, message);
@@ -95,6 +102,7 @@ class AuthStore {
 
   logout = () => {
     this.user = null;
+    this.isAuthenticated = false;
   };
 }
 

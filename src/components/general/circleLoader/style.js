@@ -24,6 +24,13 @@ export const LoadingWrapper = styled.div`
             width: "60px",
             height: "60px",
           };
+
+        case "xm":
+          return {
+            width: "45px",
+            height: "45px",
+          };
+
         case "medium":
           return {
             width: "100px",

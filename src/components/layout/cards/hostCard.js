@@ -9,7 +9,7 @@ import Button from "components/general/button/button";
 import RedFavourite from "assets/icons/dashboard/redFavourite.svg";
 
 const HostCard = observer(({ listingId }) => {
-  const { getAllListing, allListings, favouriteListings } = ListingStore;
+  const { allListings } = ListingStore;
 
   const [host, setHost] = useState();
 

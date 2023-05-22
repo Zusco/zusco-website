@@ -1,6 +1,5 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { images } from "../../../../utils/constants";
 import { CgArrowLongRight } from "react-icons/cg";
 
 const instructions = observer(() => {
@@ -20,13 +19,9 @@ const instructions = observer(() => {
       </div>
 
       <div className="grid grid-cols-[1fr,_1fr]  mmd:grid-cols-[1fr] gap-6 justify-between ">
-        <div>
-        
-        </div>
+        <div></div>
         <div className="flex flex-col justify-between py-6 px-[32px] pl-[15%]  mmd:pl-[10%]">
-          <div className="">
-         
-          </div>
+          <div className=""></div>
           <h2 className="text-blue-sky font-bold text-[32px]   mlgtext-[26px]  mmd:text-[32px]  mxs:text-[26px]">
             Rent a shortlet.
           </h2>
@@ -47,9 +42,7 @@ const instructions = observer(() => {
 
       <div className="grid grid-cols-[1fr,_1fr]  mmd:grid-cols-[1fr] gap-6 justify-between  ">
         <div className="flex flex-col justify-between py-6 pl-[10%] ">
-          <div>
-          
-          </div>
+          <div></div>
           <h2 className="text-blue-sky font-bold text-[32px]   mlgtext-[26px] ">
             Become a host
           </h2>
@@ -66,9 +59,7 @@ const instructions = observer(() => {
             </span>
           </div>
         </div>
-        <div className="pl-[10%]  mmd:pl-[1px]">
-         
-        </div>
+        <div className="pl-[10%]  mmd:pl-[1px]"></div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "classnames";
-import  CancelIcon from "assets/icons/cancel.svg";
+import CancelIcon from "assets/icons/cancel.svg";
 
 const Modal = ({
   active,
@@ -12,6 +12,7 @@ const Modal = ({
   className,
   bodyClass = "bg-white min-h-[570px]",
   togglerClass = "top-0",
+  backdropClassName,
   absolute,
 }) => {
   const modalClassNames = {
@@ -37,7 +38,7 @@ const Modal = ({
       active
         ? "transition-all duration-100 ease-in-out opacity-100 pointer-events-auto"
         : "transition-all duration-300 ease-in-out opacity-0 !pointer-events-none"
-    }
+    } ${backdropClassName}
     `}
     >
       <div
@@ -74,6 +75,7 @@ Modal.propTypes = {
   togglerClass: PropTypes.string,
   bodyClass: PropTypes.string,
   absolute: PropTypes.bool,
+  backdropClassName: PropTypes.string,
 };
 
 export default Modal;

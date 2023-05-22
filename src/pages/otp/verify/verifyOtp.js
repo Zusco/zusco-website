@@ -68,7 +68,7 @@ const VerifyOtp = observer(
           modalClass,
           handleLoginSuccess
         );
-        saveFormToStorage();
+        saveFormToStorage && saveFormToStorage();
       } catch (error) {}
     };
 

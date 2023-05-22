@@ -7,7 +7,13 @@ import ContentHeader from "components/layout/landing/contentHeader";
 import ExploreStore from "pages/rent/store/index";
 
 const Content = observer(() => {
-  const { loading, allListings, getAllListing, listingsCount } = ListingStore;
+  const {
+    loading,
+    allListings,
+    getAllListing,
+    incrementPageCount,
+    listingsCount,
+  } = ListingStore;
   const [activeTab, setActiveTab] = useState({
     title: "Zusco Shorlets",
     index: 0,
@@ -17,7 +23,7 @@ const Content = observer(() => {
   }, []);
 
   return (
-    <section className="flex flex-col gap-6  mmd:gap-2 py-5">
+    <section className="flex flex-col gap-6  mmd:gap-2 py-5 mt-[90px] md:mt-0">
       <ContentHeader
         filter
         store={ExploreStore}
@@ -40,7 +46,10 @@ const Content = observer(() => {
             <Button
               isOutline
               text="Load More"
-              onClick={() => getAllListing()}
+              onClick={() => {
+                incrementPageCount();
+                getAllListing();
+              }}
               isLoading={loading}
               isDisabled={loading}
               borderColor="blue-alt"

@@ -8,6 +8,7 @@ import apis2 from "services/filter";
 import { useAuth } from "hooks/auth";
 import { debounce } from "utils/functions";
 import { PENDING_BOOKING_DATA } from "utils/storage";
+import { defaultFilterValues } from "utils/constants";
 
 class ListingStore {
   // ====================================================
@@ -42,10 +43,11 @@ class ListingStore {
 
   searchIdLoading = true;
 
+  filterData = defaultFilterValues;
   filterLoading = false;
   filteredListing = [];
   reloadFilters = false;
-
+  showShareModal = false;
   constructor() {
     makeAutoObservable(this);
 
@@ -60,51 +62,64 @@ class ListingStore {
   // ====================================================
   // Actions
   // ====================================================
+
+  setShowShareModal = (item) => {
+    this.showShareModal = item;
+  };
+  setFilterData = (item) => {
+    this.filterData = item;
+  };
+  incrementPageCount = (item) => {
+    this.pageCount += 1;
+  };
+
+  handleAlllistings = (res) => {
+    this.listingsCount = res?.total;
+    res = res?.data;
+
+    if (this.filteredListing.length > 0) {
+      res = this.filteredListing;
+    }
+    res = res?.map(
+      ({ draft, occupied, zusco, featured, popular, ...items }) => {
+        const status = draft ? "draft" : occupied ? "occupied" : "unoccupied";
+        const type = zusco
+          ? "zusco"
+          : featured
+          ? "featured"
+          : popular
+          ? "popular"
+          : items?.new
+          ? "new"
+          : "regular";
+        return { ...items, status, type };
+      }
+    );
+    let newListings = [...this.allListings, ...res];
+    newListings = newListings.filter(
+      (obj, index, self) => index === self.findIndex((o) => o.id === obj.id)
+    );
+
+    this.allListings = newListings;
+    this.reservedListings = newListings?.filter(
+      ({ status }) => status === "reserved"
+    );
+    this.zuscoListings = newListings?.filter(({ type }) => type === "zusco");
+    this.featuredListings = newListings?.filter(
+      ({ type }) => type === "featured"
+    );
+    this.popularListings = newListings?.filter(
+      ({ type }) => type === "popular"
+    );
+    this.newListings = newListings?.filter(({ type }) => type === "new");
+    this.loading = false;
+    return res;
+  };
   getAllListing = async (all) => {
     this.loading = true;
-    this.loadingStates = true;
     try {
       let res = await apis.getAllListings(all || this.pageCount);
-      this.listingsCount = res?.total;
-      res = res?.data;
-
-      if (this.filteredListing.length > 0) {
-        res = this.filteredListing;
-      }
-      this.getAllStates(res);
-      res = res?.map(
-        ({ draft, occupied, zusco, featured, popular, ...items }) => {
-          const status = draft ? "draft" : occupied ? "occupied" : "unoccupied";
-          const type = zusco
-            ? "zusco"
-            : featured
-            ? "featured"
-            : popular
-            ? "popular"
-            : items?.new
-            ? "new"
-            : "regular";
-          return { ...items, status, type };
-        }
-      );
-      let newListings = [...this.allListings, ...res];
-      newListings = [...new Set(newListings)];
-
-      this.allListings = newListings;
-      this.reservedListings = newListings?.filter(
-        ({ status }) => status === "reserved"
-      );
-      this.zuscoListings = newListings?.filter(({ type }) => type === "zusco");
-      this.featuredListings = newListings?.filter(
-        ({ type }) => type === "featured"
-      );
-      this.popularListings = newListings?.filter(
-        ({ type }) => type === "popular"
-      );
-      this.newListings = newListings?.filter(({ type }) => type === "new");
-
-      this.pageCount = this.pageCount + 1;
-
+      res = this.handleAlllistings(res);
       return res;
     } catch (error) {
       this.error = error;
@@ -131,14 +146,14 @@ class ListingStore {
         PENDING_BOOKING_DATA,
         JSON.stringify(pendingBookingData)
       );
-   router.push("/otp/send", { replace: false });
+      router.push("/otp/send", { replace: false });
     } else {
       this.bookListingLoading = true;
       try {
         makeBookingRequest &&
           (await apis.bookListing(this.currentListing?.id, data));
         localStorage.removeItem(PENDING_BOOKING_DATA);
-     router.push("/dashboard/bookings");
+        router.push("/dashboard/bookings");
         successToast("Success", `Your booking was created successfully`);
       } catch (error) {
         this.error = error;
@@ -184,7 +199,7 @@ class ListingStore {
       this.currentListing = currentListing;
       this.currentFeatures = [...amenities, ...allowances, ...rules];
     } else {
-   router.push(route);
+      router.push(route);
     }
     return currentListing;
   };
@@ -243,18 +258,6 @@ class ListingStore {
     }
   };
 
-  getAllStates = (array) => {
-    array.forEach((item) => {
-      if (this.allStates.includes(item.state)) {
-        this.allStates = this.allStates;
-      } else if (!this.allStates.includes(item.state)) {
-        this.allStates.push(item.state);
-      }
-    });
-
-    this.loadingStates = false;
-  };
-
   filterListings = async (data) => {
     this.filterLoading = true;
     try {
@@ -270,11 +273,15 @@ class ListingStore {
     }
   };
 
-  debouncedFilter = debounce((data) => this.filterListings(data), 2000);
+  debouncedFilter = debounce((data) => this.filterListings(data), 3000);
 
-  clearFilter = () => {
-    this.filteredListing = [];
-    this.reloadFilters = !this.reloadFilters;
+  clearFilter = (reload) => {
+    this.filterData = defaultFilterValues;
+    if (!reload) {
+      this.reloadFilters = !this.reloadFilters;
+    }
+    if (reload) {
+    }
   };
 }
 export default new ListingStore();

@@ -15,7 +15,7 @@ Loading.propTypes = {
   icon: PropTypes.elementType,
   className: PropTypes.string,
   body: PropTypes.elementType,
-  size: PropTypes.oneOf(["tiny", "small", "medium", "large"]),
+  size: PropTypes.oneOf(["tiny", "small", "medium", "large", "xm"]),
 };
 
 export default Loading;

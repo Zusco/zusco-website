@@ -5,9 +5,9 @@ const Notification = () => {
   return (
     <div className="w-[20rem] bg-white py-5 px-6 rounded">
       <h3 className="flex justify-between pb-4 border-b">
-        <p className="medium-font text-[12px] text-blue-9">
+        <div className="medium-font text-[12px] text-blue-9">
           Notification <span className="text-[#A4A4A4]"> (2 new) </span>
-        </p>
+        </div>
         <p className="medium-font text-[10px] text-blue-alt">
           MARK ALL AS READ
         </p>

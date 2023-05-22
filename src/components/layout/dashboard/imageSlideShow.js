@@ -6,11 +6,12 @@ import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FiArrowLeft } from "react-icons/fi";
-import Like from "assets/icons/dashboard/redLike.svg";
 import Share from "assets/icons/dashboard/share.svg";
+import ListingStore from "store/listing";
 import { NextArrow, PrevArrow } from "components/general/slider/carouselArrows";
 
 const ImageSlideShow = ({ listing, closeSlideShow }) => {
+  const { setShowShareModal } = ListingStore;
   const settings = {
     className: "center flex items-center pt-0",
     infinite: true,
@@ -64,14 +65,18 @@ const ImageSlideShow = ({ listing, closeSlideShow }) => {
         </p>
 
         <div className="flex gap-4">
-          <p className="flex gap-1 items-center">
+          {/* <p className="flex gap-1 items-center">
             <Like width={20} height={20} className="-mb-1.5" />{" "}
             <span className="text-red-400">Liked</span>
-          </p>
-          <p className="flex gap-2 items-center white-path-stroke">
+          </p> */}
+          <a
+            href="#share-listing"
+            onClick={() => setShowShareModal(true)}
+            className="flex gap-2 items-center white-path-stroke"
+          >
             <Share width={20} height={20} className="opacity-80" />{" "}
             <span className="underline">Share</span>
-          </p>
+          </a>
         </div>
       </div>
 

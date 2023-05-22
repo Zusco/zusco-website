@@ -4,8 +4,8 @@
 
 import { makeAutoObservable } from "mobx";
 import apis from "services/common";
+import listingApis from "services/listing";
 import { successToast } from "components/general/toast/toast";
-import { useAuth } from "hooks/auth";
 import { saveUserInfoToStorage } from "utils/storage";
 
 class CommonStore {
@@ -24,6 +24,7 @@ class CommonStore {
   error = null;
   loading = false;
   loadingFetchMe = false;
+  reportingAgent = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -69,6 +70,21 @@ class CommonStore {
       } finally {
         this.loading = false;
       }
+    }
+  };
+
+  reportAgent = async ({ agent_id, data, callbackFunc }) => {
+    this.reportingAgent = true;
+    try {
+      await listingApis.reportAgent(agent_id, data);
+      const message =
+        "Your report has been recorded. We'd take appropriate actions as soon as possible";
+      successToast(`Operation successful!`, message);
+      callbackFunc && callbackFunc();
+    } catch (error) {
+      this.error = error;
+    } finally {
+      this.reportingAgent = false;
     }
   };
 }

@@ -16,13 +16,7 @@ function useAuth() {
     checkSessionValidity();
   }, [token]);
 
-  function checkSessionValidity() {
-    try {
-      return !!token;
-    } catch (err) {
-      return false;
-    }
-  }
+  const checkSessionValidity = () => !!token;
 
   async function logout() {
     try {

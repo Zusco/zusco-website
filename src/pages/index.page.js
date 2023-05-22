@@ -1,11 +1,24 @@
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
+import apis from "services/listing";
+import ListingStore from "store/listing";
 import HomePage from "./landing/home";
+import { useEffect } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+export async function getServerSideProps() {
+  let metaListings;
+  try {
+    metaListings = await apis.getAllListings(1);
+  } catch (error) {}
 
-export default function Home() {
+  return {
+    props: { metaListings }, // will be passed to the page component as props
+  };
+}
+export default function Home({ metaListings }) {
+  const { handleAlllistings } = ListingStore;
+  useEffect(() => {
+    handleAlllistings(metaListings);
+  }, []);
   return (
     <>
       <Head>
@@ -18,7 +31,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <HomePage />
+        <HomePage metaListings={metaListings} />
       </main>
     </>
   );

@@ -44,6 +44,7 @@
   font-weight: 500;
   font-style: normal;
   font-display: swap;
+
 }
 
 @font-face {
@@ -100,6 +101,7 @@ body {
   width: 100%;
   overflow-x: hidden;
   color: #ffffff6e;
+  scroll-behavior: smooth;
 }
 
 .light-font {
@@ -530,4 +532,3 @@ input::focus {
 .slick-slider {
   display: flex !important;
 }
-

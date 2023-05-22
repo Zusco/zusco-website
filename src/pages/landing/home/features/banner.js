@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
-
+import Image from "next/image";
+import Link from "next/link";
 import { images } from "utils/images";
 import SearchBar from "components/layout/landing/searchBar";
 import BannerImage from "../../../../../public/banner-image.png";
-import Image from "next/image";
+
 const Banner = observer(() => {
   const { Scroll, AppStore, GoogleStore } = images;
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,7 +39,9 @@ const Banner = observer(() => {
               <AppStore className="msm:w-[50%] mxs:w-[70%]" />
             </div>
             <div className="w-full flex justify-center sm:justify-start">
-              <Scroll />
+              <Link href="#listings" scroll={false}>
+                <Scroll />
+              </Link>
             </div>
             <div className=" mmd:w-screen mmd:px-4 msm:px-2 hidden mmd:block z-[10]">
               <SearchBar

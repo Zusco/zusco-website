@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
-import Image from "next/image";
+import axios from "axios";
 
 import {
   ZuscoShortlet,
@@ -11,15 +11,14 @@ import {
 } from "assets/icons";
 import Button from "components/general/button/button";
 import Card1 from "components/layout/cards/Card1";
-import { images } from "utils/images";
-import FilterIcon from "assets/icons/features/filterIcon.svg"
+import FilterIcon from "assets/icons/features/filterIcon.svg";
 import ListingStore from "store/listing";
 import Select from "components/general/input/select";
 import FilterListings from "utils/filter";
 import { useAuth } from "hooks/auth";
 
 const ContentHeader = observer(
-  ({ setActiveTab, activeTab, filter, store, headerClass, tabClass }) => {
+  ({ setActiveTab, activeTab, filter, headerClass, tabClass }) => {
     const router = useRouter();
     const { isAuthenticated } = useAuth();
     const {
@@ -30,14 +29,12 @@ const ContentHeader = observer(
       searchListings,
       getFavouriteListings,
       favouriteListings,
-      filterLoading,
-      filterListings,
       filteredListing,
       clearFilter,
-      reloadFilters,
     } = ListingStore;
     const containerRef = useRef(null);
 
+    const [showFilter, setShowFilter] = useState(false);
     const tabs = [
       {
         title: "Zusco Shorlets",
@@ -62,7 +59,7 @@ const ContentHeader = observer(
     ];
 
     const [sliderPosition, setSliderPosition] = useState(0);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState(null);
     const [searchValue, setSearchValue] = useState("");
 
     useEffect(() => {
@@ -110,7 +107,7 @@ const ContentHeader = observer(
     };
 
     return (
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 ">
         <div className="px-2 py-[1.5rem]  flex justify-between gap-y-5 flex-wrap border-b-1/2 border-grey-border text-black">
           <div
             className={`flex flex-col justify-start items-start  w-full
@@ -120,7 +117,7 @@ const ContentHeader = observer(
         `}
           >
             <div
-              className={`flex flex-col-reverse md:flex-row md:justify-between items-start md:items-center gap-x-8 gap-y-5 w-full
+              className={`flex flex-col-reverse md:flex-row md:justify-between items-start md:items-center gap-x-8 gap-y-5 w-full z-[9]
               bg-white ${filter ? "px-6" : ""} py-4 md:py-3
            
             `}
@@ -154,7 +151,7 @@ const ContentHeader = observer(
 
                 {filter && (
                   <div className="flex justify-end items-center w-[100px] h-[63px]">
-                    {!store.filter ? (
+                    {!showFilter ? (
                       <div className="h-[52px] flex items-center">
                         <Button
                           whiteBg
@@ -162,13 +159,13 @@ const ContentHeader = observer(
                           icon={<FilterIcon />}
                           btnClass="border border-black hover:bg-black/[.1] text-black bg-white h-[50px]"
                           className="shadow-btn bg-white"
-                          onClick={() => store.toggleFilter()}
+                          onClick={() => setShowFilter(true)}
                           xsmall
                         />
                       </div>
-                    ) : store.filter ? (
+                    ) : showFilter ? (
                       <button
-                        onClick={() => store.toggleFilter()}
+                        onClick={() => setShowFilter(false)}
                         className="medium-font text-right text-[14px] text-[#211D31] cursor-pointer hover:text-red-500"
                       >
                         Close
@@ -222,8 +219,8 @@ const ContentHeader = observer(
               </div>
             </div>
 
-            {filter && store.filter && (
-              <div className="items-center flex gap-5 px-2 md:px-8 py-2  bg-white fade-in w-full border-t-1/2 border-grey-border">
+            {showFilter && (
+              <div className="flex justify-between items-center gap-5 px-2 md:px-8 py-2 bg-white fade-in w-full border-t-1/2 border-grey-border z-[9]">
                 <div className="flex items-center gap-1">
                   <p
                     className="underline cursor-pointer text-blue-9"
@@ -240,17 +237,23 @@ const ContentHeader = observer(
                 <div className="h-[3.5rem] mmd:h-[2.5rem] flex items-center">
                   <Button
                     whiteBg
-                    text={`Show ${filteredListing.length} results`}
-                    btnClass="border border-black text-black"
+                    text={`Show ${
+                      filteredListing.length > 0
+                        ? filteredListing.length
+                        : "all"
+                    } results`}
+                    btnClass="!border-none !sm:border border-black text-black"
                     className="shadow-btn"
-                    onClick={() => store.toggleFilter()}
+                    onClick={() => setShowFilter(false)}
                   />
                 </div>
               </div>
             )}
 
-            {filter && store.filter && reloadFilters && <FilterListings />}
-            {filter && store.filter && !reloadFilters && <FilterListings />}
+            {showFilter && <FilterListings />}
+            {showFilter && (
+              <div className="fixed top-0 left-0 h-screen w-full !my-0 backdrop "></div>
+            )}
           </div>
         </div>
         {/* content */}

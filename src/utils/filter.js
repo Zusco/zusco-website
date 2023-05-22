@@ -1,107 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { BsCheck2 } from "react-icons/bs";
-import { AiOutlinePlus, AiOutlineMinus, AiOutlineRight } from "react-icons/ai";
+import { isArray } from "lodash";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { useRouter } from "next/router";
+import Image from "next/image";
 import Button from "components/general/button/button";
 import Slider from "components/general/slider/priceSlider";
 import RoundedBtn from "components/general/button/roundedBtn";
 import CheckBox from "components/general/input/checkBox1";
-import FilterStore from "store/filter";
 import ListingStore from "store/listing";
 import CircleLoader from "components/general/circleLoader/circleLoader";
-import Image from "next/image";
+import useListToggle from "hooks/useListToggle";
+import { numberFormatter } from "./formatter";
+import { STATES, maxPriceValue, minPriceValue } from "./constants";
 
 const FilterListings = observer(() => {
-  const store = FilterStore;
   const {
     getARR,
     amenitiesLoading,
     amenities,
     allowances,
     rules,
-    filterLoading,
-    filterListings,
-    filteredListing,
-    allStates,
-    loadingStates,
     debouncedFilter,
+    filterData,
+    setFilterData,
+    clearFilter,
   } = ListingStore;
 
-  const Locations = allStates;
-
-  const [toggleAmenities, setToggleAmenities] = useState(false);
-  const [toggleAllowances, setToggleAllowances] = useState(false);
-  const [toggleRules, setToggleRules] = useState(false);
-
-  const [filterData, setFilterData] = useState({
-    states: [],
-    min_price: `0`,
-    max_price: `${store?.maxVal}`,
-    number_of_bedrooms: 0,
-    amenities: [],
-    allowances: [],
-    rules: [],
-  });
+  const router = useRouter();
+  useEffect(() => {
+    const handleRouteChange = () => {
+      clearFilter(true);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   useEffect(() => {
     getARR();
   }, []);
   useEffect(() => {
-    debouncedFilter(filterData);
-    console.log("the list", filterData);
+    debouncedFilter({
+      ...filterData,
+      min_price: String(filterData.min_price),
+      max_price: String(filterData.max_price),
+    });
   }, [filterData]);
-
-  const handleSliderChange = () => {
-    setFilterData({
-      ...filterData,
-      min_price: `${store?.minVal}`,
-      max_price: `${store?.maxVal}`,
-    });
-  };
-
-  const handleCheckboxChange = (event) => {
-    const { name, value, type, checked, id } = event.target;
-    let newArray = [...filterData[name], id];
-    if (filterData[name].includes(id)) {
-      newArray = newArray.filter((item) => item !== id);
-    }
-    setFilterData({
-      ...filterData,
-      [name]: newArray,
-    });
-  };
-
-  const roomIncrement = () => {
-    setFilterData({
-      ...filterData,
-      number_of_bedrooms: filterData.number_of_bedrooms + 1,
-    });
-  };
-  const roomDecrement = () => {
-    if (filterData.number_of_bedrooms > 0) {
-      setFilterData({
-        ...filterData,
-        number_of_bedrooms: filterData.number_of_bedrooms - 1,
-      });
-    }
-  };
-
-  const handleChange = (prop, val, type) => {
-    setFilterData((prev) => {
-      return { ...prev, [prop]: val };
-    });
-  };
-
-  const selectLocation = (location) => {
-    let newArray = [...filterData.states, location];
-    if (filterData.states.includes(location)) {
-      newArray = newArray.filter((item) => {
-        item !== location;
-      });
-    }
-    setFilterData({ ...filterData, states: newArray });
-  };
-
   const Amenities = amenities.map((item, index) => ({
     key: item.id,
     name: item.name,
@@ -120,6 +67,56 @@ const FilterListings = observer(() => {
     logo: item.icon,
   }));
 
+  const {
+    renderListToggler: renderLocationsToggler,
+    displayedList: displayedLocations,
+  } = useListToggle({
+    list: STATES,
+  });
+
+  const {
+    renderListToggler: renderAmenitiesToggler,
+    displayedList: displayedAmenities,
+  } = useListToggle({
+    list: Amenities,
+    maxCount: 3,
+  });
+
+  const {
+    renderListToggler: renderAllowancesToggler,
+    displayedList: displayedAllowances,
+  } = useListToggle({
+    list: Allowances,
+    maxCount: 3,
+  });
+
+  const {
+    renderListToggler: renderRulesToggler,
+    displayedList: displayedRules,
+  } = useListToggle({
+    list: Rules,
+    maxCount: 3,
+  });
+
+  const isSelectedItem = (item, field) =>
+    filterData[field]?.find((itm) => itm === item);
+
+  const selectFilterItem = (item, field) => {
+    let selectedFilterItem = filterData[field];
+
+    if (!item) return;
+    if (isArray(selectedFilterItem)) {
+      if (isSelectedItem(item, field)) {
+        selectedFilterItem = selectedFilterItem?.filter((itm) => itm !== item);
+      } else {
+        selectedFilterItem = [...selectedFilterItem, item];
+      }
+      setFilterData({ ...filterData, [field]: [...selectedFilterItem] });
+    } else {
+      setFilterData({ ...filterData, [field]: item });
+    }
+  };
+
   const formatter = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
@@ -134,249 +131,211 @@ const FilterListings = observer(() => {
   return (
     <div
       className={`overflow-y-scroll w-full max-h-[calc(100vh-300px)] md:max-h-[calc(100vh-220px)]
-       bg-white  fade-in px-2 md:px-8 flex flex-col gap-10`}
+       bg-white z-[9] fade-in px-2 md:px-8 flex flex-col gap-10`}
     >
       <form action="">
-        <div className="grid md:grid-cols-[20rem,_10rem,_12rem] xs:grid-cols-2 grid-cols-1 px-4 space-y-4 gap-6 justify-between">
-          <div className="md:max-w-[25rem] xs:col-span-2 col-span-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-between items-start mb-6 w-full">
+          <div className="w-full flex flex-col justify-start items-start gap-4">
             <h1 className="text-[#211D31] text-[20px]">Location</h1>
-            <div className="flex flex-wrap gap-3 w-full">
-              {loadingStates && (
-                <div className="w-full flex justify-center items-center h-[100px]">
-                  <CircleLoader blue />
-                </div>
-              )}
-
-              {!loadingStates &&
-                Locations?.map((place, index) => {
-                  return (
-                    <>
-                      <div className=""></div>
-                      <Button
-                        name={filterData.states}
-                        key={place + index}
-                        whiteBg
-                        text={`${place}`}
-                        btnClass={`border border-black text-black rounded-l-full rounded-r-full ${
-                          filterData.states.includes(place) &&
-                          "bg-blue-sky/[.1] border-blue-9 text-blue-9"
-                        }`}
-                        iconAfter={
-                          filterData.states.includes(place) ? (
-                            <BsCheck2 size={20} color="#00509D" />
-                          ) : (
-                            false
-                          )
-                        }
-                        className=""
-                        value={`${place}`}
-                        onClick={() => selectLocation(place)}
-                      />
-                    </>
-                  );
-                })}
-            </div>
-          </div>
-
-          <div className="w-fit ">
-            <h1 className="text-[#211D31] text-[20px]">Number of Rooms</h1>
-            <div className="flex items-center justify-between">
-              {" "}
-              <RoundedBtn
-                className="text-[24px] border-blue-sky"
-                icon={<AiOutlineMinus color="#5599DD" />}
-                onClick={() => roomDecrement()}
-              />{" "}
-              <p className="text-base">{filterData.number_of_bedrooms}</p>{" "}
-              <RoundedBtn
-                className="text-[24px] border-blue-sky"
-                icon={<AiOutlinePlus color="#5599DD" />}
-                onClick={() => roomIncrement()}
-              />{" "}
-            </div>
-          </div>
-
-          <div className="min-w-[180px] max-w-[250px] flex flex-col gap-3 ">
-            <h1 className="text-[#211D31] text-[20px]">Amenities</h1>
-            {amenitiesLoading && (
-              <div className="w-full flex justify-center items-center h-[100px]">
-                <CircleLoader blue />
-              </div>
-            )}
-
-            <div
-              className={`${
-                !toggleAmenities ? "overflow-hidden h-[5rem]" : ""
-              } text-black/[.3] fill-[#D8DCE3] stroke-[#D8DCE3] flex flex-col gap-1`}
-            >
-              {Amenities.map((Amenity, index) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-4 justify-end items-start w-full">
+              {displayedLocations?.map(({ label, value }, index) => {
+                const itemSelected = isSelectedItem(value, "states");
                 return (
-                  <CheckBox
-                    key={Amenity.key}
-                    name={`amenities`}
-                    id={Amenity.key}
-                    onChange={handleCheckboxChange}
-                    label={Amenity.name}
-                    icon={
-                      <Image
-                        className="w-[20px]"
-                        src={Amenity.logo}
-                        alt={Amenity.name}
-                        width={20}
-                        height={20}
-                      />
+                  <Button
+                    key={value + index}
+                    whiteBg
+                    text={label}
+                    btnClass={`!border-black !text-black rounded-l-full rounded-r-full ${
+                      itemSelected &&
+                      "bg-blue-sky/[.1] !border-blue-9 !text-blue-9"
+                    }`}
+                    iconAfter={
+                      itemSelected && <BsCheck2 size={20} color="#00509D" />
                     }
+                    value={`${value}`}
+                    onClick={() => selectFilterItem(value, "states")}
                   />
                 );
               })}
             </div>
-            {!toggleAmenities && (
-              <div
-                onClick={() => {
-                  setToggleAmenities((prevState) => !prevState);
-                }}
-                className="flex justify-between text-black cursor-pointer"
-              >
-                <AiOutlineRight size={12} />{" "}
-                <p className="text-[12px] text-black underline">View all</p>
+
+            {renderLocationsToggler()}
+          </div>
+          <div className="w-full flex justify-start md:justify-end lg:justify-center lg:ml-10 ">
+            <div className="w-[250px] md:w-[180px] lg:w-[250px] flex flex-col justify-start items-start gap-4">
+              <h1 className="text-[#211D31] text-[20px]">Number of Rooms</h1>
+              <div className="flex items-center justify-between gap-5 w-full">
+                <RoundedBtn
+                  className="text-[24px] border-blue-sky"
+                  icon={<AiOutlineMinus color="#5599DD" />}
+                  onClick={() =>
+                    filterData.number_of_bedrooms > 1 &&
+                    selectFilterItem(
+                      filterData.number_of_bedrooms - 1,
+                      "number_of_bedrooms"
+                    )
+                  }
+                />
+                <p className="text-base">{filterData.number_of_bedrooms}</p>
+                <RoundedBtn
+                  className="text-[24px] border-blue-sky"
+                  icon={<AiOutlinePlus color="#5599DD" />}
+                  onClick={() =>
+                    selectFilterItem(
+                      filterData.number_of_bedrooms + 1,
+                      "number_of_bedrooms"
+                    )
+                  }
+                />
               </div>
-            )}
-            {toggleAmenities && (
+            </div>
+          </div>
+          <div className="w-full flex justify-start lg:justify-end">
+            <div className=" w-[250px] md:w-[180px] lg:w-[250px] flex flex-col justify-start items-start gap-4 relative ">
+              <h1 className="text-[#211D31] text-[20px]">Amenities</h1>
+              {amenitiesLoading && (
+                <div className="w-full flex justify-center items-center h-[100px] absolute m-auto left-0 right-0 mt-[30px]">
+                  <CircleLoader blue size="xm" />
+                </div>
+              )}
               <div
-                onClick={() => {
-                  setToggleAmenities((prevState) => !prevState);
-                }}
-                className="w-full text-black cursor-pointer underline text-right text-[12px]"
+                className={`text-black/[.3] fill-[#D8DCE3] stroke-[#D8DCE3] flex flex-col gap-2 w-full`}
               >
-                Show less
+                {displayedAmenities.map((item) => {
+                  return (
+                    <CheckBox
+                      key={item.key}
+                      onChange={() => selectFilterItem(item.key, "amenities")}
+                      checked={isSelectedItem(item.key, "amenities")}
+                      label={item.name}
+                      icon={
+                        <Image
+                          className="w-[20px]"
+                          src={item.logo}
+                          alt={item.name}
+                          width={20}
+                          height={20}
+                        />
+                      }
+                    />
+                  );
+                })}
               </div>
-            )}
+              {renderAmenitiesToggler()}
+            </div>
           </div>
         </div>
 
-        <p className="w-full h-[1px] border-t"></p>
+        <hr className="w-full h-[1px] border-t py-5" />
 
-        <div className="flex flex-wrap md:flex-nowrap md:justify-between">
-          <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-between items-start mb-6 w-full">
+          <div className="w-full flex flex-col justify-start items-start gap-4">
             <h1 className="text-[#211D31] text-[20px] px-4">Price Range</h1>
 
-            <div className="xs:w-[400px] w-full flex flex-col px-4 gap-4">
-              <div className="flex gap-4 justify-end">
+            <div className="w-full flex flex-col px-4 gap-4">
+              <div className="flex gap-4 justify-start lg:justify-end">
                 <p className="w-fit xs:px-3 px-1 border border-[#D0D5DD] bg-[#F3F8FF] text-blue-sky">
-                  min: {formatMoney(store?.minVal)}
+                  min: {formatMoney(filterData.min_price)}
                 </p>
                 <p className="w-fit ms:px-3 px-1 border border-[#D0D5DD] bg-[#F3F8FF] text-blue-sky">
-                  max: {formatMoney(store?.maxVal)}
+                  max: {formatMoney(filterData?.max_price)}
                 </p>
               </div>
               <div className="flex justify-between">
-                <p className="text-[#8B8E93] underline">₦ 1k</p>
-                <p className="text-[#8B8E93] underline">₦ 400k</p>
+                <p className="text-[#8B8E93] underline">
+                  ₦ {numberFormatter(parseInt(minPriceValue), 2)}
+                </p>
+                <p className="text-[#8B8E93] underline">
+                  ₦ {numberFormatter(parseInt(maxPriceValue), 2)}
+                </p>
               </div>
-              <Slider handleSliderChange={handleSliderChange} store={store} />
+              <Slider
+                range
+                allowCross={false}
+                min={minPriceValue}
+                max={maxPriceValue}
+                defaultValue={[minPriceValue, maxPriceValue]}
+                onChange={(e) => {
+                  setFilterData({
+                    ...filterData,
+                    min_price: e[0],
+                    max_price: e[1],
+                  });
+                }}
+              />
             </div>
           </div>
 
-          <div className="min-w-[180px] max-w-[250px] flex flex-col gap-3 px-4">
-            <h1 className="text-[#211D31] text-[20px]">Allowances</h1>
-            <div
-              className={`${
-                !toggleAllowances ? "overflow-hidden h-[5rem]" : ""
-              } text-black/[.3] fill-[#D8DCE3] stroke-[#D8DCE3] flex flex-col gap-1`}
-            >
-              {Allowances.map((Allowance, index) => {
-                return (
-                  <CheckBox
-                    name={`allowances`}
-                    id={Allowance.key}
-                    onChange={handleCheckboxChange}
-                    key={Allowance.key}
-                    label={Allowance.name}
-                    icon={
-                      <Image
-                        className="w-[20px] "
-                        src={Allowance.logo}
-                        alt={Allowance.name}
-                        width={20}
-                        height={20}
-                      />
-                    }
-                  />
-                );
-              })}
-            </div>
-            {!toggleAllowances && (
+          <div className="w-full flex justify-start md:justify-end lg:justify-center lg:ml-10">
+            <div className=" w-[250px] md:w-[180px] lg:w-[250px] flex flex-col justify-start items-start gap-4 relative ">
+              <h1 className="text-[#211D31] text-[20px]">Allowances</h1>
+              {amenitiesLoading && (
+                <div className="w-full flex justify-center items-center h-[100px] absolute m-auto left-0 right-0 mt-[30px]">
+                  <CircleLoader blue size="xm" />
+                </div>
+              )}
               <div
-                onClick={() => {
-                  setToggleAllowances((prevState) => !prevState);
-                }}
-                className="flex justify-between text-black cursor-pointer"
+                className={`text-black/[.3] fill-[#D8DCE3] stroke-[#D8DCE3] flex flex-col gap-2 w-full`}
               >
-                <AiOutlineRight size={12} />{" "}
-                <p className="text-[12px] text-black underline">View all</p>
+                {displayedAllowances.map((item) => {
+                  return (
+                    <CheckBox
+                      key={item.key}
+                      onChange={() => selectFilterItem(item.key, "allowances")}
+                      checked={isSelectedItem(item.key, "allowances")}
+                      label={item.name}
+                      icon={
+                        <Image
+                          className="w-[20px]"
+                          src={item.logo}
+                          alt={item.name}
+                          width={20}
+                          height={20}
+                        />
+                      }
+                    />
+                  );
+                })}
               </div>
-            )}
-            {toggleAllowances && (
-              <div
-                onClick={() => {
-                  setToggleAllowances((prevState) => !prevState);
-                }}
-                className="w-full text-black cursor-pointer underline text-right text-[12px]"
-              >
-                Show less
-              </div>
-            )}
-          </div>
 
-          <div className="min-w-[180px] max-w-[250px] flex flex-col gap-3 px-4">
-            <h1 className="text-[#211D31] text-[20px]">Rules</h1>
-            <div
-              className={`${
-                !toggleRules ? "overflow-hidden h-[5rem]" : ""
-              } text-black/[.3] fill-[#D8DCE3] stroke-[#D8DCE3] flex flex-col gap-1`}
-            >
-              {Rules.map((Rule, index) => {
-                return (
-                  <CheckBox
-                    name={`rules`}
-                    id={Rule.key}
-                    onChange={handleCheckboxChange}
-                    key={Rule.key}
-                    label={Rule.name}
-                    icon={
-                      <Image
-                        className="w-[20px] "
-                        src={Rule.logo}
-                        alt={Rule.name}
-                        width={20}
-                        height={20}
-                      />
-                    }
-                  />
-                );
-              })}
+              {renderAllowancesToggler()}
             </div>
-            {!toggleRules && (
+          </div>
+          <div className="w-full flex justify-start lg:justify-end">
+            <div className=" w-[250px] md:w-[180px] lg:w-[250px] flex flex-col justify-start items-start gap-4 relative">
+              <h1 className="text-[#211D31] text-[20px]">Rules</h1>
+
+              {amenitiesLoading && (
+                <div className="w-full flex justify-center items-center h-[100px] absolute m-auto left-0 right-0 mt-[30px]">
+                  <CircleLoader blue size="xm" />
+                </div>
+              )}
+
               <div
-                onClick={() => {
-                  setToggleRules((prevState) => !prevState);
-                }}
-                className="flex justify-between text-black cursor-pointer"
+                className={`text-black/[.3] fill-[#D8DCE3] stroke-[#D8DCE3] flex flex-col gap-2 w-full`}
               >
-                <AiOutlineRight size={12} />{" "}
-                <p className="text-[12px] text-black underline">View all</p>
+                {displayedRules.map((item) => {
+                  return (
+                    <CheckBox
+                      key={item.key}
+                      onChange={() => selectFilterItem(item.key, "rules")}
+                      checked={isSelectedItem(item.key, "rules")}
+                      label={item.name}
+                      icon={
+                        <Image
+                          className="w-[20px]"
+                          src={item.logo}
+                          alt={item.name}
+                          width={20}
+                          height={20}
+                        />
+                      }
+                    />
+                  );
+                })}
               </div>
-            )}
-            {toggleRules && (
-              <div
-                onClick={() => {
-                  setToggleRules((prevState) => !prevState);
-                }}
-                className="w-full text-black cursor-pointer underline text-right text-[12px]"
-              >
-                Show less
-              </div>
-            )}
+              {renderRulesToggler()}
+            </div>
           </div>
         </div>
         <div className="w-full h-20" />

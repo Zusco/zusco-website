@@ -20,7 +20,9 @@ import Gold from "assets/icons/dashboard/goldHost.svg";
 import Bath from "assets/icons/bath.svg";
 import Bed from "assets/icons/bed.svg";
 import Tips from "assets/icons/tips.svg";
-
+import Favorite from "assets/icons/dashboard/favourite.svg";
+import RedFavorite from "assets/icons/dashboard/redFavourite.svg";
+import AuthStore from "store/auth";
 import ListingStore from "store/listing";
 import ImageSlideShow from "components/layout/dashboard/imageSlideShow";
 import CommonLayout from "components/layout";
@@ -56,12 +58,17 @@ export async function getServerSideProps({ query }) {
 const ApartmentDetailsHome = ({ metadata }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { handleFindListing, currentListing, currentFeatures, addToFavourite } =
-    ListingStore;
+  const {
+    handleFindListing,
+    currentListing,
+    currentFeatures,
+    addToFavourite,
+    setShowShareModal,
+  } = ListingStore;
   const { handleFindBooking, currentBooking } = BookingsStore;
   const userInfo = getUserInfoFromStorage();
   const { isAuthenticated } = useAuth();
-
+  const { setShowAuthModal } = AuthStore;
   const path = findPath(router, "/listing") || findPath(router, "/booking");
   const pathname = router?.pathname;
 
@@ -130,17 +137,21 @@ const ApartmentDetailsHome = ({ metadata }) => {
   };
 
   const updateLike = async () => {
-    setAddingFavourite(true);
-    try {
-      const likeApartment = await addToFavourite(
-        currentListing.id,
-        isAuthenticated
-      );
-      if (likeApartment) {
-        setLiked((prevState) => !prevState);
+    if (isAuthenticated) {
+      setAddingFavourite(true);
+      try {
+        const likeApartment = await addToFavourite(
+          currentListing.id,
+          isAuthenticated
+        );
+        if (likeApartment) {
+          setLiked((prevState) => !prevState);
+        }
+      } finally {
+        setAddingFavourite(false);
       }
-    } finally {
-      setAddingFavourite(false);
+    } else {
+      setShowAuthModal(true);
     }
   };
 
@@ -151,8 +162,22 @@ const ApartmentDetailsHome = ({ metadata }) => {
     ? `${metadata?.description}`
     : "Forget multiyear leases, tacky decor and constant moving. Zusco offers an easy, flexible option with no long term commitment!";
 
-  const metaImage = metadata?.images[0] || "";
+  const metaImage = metadata?.images?.[0] || "";
 
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: metaTitle,
+          text: metaDescription,
+          url: window.location.href,
+        })
+
+        .catch(console.error);
+    } else {
+      setShowShareModal(true);
+    }
+  };
   return (
     <>
       <CommonLayout>
@@ -192,21 +217,38 @@ const ApartmentDetailsHome = ({ metadata }) => {
                 </p>
 
                 <div className="flex gap-4">
-                  <p
+                  <div
                     onClick={() => updateLike()}
-                    className={`flex gap-1 items-center scale-in ${
+                    className={`cursor-pointer flex gap-1 items-center scale-in ${
                       addingFavourite && "blur-sm"
                     }`}
                   >
+                    {liked ? (
+                      <RedFavorite
+                        className={`scale-in ${
+                          addingFavourite ? "blur-sm" : ""
+                        }`}
+                      />
+                    ) : (
+                      <Favorite
+                        className={`scale-in ${
+                          addingFavourite ? "blur-sm" : ""
+                        }`}
+                      />
+                    )}
                     <span
                       className={`${liked ? "text-red-600" : "text-black"}`}
                     >
-                      Like
+                      {liked ? "Liked" : "Like"}
                     </span>
-                  </p>
-                  <p className="flex gap-2 items-center">
+                  </div>
+                  <a
+                    href="#share-listing"
+                    onClick={handleShare}
+                    className="flex gap-2 items-center cursor-pointer"
+                  >
                     <Share /> <span className="underline">Share</span>
-                  </p>
+                  </a>
                 </div>
               </div>
               <div className="flex flex-col gap-y-5 mmd:pr-2">
@@ -286,9 +328,9 @@ const ApartmentDetailsHome = ({ metadata }) => {
                             width={64}
                             height={64}
                           />
-                          <p className="absolute bottom-1 right-0">
+                          <div className="absolute bottom-1 right-0">
                             <Gold />
-                          </p>
+                          </div>
                         </div>
                       )}
                       <p

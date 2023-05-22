@@ -13,15 +13,14 @@ const Content = ({ store }) => {
     getAllListing,
     listingsCount,
     getFavouriteListings,
+    incrementPageCount,
   } = ListingStore;
   const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState({
     title: "Zusco Shorlets",
     index: 0,
   });
-  useEffect(() => {
-    getAllListing();
-  }, []);
+
   useEffect(() => {
     getFavouriteListings(isAuthenticated);
   }, []);
@@ -35,7 +34,10 @@ const Content = ({ store }) => {
         <h2 className="text-black zusco-heading mb-2 regular-font">
           Browse our top shortlet properties
         </h2>
-        <p className="text-grey-textalt zusco-title regular-font w-full lg:w-[40%]  md:w-[65%] mx-auto">
+        <p
+          id="listings"
+          className="text-grey-textalt zusco-title regular-font w-full lg:w-[40%]  md:w-[65%] mx-auto"
+        >
           Browse our locations. Leave it to Zusco to help support your
           short-stay needs.
         </p>
@@ -59,13 +61,18 @@ const Content = ({ store }) => {
             <Button
               isOutline
               text="Load More"
-              onClick={() => getAllListing()}
+              onClick={() => {
+                incrementPageCount();
+                getAllListing();
+              }}
               isLoading={loading}
               isDisabled={loading}
               borderColor="blue-alt"
             />
           </div>
         )}
+
+        <div id="faqs" />
       </div>
     </section>
   );

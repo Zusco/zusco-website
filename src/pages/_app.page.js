@@ -6,11 +6,12 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Script from "next/script";
 
+import AuthStore from "store/auth";
 import Toast from "components/general/toast/toast";
-import useLoginSetup from "hooks/loginSetup";
+import { TOKEN } from "utils/storage";
 
 export default function App({ Component, pageProps }) {
-  const {} = useLoginSetup();
+  const { setisAuthenticated } = AuthStore;
   const router = useRouter();
   const topRef = useRef(null);
   const scrollToRef = () => {
@@ -18,6 +19,7 @@ export default function App({ Component, pageProps }) {
   };
 
   useEffect(() => {
+    setisAuthenticated(!!localStorage.getItem(TOKEN));
     scrollToRef();
   }, [router?.pathname]);
   return (
@@ -53,6 +55,7 @@ export default function App({ Component, pageProps }) {
 
           <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
           <link rel="icon" href="/favicon.ico" />
+          <link rel="preload" href="/banner-image.png" as="image" />
         </Head>
       )}
       <Toast />

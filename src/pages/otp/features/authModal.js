@@ -10,16 +10,22 @@ import AuthStore from "store/auth";
 import SendOtp from "../send/sendOtp";
 import VerifyOtp from "../verify/verifyOtp";
 
-const AuthModal = ({ toggleModal, saveFormToStorage, handleLoginSuccess }) => {
+const AuthModal = ({
+  toggleModal,
+  saveFormToStorage,
+  handleLoginSuccess,
+  active,
+}) => {
   const { loading, loadingVerify, authState } = AuthStore;
 
   return (
     <Modal
       size="md"
-      active
+      active={active}
       noPadding
       bodyClass="bg-white py-6 px-6"
       toggler={!loading && !loadingVerify && toggleModal}
+      backdropClassName="!z-[901]"
     >
       <ModalHeader>
         <p className="text-blue text-2xl font-bold mb-1">
@@ -30,24 +36,26 @@ const AuthModal = ({ toggleModal, saveFormToStorage, handleLoginSuccess }) => {
           Enter your phone number to receive veification code.
         </p>
       </ModalHeader>
-      <ModalBody>
-        <SendOtp
-          modalClass={
-            authState === "verify"
-              ? "-translate-x-[420px] !max-h-0"
-              : "translate-x-0"
-          }
-        />
-        <VerifyOtp
-          modalClass={
-            authState == "verify"
-              ? "translate-x-0"
-              : "translate-x-[420px] !max-h-0"
-          }
-          saveFormToStorage={saveFormToStorage}
-          handleLoginSuccess={handleLoginSuccess}
-        />
-      </ModalBody>
+      {active && (
+        <ModalBody className="!overflow-y-hidden">
+          <SendOtp
+            modalClass={
+              authState === "verify"
+                ? "-translate-x-[420px] !max-h-0"
+                : "translate-x-0"
+            }
+          />
+          <VerifyOtp
+            modalClass={
+              authState == "verify"
+                ? "translate-x-0"
+                : "translate-x-[420px] !max-h-0"
+            }
+            saveFormToStorage={saveFormToStorage}
+            handleLoginSuccess={handleLoginSuccess}
+          />
+        </ModalBody>
+      )}
     </Modal>
   );
 };
@@ -56,6 +64,7 @@ AuthModal.propTypes = {
   toggleModal: PropTypes.func,
   saveFormToStorage: PropTypes.func,
   handleLoginSuccess: PropTypes.func,
+  active: PropTypes.bool,
 };
 
 export default observer(AuthModal);

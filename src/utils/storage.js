@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-const TOKEN = "zusco-token";
+export const TOKEN = "zusco-token";
 const USER_DATA = "zusco-user-data";
 const LAST_CURRENT_BUSINESS = "zusco-lcb";
 export const ACCOUNT_CREATED = "ACCOUNT_CREATED";

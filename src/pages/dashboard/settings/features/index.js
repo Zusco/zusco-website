@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { AiOutlineRight } from "react-icons/ai";
 
-import  Delete from "assets/icons/delete.svg";
+import Delete from "assets/icons/delete.svg";
 import AppSwitch from "components/general/switch";
 import SettingsStore from "../store";
 
@@ -132,7 +132,14 @@ const SettingsHome = () => {
           </Link>
 
           <div className="flex justify-between px-6 py-4 md:py-6 bg-white border-[0.5px] border-[#E7EAEE] items-center">
-            <p className="text-[19px]">Support & F.A.Q</p>
+            <a
+              href="mailto:info@getzusco.com"
+              target="_blank"
+              rel="noreferrer"
+              className="text-[19px]"
+            >
+              Support & F.A.Q
+            </a>
             <span>
               <AiOutlineRight size={16} />
             </span>

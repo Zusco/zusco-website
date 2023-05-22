@@ -13,6 +13,7 @@ const Content = observer(() => {
     loading,
     allListings,
     getAllListing,
+    incrementPageCount,
     listingsCount,
     getFavouriteListings,
   } = ListingStore;
@@ -51,7 +52,10 @@ const Content = observer(() => {
             <Button
               isOutline
               text="Load More"
-              onClick={() => getAllListing()}
+              onClick={() => {
+                incrementPageCount();
+                getAllListing();
+              }}
               isLoading={loading}
               isDisabled={loading}
               borderColor="blue-alt"
