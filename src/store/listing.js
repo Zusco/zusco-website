@@ -74,7 +74,7 @@ class ListingStore {
   };
 
   handleAlllistings = (res) => {
-    this.listingsCount = res?.total;
+    this.listingsCount = res?.total - 1;
     res = res?.data;
 
     if (this.filteredListing.length > 0) {
@@ -96,9 +96,11 @@ class ListingStore {
       }
     );
     let newListings = [...this.allListings, ...res];
-    newListings = newListings.filter(
-      (obj, index, self) => index === self.findIndex((o) => o.id === obj.id)
-    );
+    newListings = newListings
+      .filter(
+        (obj, index, self) => index === self.findIndex((o) => o.id === obj.id)
+      )
+      .filter((item) => item?.id !== "83e074f8-d8f0-4e0c-88a5-eaf606589be2");
 
     this.allListings = newListings;
     this.reservedListings = newListings?.filter(
