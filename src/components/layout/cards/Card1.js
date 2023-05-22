@@ -4,20 +4,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 import { getUserInfoFromStorage } from "utils/storage";
+import { observer } from "mobx-react-lite";
 
 import ListingStore from "store/listing";
+import AuthStore from "store/auth";
 import { renderIndicator } from "utils/carouselFunctions";
 import Favorite from "assets/icons/dashboard/favourite.svg";
 import RedFavorite from "assets/icons/dashboard/redFavourite.svg";
 import Bedroom from "assets/icons/features/bed.svg";
 import Bathroom from "assets/icons/features/bath.svg";
-import GreenStar from "assets/icons/features/greenStar.svg";
-import { useAuth } from "hooks/auth";
 
-const Card1 = ({ listing, allFavourites }) => {
-  const { isAuthenticated } = useAuth();
+const Card1 = ({ listing }) => {
+  // const { isAuthenticated } = useAuth();
 
   const { addToFavourite } = ListingStore;
+  const { setShowAuthModal, isAuthenticated } = AuthStore;
   const userInfo = getUserInfoFromStorage();
 
   const [liked, setLiked] = useState(false);
@@ -31,19 +32,23 @@ const Card1 = ({ listing, allFavourites }) => {
   }, []);
 
   const updateLike = async () => {
-    setAddingFavourite(true);
-    try {
-      const likeApartment = await addToFavourite(listing.id, isAuthenticated);
-      if (likeApartment) {
-        setLiked((prevState) => !prevState);
+    if (isAuthenticated) {
+      setAddingFavourite(true);
+      try {
+        const likeApartment = await addToFavourite(listing.id, isAuthenticated);
+        if (likeApartment) {
+          setLiked((prevState) => !prevState);
+        }
+        if (likeApartment && liked) {
+          setNewFaveNumbers((prevState) => prevState - 1);
+        } else if (likeApartment && !liked) {
+          setNewFaveNumbers((prevState) => prevState + 1);
+        }
+      } finally {
+        setAddingFavourite(false);
       }
-      if (likeApartment && liked) {
-        setNewFaveNumbers((prevState) => prevState - 1);
-      } else if (likeApartment && !liked) {
-        setNewFaveNumbers((prevState) => prevState + 1);
-      }
-    } finally {
-      setAddingFavourite(false);
+    } else {
+      setShowAuthModal(true);
     }
   };
 
@@ -135,18 +140,18 @@ const Card1 = ({ listing, allFavourites }) => {
           </Link>
 
           <div className="flex gap-3">
-            <p className="flex text-[#686B6F] text-[13px] items-center gap-1">
+            <div className="flex text-[#686B6F] text-[13px] items-center gap-1">
               {listing?.number_of_bedrooms}{" "}
               <span>
                 <Bedroom />
               </span>
-            </p>
-            <p className="flex text-[#686B6F] text-[13px] items-center gap-1">
+            </div>
+            <div className="flex text-[#686B6F] text-[13px] items-center gap-1">
               {listing?.number_of_bathrooms}{" "}
               <span>
                 <Bathroom />
               </span>
-            </p>
+            </div>
           </div>
         </div>
 
@@ -190,4 +195,4 @@ const Card1 = ({ listing, allFavourites }) => {
   );
 };
 
-export default Card1;
+export default observer(Card1);
