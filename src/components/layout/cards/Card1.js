@@ -15,8 +15,6 @@ import Bedroom from "assets/icons/features/bed.svg";
 import Bathroom from "assets/icons/features/bath.svg";
 
 const Card1 = ({ listing }) => {
-  // const { isAuthenticated } = useAuth();
-
   const { addToFavourite } = ListingStore;
   const { setShowAuthModal, isAuthenticated } = AuthStore;
   const userInfo = getUserInfoFromStorage();
@@ -135,7 +133,7 @@ const Card1 = ({ listing }) => {
           >
             {listing?.name}, {listing?.state}
             <span className="text-[#7A8996] font-thin flex text-[13px] mmd:text-[12px] leading-[13px] items-center">
-              <GreenStar /> {listing?.rating || "5.0"}
+              {/* <GreenStar /> {listing?.rating || "5.0"} */}
             </span>
           </Link>
 

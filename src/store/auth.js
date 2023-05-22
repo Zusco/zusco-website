@@ -6,7 +6,7 @@ import { makeAutoObservable } from "mobx";
 import apis from "services/auth";
 
 import { successToast } from "components/general/toast/toast";
-import { TOKEN, saveToStorage } from "utils/storage";
+import { saveToStorage } from "utils/storage";
 
 class AuthStore {
   // ====================================================
@@ -30,13 +30,6 @@ class AuthStore {
   // Computed views
   // ====================================================
   // While MobX promotes OOP, we can still benefit from using FP where it's appropriate
-  // get isAuthenticated() {
-  //   try {
-  //     return !!localStorage.getItem(TOKEN);
-  //   } catch (err) {
-  //     return false;
-  //   }
-  // }
 
   // ====================================================
   // Actions
