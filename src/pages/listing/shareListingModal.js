@@ -20,7 +20,14 @@ const ShareListingModal = ({ data, handleOk, active }) => {
     shareLink
   }`;
   return (
-    <Modal size="sm" active={active} noPadding bodyClass="" toggler={handleOk}>
+    <Modal
+      size="sm"
+      active={active}
+      noPadding
+      bodyClass=""
+      toggler={handleOk}
+      backdropClassName="!z-[9999999]"
+    >
       {active && (
         <ModalBody>
           <div className="w-full text-center relative">

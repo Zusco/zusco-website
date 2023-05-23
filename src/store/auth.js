@@ -4,9 +4,8 @@
 
 import { makeAutoObservable } from "mobx";
 import apis from "services/auth";
-
 import { successToast } from "components/general/toast/toast";
-import { saveToStorage } from "utils/storage";
+import { getToken, saveToStorage } from "utils/storage";
 
 class AuthStore {
   // ====================================================
@@ -20,7 +19,7 @@ class AuthStore {
   loadingVerify = false;
   showAuthModal = false;
   showPaymentModal = false;
-  isAuthenticated = false;
+  isAuthenticated = !!getToken();
 
   constructor() {
     makeAutoObservable(this);

@@ -53,7 +53,7 @@ const ImageSlideShow = ({ listing, closeSlideShow }) => {
   };
 
   return (
-    <div className="fixed w-full h-full top-0 left-0 z-[100] grid place-content-center bg-black/[.8]">
+    <div className="fixed w-full h-full top-0 left-0 z-[9999] grid place-content-center bg-black/[.8]">
       <div className="overlay w-screen h-screen inset-0 fixed bg-black/[.1] "></div>
 
       <div className="flex justify-between text-white absolute py-6 w-full px-10">

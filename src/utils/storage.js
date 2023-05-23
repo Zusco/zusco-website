@@ -17,7 +17,7 @@ export const getToken = () => {
   try {
     return localStorage.getItem(TOKEN);
   } catch (e) {
-    return e;
+    return false;
   }
 };
 

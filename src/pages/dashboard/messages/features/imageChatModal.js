@@ -6,7 +6,6 @@ import Button from "components/general/button/button";
 import Modal from "components/general/modal/modal/modal";
 import ModalBody from "components/general/modal/modalBody/modalBody";
 
-
 const ImageChatModal = ({
   image,
   isDeleting,
@@ -15,7 +14,13 @@ const ImageChatModal = ({
   handleChange,
 }) => {
   return (
-    <Modal size="sm" active noPadding bodyClass="">
+    <Modal
+      size="sm"
+      active
+      noPadding
+      bodyClass=""
+      backdropClassName="!z-[99999]"
+    >
       <ModalBody>
         <div className="w-full text-center relative">
           <button

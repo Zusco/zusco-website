@@ -9,7 +9,13 @@ import ModalBody from "components/general/modal/modalBody/modalBody";
 
 const UserProfileModal = ({ data, handleOk }) => {
   return (
-    <Modal size="sm" active noPadding bodyClass="">
+    <Modal
+      size="sm"
+      active
+      noPadding
+      bodyClass=""
+      backdropClassName="!z-[99999]"
+    >
       <ModalBody>
         <div className="w-full text-center relative">
           <div className="w-full min-h-[300px]  max-h-[300px] mt-10">

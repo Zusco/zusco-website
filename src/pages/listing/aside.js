@@ -228,7 +228,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
       <div className="px-4 flex flex-col gap-4">
         <p className="text-[#8B8E93] text-xs uppercase">Price Details</p>
         <div className="flex flex-col gap-y-3 text-black">
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-4">
             <p className="font-light">
               {formatter.format(shortletdetails?.base_price)} &#215;{" "}
               {formData?.diffDays}{" "}

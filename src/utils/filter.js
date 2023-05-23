@@ -13,7 +13,7 @@ import ListingStore from "store/listing";
 import CircleLoader from "components/general/circleLoader/circleLoader";
 import useListToggle from "hooks/useListToggle";
 import { numberFormatter } from "./formatter";
-import { STATES, maxPriceValue, minPriceValue } from "./constants";
+import { HOUSE_TYPES, maxPriceValue, minPriceValue } from "./constants";
 
 const FilterListings = observer(() => {
   const {
@@ -55,23 +55,24 @@ const FilterListings = observer(() => {
     logo: item.icon,
   }));
 
-  const Allowances = allowances.map((item, index) => ({
+  const Allowances = allowances.map((item) => ({
     key: item.id,
     name: item.name,
     logo: item.icon,
   }));
 
-  const Rules = rules.map((item, index) => ({
+  const Rules = rules.map((item) => ({
     key: item.id,
     name: item.name,
     logo: item.icon,
   }));
 
   const {
-    renderListToggler: renderLocationsToggler,
-    displayedList: displayedLocations,
+    renderListToggler: renderPropertyTypesToggler,
+    displayedList: displayedPropertyTypes,
   } = useListToggle({
-    list: STATES,
+    list: HOUSE_TYPES,
+    maxCount: 4,
   });
 
   const {
@@ -98,8 +99,14 @@ const FilterListings = observer(() => {
     maxCount: 3,
   });
 
-  const isSelectedItem = (item, field) =>
-    filterData[field]?.find((itm) => itm === item);
+  const isSelectedItem = (item, field) => {
+    let selectedFilterItem = filterData[field];
+    if (isArray(selectedFilterItem)) {
+      return selectedFilterItem?.find((itm) => itm === item);
+    } else {
+      return selectedFilterItem === item;
+    }
+  };
 
   const selectFilterItem = (item, field) => {
     let selectedFilterItem = filterData[field];
@@ -136,30 +143,30 @@ const FilterListings = observer(() => {
       <form action="">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-between items-start mb-6 w-full">
           <div className="w-full flex flex-col justify-start items-start gap-4">
-            <h1 className="text-[#211D31] text-[20px]">Location</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-4 gap-x-4 justify-end items-start w-full">
-              {displayedLocations?.map(({ label, value }, index) => {
-                const itemSelected = isSelectedItem(value, "states");
+            <h1 className="text-[#211D31] text-[20px]">Property Type</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 justify-end items-start w-full">
+              {displayedPropertyTypes?.map(({ label, value }, index) => {
+                const itemSelected = isSelectedItem(value, "house_type");
                 return (
                   <Button
                     key={value + index}
                     whiteBg
                     text={label}
-                    btnClass={`!border-black !text-black rounded-l-full rounded-r-full ${
+                    btnClass={`!border-black !text-black rounded-l-full rounded-r-full !text-sm ${
                       itemSelected &&
-                      "bg-blue-sky/[.1] !border-blue-9 !text-blue-9"
+                      "bg-blue-sky/[.1] !border-blue-9 !text-blue-9 !text-[13px]"
                     }`}
                     iconAfter={
                       itemSelected && <BsCheck2 size={20} color="#00509D" />
                     }
                     value={`${value}`}
-                    onClick={() => selectFilterItem(value, "states")}
+                    onClick={() => selectFilterItem(value, "house_type")}
                   />
                 );
               })}
             </div>
 
-            {renderLocationsToggler()}
+            {renderPropertyTypesToggler()}
           </div>
           <div className="w-full flex justify-start md:justify-end lg:justify-center lg:ml-10 ">
             <div className="w-[250px] md:w-[180px] lg:w-[250px] flex flex-col justify-start items-start gap-4">

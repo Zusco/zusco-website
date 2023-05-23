@@ -242,7 +242,7 @@ const ContentHeader = observer(
                         ? filteredListing.length
                         : "all"
                     } results`}
-                    btnClass="!border-none !sm:border border-black text-black"
+                    btnClass="border-none sm:!border-[0.8px] sm:!border-black sm:border-solid text-black"
                     className="shadow-btn"
                     onClick={() => setShowFilter(false)}
                   />

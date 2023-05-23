@@ -142,6 +142,7 @@ const PaymentModal = ({
       noPadding
       bodyClass="bg-white py-6 px-6"
       toggler={toggleModal}
+      backdropClassName="!z-[99999]"
     >
       <ModalHeader>
         <p className="text-blue text-2xl font-bold">

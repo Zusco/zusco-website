@@ -2,6 +2,9 @@ export const HOUSE_TYPES = [
   { value: "duplex", label: "Duplex" },
   { value: "flat", label: "Flat" },
   { value: "bungalow", label: "Bungalow" },
+  { value: "terraced_house", label: "Terraced House" },
+  { value: "detached_house", label: "Detached House" },
+  { value: "semi_detached_house", label: "Semi-detached House" },
 ];
 
 export const SPACES = [
@@ -101,7 +104,7 @@ export const STATES = [
 export const minPriceValue = 1000;
 export const maxPriceValue = 400000;
 export const defaultFilterValues = {
-  states: ["Lagos"],
+  house_type: HOUSE_TYPES[0].value,
   min_price: minPriceValue,
   max_price: maxPriceValue,
   number_of_bedrooms: 2,

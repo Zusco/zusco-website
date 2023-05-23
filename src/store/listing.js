@@ -5,7 +5,6 @@ import { makeAutoObservable, toJS } from "mobx";
 import { successToast } from "components/general/toast/toast";
 import apis from "services/listing";
 import apis2 from "services/filter";
-import { useAuth } from "hooks/auth";
 import { debounce } from "utils/functions";
 import { PENDING_BOOKING_DATA } from "utils/storage";
 import { defaultFilterValues } from "utils/constants";

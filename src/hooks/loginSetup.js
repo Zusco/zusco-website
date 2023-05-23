@@ -25,7 +25,6 @@ function useLoginSetup() {
       clearAccountCreation();
 
       if (!isModal) {
-        console.log("pendingBookingDataId: ", pendingBookingData);
         router.push(
           route ||
             (pendingBookingDataId

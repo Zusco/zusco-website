@@ -1,8 +1,12 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import apis from "services/listing";
 import ListingStore from "store/listing";
+import AuthStore from "store/auth";
 import HomePage from "./landing/home";
-import { useEffect } from "react";
+import DashboardHome from "./dashboard/explore/index.page";
+import { getToken } from "utils/storage";
 
 export async function getServerSideProps() {
   let metaListings;
@@ -16,9 +20,16 @@ export async function getServerSideProps() {
 }
 export default function Home({ metaListings }) {
   const { handleAlllistings } = ListingStore;
+  const { isAuthenticated } = AuthStore;
+  const userIsAuthenticated = !!getToken() || isAuthenticated;
+  const router = useRouter();
   useEffect(() => {
     handleAlllistings(metaListings);
   }, []);
+  useEffect(() => {
+    userIsAuthenticated && router.push("/dashboard/explore");
+  }, [userIsAuthenticated]);
+
   return (
     <>
       <Head>
@@ -31,7 +42,11 @@ export default function Home({ metaListings }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <HomePage metaListings={metaListings} />
+        {userIsAuthenticated ? (
+          <DashboardHome />
+        ) : (
+          <HomePage metaListings={metaListings} />
+        )}
       </main>
     </>
   );

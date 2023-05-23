@@ -138,7 +138,14 @@ const AgentProfileModal = ({ data, handleOk }) => {
   console.log("data: ", data);
   return (
     <>
-      <Modal size="sm" active noPadding bodyClass="" toggler={handleOk}>
+      <Modal
+        size="sm"
+        active
+        noPadding
+        bodyClass=""
+        toggler={handleOk}
+        backdropClassName="!z-[99999]"
+      >
         <ModalBody>
           <div className="w-full text-center relative">
             {data?.image && (

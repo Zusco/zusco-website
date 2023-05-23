@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { AiOutlineRight } from "react-icons/ai";
 
-import Delete from "assets/icons/delete.svg";
 import AppSwitch from "components/general/switch";
 import SettingsStore from "../store";
 
@@ -42,12 +41,6 @@ const SettingsHome = () => {
     <section className="py-6 pl-6 pr-6 sm:pr-12">
       <div className="flex justify-between">
         <p className="text-[#211D31] text-[19px] regular-font">Settings</p>
-        <p className="text-[#8B8E93] flex items-center gap-1">
-          <span>
-            <Delete />
-          </span>{" "}
-          Delete Account
-        </p>
       </div>
 
       <br />

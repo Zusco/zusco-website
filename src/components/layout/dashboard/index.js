@@ -15,13 +15,15 @@ import CommonStore from "store/common";
 
 import Toast from "../../general/toast/toast";
 import Hamburger from "../hamburger";
+import NotificationPane from "../notification";
 import CommonFooter from "../footer";
 
 const DashboardLayout = ({ children, hasHeader }) => {
   const router = useRouter();
   const { logout, isAuthenticated } = useAuth();
   const [sidenavOpen, setSidenavOpen] = useState(false);
-  const { getMe, me } = CommonStore;
+  const [notificationPaneOpen, setNotificationPaneOpen] = useState(false);
+  const { getMe, me, notificationItems } = CommonStore;
 
   const redirectUser = () => {
     if (!isAuthenticated) {
@@ -84,9 +86,11 @@ const DashboardLayout = ({ children, hasHeader }) => {
     },
     {
       title: "Logout",
-      link: "/otp/send",
+      link: "#",
       click: () => {
+        console.log("LOgging out");
         logout();
+        router.push("/otp/send");
       },
       icon: <Logout className="fill-current" />,
     },
@@ -94,7 +98,7 @@ const DashboardLayout = ({ children, hasHeader }) => {
 
   return (
     <div className="w-screen min-h-screen h-screen flex flex-grow flex-col relative">
-      <header className="flex flex-row justify-between items-center w-full py-4 fixed left-0 right-0 top-0 border-b-1/2 border-grey-border z-[99999] h-[70px] bg-white">
+      <header className="flex flex-row justify-between items-center w-full py-4 fixed left-0 right-0 top-0 border-b-1/2 border-grey-border z-[9999] h-[70px] bg-white">
         <div className="relative flex flex-row justify-between items-center mx-auto w-full px-10 ">
           <Link className="h-8 w-[110px] !my-0" href="/dashboard/explore">
             <Logo className="w-full h-full z-90" />
@@ -102,7 +106,15 @@ const DashboardLayout = ({ children, hasHeader }) => {
           <Toast />
 
           <div className="flex flex-row justify-start items-center space-x-[20px]">
-            <Notification className="hover:fill-grey-lighter transition-all duration-300 ease-in-out cursor-pointer" />
+            <button
+              onClick={() => setNotificationPaneOpen(true)}
+              className="relative"
+            >
+              {notificationItems?.length > 0 && (
+                <div className="absolute right-[15px] top-[17px] bg-red-alt rounded-full w-[5px] h-[5px]" />
+              )}
+              <Notification className="hover:fill-grey-lighter transition-all duration-300 ease-in-out cursor-pointer" />
+            </button>
 
             <Hamburger
               click={() => {
@@ -111,6 +123,12 @@ const DashboardLayout = ({ children, hasHeader }) => {
               className={sidenavOpen ? "ham_crossed" : ""}
             />
           </div>
+        </div>
+
+        <div className="relative">
+          {notificationPaneOpen && (
+            <NotificationPane onClose={() => setNotificationPaneOpen(false)} />
+          )}
         </div>
       </header>
       <section className="w-full h-full flex flex-row flex-grow max-w-9xl mx-auto relative mt-[70px] overflow-hidden">

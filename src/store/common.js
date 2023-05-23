@@ -25,6 +25,7 @@ class CommonStore {
   loading = false;
   loadingFetchMe = false;
   reportingAgent = false;
+  notificationItems = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -40,6 +41,9 @@ class CommonStore {
   // ====================================================
   // Actions
   // ====================================================
+  handleSetNotificationItems = (items, reset) => {
+    this.notificationItems = reset ? [] : [...this.notificationItems, ...items];
+  };
   getMe = async () => {
     if (localStorage.getItem("zusco-token") !== null) {
       this.loadingFetchMe = true;

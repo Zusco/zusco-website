@@ -14,6 +14,7 @@ const Modal = ({
   togglerClass = "top-0",
   backdropClassName,
   absolute,
+  onClick,
 }) => {
   const modalClassNames = {
     "max-w-lg": size === "lg",
@@ -60,7 +61,10 @@ const Modal = ({
         )}
       </div>
 
-      <div className="fixed top-0 left-0 h-screen w-full !my-0 "></div>
+      <div
+        onClick={onClick}
+        className="fixed top-0 left-0 h-screen w-full !my-0 "
+      ></div>
     </div>
   );
 };
@@ -76,6 +80,7 @@ Modal.propTypes = {
   bodyClass: PropTypes.string,
   absolute: PropTypes.bool,
   backdropClassName: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 export default Modal;
