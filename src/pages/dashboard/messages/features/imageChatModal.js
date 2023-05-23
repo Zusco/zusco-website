@@ -19,23 +19,23 @@ const ImageChatModal = ({
       active
       noPadding
       bodyClass=""
-      backdropClassName="!z-[99999]"
+      backdropClassName="!z-[999999]"
     >
       <ModalBody>
         <div className="w-full text-center relative">
           <button
             type="button"
             onClick={onRemove}
-            className="flex justify-center items-center w-fit h-fit py-1 px-2 rounded-full bg-red text-white text-xs absolute right-2 top-12 shadow-sm"
+            className="flex justify-center items-center w-fit h-fit py-1 px-2 rounded-full bg-red text-white text-xs absolute right-2 top-12 shadow-sm z-[99999999]"
           >
             remove
           </button>
-          <div className="w-full h-full">
+          <div className="w-full h-full min-h-[400px]  max-h-[400px]">
             <Image
-              className="w-full h-full z-99  max-h-[65vh] object-cover object-top mt-10"
+              className="w-full h-full z-99 min-h-[350px]  max-h-[350px] object-cover object-top mt-10"
               src={image}
               fill
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "cover" }}
               alt="chat image"
             />
           </div>

@@ -6,38 +6,36 @@ import Image from "next/image";
 import Modal from "../modal/modal";
 import ModalBody from "../modalBody/modalBody";
 
-
 const ImageModal = ({ active, toggler, photos }) => {
   return (
-    <Modal size="md" active={active} toggler={toggler} noPadding bodyClass="">
+    <Modal
+      backdropClassName="!z-[99999999]"
+      size="md"
+      active={active}
+      toggler={toggler}
+      noPadding
+      bodyClass=""
+    >
       <ModalBody>
         <div className="w-full h-full">
-          <Slide cssClass="w-full h-full">
+          <Slide cssClass="h-full" arrows={photos?.length > 1}>
             {photos?.map((slideImage, index) => (
-              <div className="each-slide w-full h-full" key={index}>
-                {/* <div className='w-full h-full' style={{'backgroundImage': `url(${slideImage.url})`}}>
-                
-                <span>{slideImage.name}</span>
-              </div> */}
-                {/* <div
-                className="w-full h-full"
-                  style={{
-                    backgroundImage: `url(${slideImage.url})`,
-                    backgroundSize: "contain",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "top",
-                    zIndex: 9999,
-                  }}
-                /> */}
+              <div
+                className="each-slide w-full h-full flex flex-col"
+                key={index}
+              >
                 <span className="text-white medium-font">
                   {slideImage.name}
                 </span>
-                <Image
-                  className="w-full h-full z-99"
-                  src={slideImage.url}
-                  alt={slideImage.name}
-                  fill
-                />
+                <div className="w-full h-full min-h-[400px]  max-h-[400px] ">
+                  <Image
+                    className="w-full h-full z-99 min-h-[350px]  max-h-[350px] object-cover object-top"
+                    src={slideImage.url}
+                    alt={slideImage.name}
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
+                </div>
               </div>
             ))}
           </Slide>

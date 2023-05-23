@@ -5,7 +5,6 @@ import Image from "next/image";
 import { DEFAULT_AVATAR } from "utils/constants";
 import ImageModal from "../modal/imageModal/ImageModal";
 
-
 const Chat = ({
   image,
   title,
@@ -72,7 +71,9 @@ const Chat = ({
                 src={image}
                 onClick={() => setShowModal(true)}
                 alt="avatar"
-                fill
+                style={{ objectFit: "cover" }}
+                width={250}
+                height={250}
               />
             )}
             {msg && (
