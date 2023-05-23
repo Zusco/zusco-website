@@ -67,7 +67,7 @@ const Button = ({
       ) : (
         <div
           className={`${
-            iconAfter ? "space-x-3 md:space-x-1 lg:space-x-3" : "space-x-3"
+            iconAfter ? "space-x-3 md:space-x-1" : "space-x-3"
           } ${buttonClass} ${btnClass}`}
         >
           {icon && <div>{icon}</div>}
