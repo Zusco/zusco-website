@@ -20,6 +20,7 @@ const DeleteModal = ({
   isDisabled,
   noToggle,
   active,
+  backdropClassName,
 }) => {
   return (
     <Modal
@@ -28,6 +29,7 @@ const DeleteModal = ({
       toggler={!noToggle && onClose}
       noPadding
       bodyClass="bg-white"
+      backdropClassName={backdropClassName}
     >
       {titleAlt && (
         <ModalHeader>
@@ -85,6 +87,7 @@ DeleteModal.propTypes = {
   placeholder: PropTypes.string,
   noToggle: PropTypes.bool,
   active: PropTypes.bool,
+  backdropClassName: PropTypes.string,
 };
 
 export default DeleteModal;
