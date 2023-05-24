@@ -30,7 +30,7 @@ const ToastLoader = styled.div`
 
 const Toast = () => {
   return (
-    <Toaster position="top-right" containerClassName="z-[999]">
+    <Toaster position="top-right" containerClassName="!z-[9999999]">
       {(t) => (
         <ToastBar
           toast={t}

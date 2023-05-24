@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 const Hamburger = ({ className, click }) => (
   <button
-    className={`hamburger_btn z-[999] ${
+    className={`hamburger_btn z-[9999999] ${
       className?.includes("hidden") ? "" : "lg:hidden"
     } ${className}`}
     onClick={click}

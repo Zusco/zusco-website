@@ -11,7 +11,7 @@ const Modal = ({
   noPadding,
   className,
   bodyClass = "bg-white min-h-[570px]",
-  togglerClass = "top-0",
+  togglerClass = "top-[-40px] sm:top-0",
   backdropClassName,
   absolute,
   onClick,
@@ -51,7 +51,7 @@ const Modal = ({
         {children}
         {toggler && (
           <div
-            className={`absolute ${togglerClass} -right-14 cursor-pointer flex justify-center items-center text-white bg-grey-whitesmoke bg-opacity-30 hover:bg-opacity-100 hover:text-black hover:bg-white rounded-full transition-all duration-150 ease-in-out z-[999999]`}
+            className={`absolute ${togglerClass} right-[25px] sm:right-[-56px] cursor-pointer flex justify-center items-center text-white bg-grey-whitesmoke bg-opacity-30 hover:bg-opacity-100 hover:text-black hover:bg-white rounded-full transition-all duration-150 ease-in-out z-[999999]`}
             onClick={toggler}
           >
             <div className="h-8 w-8 relative flex justify-center items-center ">

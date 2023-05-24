@@ -135,7 +135,14 @@ const AgentProfileModal = ({ data, handleOk }) => {
       setShowAuthModal(true);
     }
   };
-  console.log("data: ", data);
+  const handleReportHost = () => {
+    if (isAuthenticated) {
+      setShowReportModal(true);
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -235,11 +242,7 @@ const AgentProfileModal = ({ data, handleOk }) => {
 
               <div className="flex justify-between items-center w-full">
                 <div>
-                  <Button
-                    redBg
-                    text="Report Host"
-                    onClick={() => setShowReportModal(true)}
-                  />
+                  <Button redBg text="Report Host" onClick={handleReportHost} />
                 </div>
                 <div>
                   <Button text="Close" onClick={handleOk} />
@@ -251,12 +254,16 @@ const AgentProfileModal = ({ data, handleOk }) => {
       </Modal>
 
       <DeleteModal
+        backdropClassName="!z-[9999999]"
         active={showReportModal}
         handleDelete={() => {
           reportAgent({
             agent_id: data?.id,
             data: reportHostPayload,
-            callbackFunc: () => setShowReportModal(false),
+            callbackFunc: () => {
+              setShowReportModal(false);
+              setReason("");
+            },
           });
         }}
         isDeleting={reportingAgent}

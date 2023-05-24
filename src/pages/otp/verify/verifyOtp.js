@@ -88,7 +88,7 @@ const VerifyOtp = observer(
           modalClass ? "h-fit py-3 w-full" : "h-[60vh]"
         } ${modalClass}`}
       >
-        <section className="w-[90%] h-fit md:w-[380px] mx-auto md:m-auto flex flex-col">
+        <section className="w-full sm:w-[90%] h-fit md:w-[380px] mx-auto md:m-auto flex flex-col">
           {!modalClass && (
             <>
               <h2 className="text-black text-[24px] mb-4 medium-font">

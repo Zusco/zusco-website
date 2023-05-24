@@ -23,13 +23,13 @@ const Content = observer(() => {
   }, []);
 
   return (
-    <section className="flex flex-col gap-6  mmd:gap-2 py-5 mt-[90px] md:mt-0">
+    <section className="flex flex-col gap-6  mmd:gap-2 py-5 mt-[30px] md:mt-0">
       <ContentHeader
         filter
         store={ExploreStore}
         setActiveTab={setActiveTab}
         activeTab={activeTab}
-        headerClass="fixed top-[65px] left-0 right-0 z-[9] border-y-1/2 border-[#E0E3E8] "
+        headerClass="fixed top-[65px] left-0 right-0 bg-white sm:bg-transparent z-[9] border-y-1/2 border-[#E0E3E8] "
         tabClass="pt-6 px-6 "
       />
       <div className="flex flex-col gap-6 pt-10 sm:pt-4 md:pt-1">

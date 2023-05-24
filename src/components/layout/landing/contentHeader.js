@@ -176,7 +176,7 @@ const ContentHeader = observer(
               </div>
 
               <div
-                className="flex flex-col justify-center items-end w-full sm:w-fit overflow-x-scroll"
+                className="hidden sm:flex flex-col justify-center items-end w-full sm:w-fit overflow-x-scroll"
                 ref={containerRef}
               >
                 <div className="flex justify-end items-end space-x-2 overflow-x-scroll w-full max-w-[calc(100vw-10px)] sm:max-w-fit ">
