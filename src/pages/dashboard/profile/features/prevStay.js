@@ -11,7 +11,6 @@ const Content = observer(({ store }) => {
 
   useEffect(() => {
     getBookings();
-    console.log("received", toJS(bookings));
   }, []);
 
   return (

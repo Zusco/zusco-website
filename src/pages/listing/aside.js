@@ -12,9 +12,9 @@ import CheckBoxRound from "components/general/input/checkBoxRound";
 import { useAuth } from "hooks/auth";
 import PaymentModal from "components/layout/modals/paymentModal";
 import { formatter } from "utils/functions";
+import { PENDING_BOOKING_DATA } from "utils/storage";
 import AuthModal from "pages/otp/features/authModal";
 import AuthStore from "store/auth";
-import { PENDING_BOOKING_DATA } from "utils/storage";
 import ShareListingModal from "./shareListingModal";
 
 const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {

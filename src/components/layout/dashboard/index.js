@@ -88,7 +88,6 @@ const DashboardLayout = ({ children, hasHeader }) => {
       title: "Logout",
       link: "#",
       click: () => {
-        console.log("LOgging out");
         logout();
         router.push("/otp/send");
       },
