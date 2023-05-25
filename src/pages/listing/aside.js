@@ -188,6 +188,9 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
       JSON.stringify(pendingBookingData)
     );
   };
+
+  const isListing = !bookingdetails?.paid && !pathname?.includes("booking");
+  const isBooking = pathname?.includes("booking");
   return (
     <div className="w-full py-4 px-3 flex flex-col gap-y-8">
       <div>
@@ -202,8 +205,9 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
           endDatePlaceholder="CHECK OUT"
           color="#000000"
           minDate={new Date()}
-          maxDate={bookingdetails?.paid && new Date()}
+          maxDate={isBooking && new Date()}
           className="text-blue-9 w-full"
+          disabledDates={isBooking ? [new Date()] : []}
         />
       </div>
 
@@ -221,7 +225,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
           }
           decrementClickDisabled={form.number_of_guests < 2}
           itemCount={form.number_of_guests}
-          disabled={bookingdetails?.paid}
+          disabled={isBooking}
         />
       </div>
 
@@ -255,7 +259,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
         </div>{" "}
       </div>
 
-      {!bookingdetails?.paid && !pathname?.includes("booking") && (
+      {isListing && (
         <div className="px-4 flex flex-col gap-4">
           <p className="text-[#8B8E93] text-xs uppercase">Payment Method</p>
           <div className="flex items-center gap-x-8">
@@ -295,7 +299,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
         </div>
       )}
 
-      {!bookingdetails?.paid && !pathname?.includes("booking") && (
+      {isListing && (
         <Button
           text="Book a stay"
           blueBg
