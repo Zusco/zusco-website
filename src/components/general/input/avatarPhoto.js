@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { FileUploader } from "react-drag-drop-files";
 import { DEFAULT_AVATAR } from "utils/constants";
-import  EditSpan from "assets/icons/edit-span.svg";
+import EditSpan from "assets/icons/edit-span.svg";
 import ImageModal from "../modal/imageModal/ImageModal";
 
 const AvatarPhoto = ({
@@ -53,7 +53,7 @@ const AvatarPhoto = ({
       {isEdit && (
         <button
           type="button"
-          className={`w-[35px] h-[35px] flex justify-center items-center z-[10] absolute
+          className={`edit-file_btn w-[35px] h-[35px] flex justify-center items-center z-[10] absolute
          bottom-[20px] right-[0px] cursor-pointer
          `}
         >

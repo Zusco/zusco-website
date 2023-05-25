@@ -71,8 +71,7 @@ const ApartmentDetailsHome = ({ metadata }) => {
   const { setShowAuthModal } = AuthStore;
   const path = findPath(router, "/listing") || findPath(router, "/booking");
   const pathname = router?.pathname;
-  console.log("pathname: ", pathname);
-  console.log("path: ", path);
+
   const SafetyTips = [
     "Book only when confident with your selection",
     "Contact Host for further enquiries",

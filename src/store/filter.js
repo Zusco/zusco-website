@@ -70,7 +70,6 @@ class FilterStore {
       let results = await apis.filterListings(data);
       results = results?.data;
       this.filteredListing = results;
-      console.log("filtered results", results);
       return results;
     } catch (error) {
       this.error = error;

@@ -532,3 +532,7 @@ input::focus {
 .slick-slider {
   display: flex !important;
 }
+
+.edit-file_btn input {
+  display: none;
+}

@@ -1,7 +1,7 @@
 /**
  * Advanced example demonstrating all core MobX constructs.
  */
-import { makeAutoObservable, toJS } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { successToast } from "components/general/toast/toast";
 import apis from "services/listing";
 import apis2 from "services/filter";
@@ -245,13 +245,6 @@ class ListingStore {
       this.amenities = res?.amenities;
       this.allowances = res?.allowances;
       this.rules = res?.rules;
-      console.log(
-        "Amenities",
-        toJS(this.amenities),
-        toJS(this.allowances),
-        toJS(this.rules)
-      );
-
       return res;
     } catch (error) {
       this.error = error;
@@ -266,7 +259,6 @@ class ListingStore {
       let results = await apis2.filterListings(data);
       results = results?.data;
       this.filteredListing = results;
-      console.log("filtered results", results);
       return results;
     } catch (error) {
       this.error = error;

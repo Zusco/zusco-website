@@ -61,7 +61,6 @@ class ExploreStore {
 
   toggleFilter() {
     this.filter = !this.filter;
-    console.log("filter works");
   }
 
   addRoom() {

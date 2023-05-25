@@ -32,22 +32,18 @@ class LandingStore {
 
   isZuscoShortlets() {
     this.apartmentPackage = "zuscoShortlets";
-    console.log("shortlets");
   }
 
   isPopular() {
     this.apartmentPackage = "popular";
-    console.log("popular");
   }
 
   isFeatured() {
     this.apartmentPackage = "featured";
-    console.log(this.apartmentPackage);
   }
 
   isNew() {
     this.apartmentPackage = "new";
-    console.log(this.apartmentPackage);
   }
 }
 

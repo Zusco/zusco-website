@@ -22,7 +22,6 @@ const PaymentModal = ({
   shortletdetails,
   bookingForm,
 }) => {
-  console.log("shortletdetails: ", shortletdetails);
   const formatter = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
@@ -41,7 +40,6 @@ const PaymentModal = ({
 
   const [uploading, setUploading] = useState(false);
 
-  console.log("me: ", me);
   useEffect(() => {
     !me && getMe();
   }, []);
@@ -100,7 +98,7 @@ const PaymentModal = ({
     check_out_date: moment(check_out_date).format("YYYY-MM-DD"),
     number_of_guests: number_of_guests,
   };
-  console.log("paystackMetadata: ", paystackMetadata);
+
   const config = {
     email: form.email,
     amount: formData?.grandTotal * 100,
@@ -117,7 +115,6 @@ const PaymentModal = ({
   };
   const handleClose = (reference) => {
     // implementation for  whatever you want to do when the Paystack dialog closed.
-    console.log("Payment widget reference handleClose : ", reference);
   };
 
   const componentProps = {
