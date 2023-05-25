@@ -156,12 +156,12 @@ const AgentProfileModal = ({ data, handleOk }) => {
         <ModalBody>
           <div className="w-full text-center relative">
             {data?.image && (
-              <div className="w-full min-h-[300px]  max-h-[300px] mt-10">
+              <div className="w-full min-h-[200px]  max-h-[200px]">
                 <Image
-                  className="w-full z-99 min-h-[300px]  max-h-[300px] object-cover object-top"
+                  className="w-full z-99 min-h-[200px]  max-h-[200px] object-cover object-center"
                   src={data?.image}
                   fill
-                  style={{ objectFit: "contain" }}
+                  style={{ objectFit: "cover" }}
                   alt="avatar"
                 />
               </div>

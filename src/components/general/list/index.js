@@ -1,16 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
-import  Location from "assets/icons/location.svg";
-import  Clock from "assets/icons/time.svg";
+import Location from "assets/icons/location.svg";
+import Clock from "assets/icons/time.svg";
 import { Button } from "../button";
 import Link from "next/link";
-
 
 const List = ({ listing }) => {
   return (
     <Link
-      href={`/booking/${listing?.shortlet_id}`}
+      href={`/dashboard/booking/${listing?.id}`}
       className={`bg-white flex flex-col sm:flex-row space-y-3 sm:space-y-0  justify-between items-center w-full h-fit rounded-lg py-6 px-6 border-1/2 border-grey-border`}
     >
       <div className="flex justify-start items-center w-fit space-x-6">

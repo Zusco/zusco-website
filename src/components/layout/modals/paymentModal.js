@@ -22,6 +22,7 @@ const PaymentModal = ({
   shortletdetails,
   bookingForm,
 }) => {
+  console.log("shortletdetails: ", shortletdetails);
   const formatter = new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency: "NGN",
@@ -80,7 +81,7 @@ const PaymentModal = ({
       lastName: form?.last_name,
       merchantKey: process.env.NEXT_PUBLIC_BANI_MERCHANT_KEY,
       metadata: {
-        shortlet_id: shortletdetails.id,
+        shortlet_id: shortletdetails?.id,
         check_in_date: moment(check_in_date).format("YYYY-MM-DD"),
         check_out_date: moment(check_out_date).format("YYYY-MM-DD"),
         number_of_guests: number_of_guests,
@@ -223,7 +224,7 @@ const PaymentModal = ({
               </p>
             </div>
 
-            {formData.paymentMethod === "bankCard" ? (
+            {formData.paymentMethod === "bankCard" && shortletdetails?.zusco ? (
               <PaystackConsumer {...componentProps}>
                 {({ initializePayment }) => (
                   <Button
@@ -239,12 +240,13 @@ const PaymentModal = ({
               </PaystackConsumer>
             ) : (
               <Button
-                text="Pay Now"
+                text="Complete Booking"
                 isDisabled={formDisabled() || loading || uploading}
                 isLoading={loading || uploading}
                 onClick={() => {
                   updateProfile();
-                  handleBaniPop();
+                  handleSuccess();
+                  // handleBaniPop();
                 }}
               />
             )}

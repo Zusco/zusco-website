@@ -21,7 +21,7 @@ class BookingsStore {
   loading = false;
   favorites = "all";
   showFavorite = false;
-
+  searchLoading = false;
   constructor() {
     makeAutoObservable(this);
   }
@@ -63,29 +63,25 @@ class BookingsStore {
   };
 
   handleFindBooking = async ({ url, router, route }) => {
-    let listingRes;
-    let lisingsArr;
-    if (this.bookings?.length < 1) {
-      listingRes = await this.getBookings("all");
-      lisingsArr = listingRes;
-    } else {
-      lisingsArr = this.bookings;
+    let currentBooking;
+    try {
+      this.searchLoading = true;
+      currentBooking = await apis.getBookingById(url);
+      currentBooking = currentBooking?.shortlet_booking;
+      if (currentBooking) {
+        const amenities = currentBooking?.shortlet?.amenities || [];
+        const allowances = currentBooking?.shortlet?.allowances || [];
+        const rules = currentBooking?.shortlet?.rules || [];
+        this.currentBooking = currentBooking;
+        this.currentFeatures = [...amenities, ...allowances, ...rules];
+      } else {
+        router.push(route);
+      }
+      return currentBooking;
+    } catch (error) {
+    } finally {
+      this.searchLoading = false;
     }
-
-    let currentBooking = lisingsArr?.find(
-      ({ shortlet_id }) => shortlet_id === url
-    );
-
-    if (currentBooking) {
-      let amenities = currentBooking?.shortlet?.amenities || [];
-      let allowances = currentBooking?.shortlet?.allowances || [];
-      let rules = currentBooking?.shortlet?.rules || [];
-      this.currentBooking = currentBooking;
-      this.currentFeatures = [...amenities, ...allowances, ...rules];
-    } else {
-   router.push(route);
-    }
-    return currentBooking;
   };
 
   isShortlets() {

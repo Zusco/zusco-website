@@ -8,7 +8,7 @@ import apis2 from "services/filter";
 import { debounce } from "utils/functions";
 import { PENDING_BOOKING_DATA } from "utils/storage";
 import { defaultFilterValues } from "utils/constants";
-
+import AuthStore from "./auth";
 class ListingStore {
   // ====================================================
   // State
@@ -160,6 +160,7 @@ class ListingStore {
         this.error = error;
       } finally {
         this.bookListingLoading = false;
+        AuthStore.setShowPaymentModal(false);
       }
     }
   };

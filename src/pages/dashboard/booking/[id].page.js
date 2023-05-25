@@ -28,8 +28,8 @@ import ImageSlideShow from "components/layout/dashboard/imageSlideShow";
 import CommonLayout from "components/layout";
 import BookingsStore from "pages/dashboard/bookings/store";
 import { useAuth } from "hooks/auth";
-import AgentProfileModal from "./agentProfileModal";
-import SideBar from "./aside";
+import AgentProfileModal from "pages/listing/agentProfileModal";
+import SideBar from "pages/listing/aside";
 
 export async function getServerSideProps({ query }) {
   const shortlet_id = query.id;
@@ -65,14 +65,14 @@ const ApartmentDetailsHome = ({ metadata }) => {
     addToFavourite,
     setShowShareModal,
   } = ListingStore;
-  const { handleFindBooking, currentBooking } = BookingsStore;
+  const { handleFindBooking, currentBooking, searchLoading } = BookingsStore;
   const userInfo = getUserInfoFromStorage();
   const { isAuthenticated } = useAuth();
   const { setShowAuthModal } = AuthStore;
-  const path = findPath(router, "/listing") || findPath(router, "/booking");
+  const path =
+    findPath(router, "/listing") || findPath(router, "/dashboard/booking");
   const pathname = router?.pathname;
-  console.log("pathname: ", pathname);
-  console.log("path: ", path);
+
   const SafetyTips = [
     "Book only when confident with your selection",
     "Contact Host for further enquiries",
@@ -97,12 +97,8 @@ const ApartmentDetailsHome = ({ metadata }) => {
   }, [currentListing]);
 
   useEffect(() => {
-    if (pathname?.includes("listing")) {
-      setShortletDetails(currentListing);
-    } else if (pathname?.includes("booking")) {
-      setShortletDetails(currentBooking?.shortlet);
-      setBookingDetails(currentBooking);
-    }
+    setShortletDetails(currentBooking?.shortlet);
+    setBookingDetails(currentBooking);
   }, [router, currentListing, currentBooking]);
 
   const showAbout = () => {
@@ -288,13 +284,13 @@ const ApartmentDetailsHome = ({ metadata }) => {
               <AgentProfileModal
                 data={{
                   name:
-                    (shortletdetails?.agent?.first_name || "N/A") +
+                    (bookingdetails?.agent?.first_name || "N/A") +
                     " " +
-                    (shortletdetails?.agent?.last_name || ""),
-                  image: shortletdetails?.agent?.profile_image_url,
-                  phone_number: shortletdetails?.agent?.phone_number,
-                  created_at: shortletdetails?.agent?.created_at,
-                  id: shortletdetails?.agent?.id,
+                    (bookingdetails?.agent?.last_name || ""),
+                  image: bookingdetails?.agent?.profile_image_url,
+                  phone_number: bookingdetails?.agent?.phone_number,
+                  created_at: bookingdetails?.agent?.created_at,
+                  id: bookingdetails?.agent?.id,
                 }}
                 handleOk={() => setShowModal(false)}
               />
@@ -341,11 +337,12 @@ const ApartmentDetailsHome = ({ metadata }) => {
                         Contact Host
                       </p>
                     </div>
+
                     <div className="flex flex-col">
                       <p className="text-grey-label medium-font text-[20px]">
-                        {(shortletdetails?.agent?.first_name || "") +
+                        {(bookingdetails?.agent?.first_name || "") +
                           " " +
-                          (shortletdetails?.agent?.last_name || "")}
+                          (bookingdetails?.agent?.last_name || "")}
                       </p>
                       <p className="text-[13px] text-[#ADB1B8] pl-2">
                         &#x2022; Added on{" "}
@@ -469,13 +466,33 @@ const ApartmentDetailsHome = ({ metadata }) => {
                   </div>
                 </div>
 
-                <div className="bg-white mt-[2rem] w-full sm:w-fit">
-                  <SideBar
-                    shortletdetails={shortletdetails}
-                    bookingdetails={bookingdetails}
-                    pathname={pathname}
-                    path={path}
-                  />
+                <div className="flex flex-col text-justify ">
+                  {!bookingdetails?.paid && pathname?.includes("booking") && (
+                    <div className="flex flex-col gap-y-4 w-full">
+                      <div className="text-base text-black">
+                        This booking has been reserved.
+                        <br /> Kindly{" "}
+                        <button
+                          onClick={() => setShowModal(true)}
+                          type="button"
+                          className="text-blue underline"
+                        >
+                          contact the host
+                        </button>{" "}
+                        of the shortlet
+                        <br /> to complete booking.
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="bg-white mt-[2rem] w-full sm:w-fit">
+                    <SideBar
+                      shortletdetails={shortletdetails}
+                      bookingdetails={bookingdetails}
+                      pathname={pathname}
+                      path={path}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

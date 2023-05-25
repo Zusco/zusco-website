@@ -255,7 +255,7 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
         </div>{" "}
       </div>
 
-      {!bookingdetails?.paid && (
+      {!bookingdetails?.paid && !pathname?.includes("booking") && (
         <div className="px-4 flex flex-col gap-4">
           <p className="text-[#8B8E93] text-xs uppercase">Payment Method</p>
           <div className="flex items-center gap-x-8">
@@ -294,7 +294,8 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
           </div>
         </div>
       )}
-      {!bookingdetails?.paid && (
+
+      {!bookingdetails?.paid && !pathname?.includes("booking") && (
         <Button
           text="Book a stay"
           blueBg
