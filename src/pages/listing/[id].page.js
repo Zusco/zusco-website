@@ -178,6 +178,7 @@ const ApartmentDetailsHome = ({ metadata }) => {
       setShowShareModal(true);
     }
   };
+
   return (
     <>
       <CommonLayout>
