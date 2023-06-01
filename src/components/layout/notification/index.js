@@ -12,6 +12,10 @@ import ClearAllButton from "components/general/button/clearAllButton";
 const NotificationPane = ({ className, onClose }) => {
   const { notificationItems, handleSetNotificationItems } = CommonStore;
 
+  console.log(
+    "notificationItems: ",
+    JSON.parse(JSON.stringify(notificationItems))
+  );
   return (
     <div
       className={`h-screen w-full fixed py-8 !m-0 flex justify-center items-start overflow-y-auto backdrop  top-0 left-0
@@ -50,7 +54,7 @@ const NotificationPane = ({ className, onClose }) => {
                 shortlet,
                 created_at,
                 lastMessageAt,
-                userName,
+                agentName,
                 unreadUserChats,
               }) => {
                 const title =
@@ -67,7 +71,7 @@ const NotificationPane = ({ className, onClose }) => {
                 const body =
                   notification_type === "message" ? (
                     <p>
-                      From <span className="text-blue-alt">{userName} </span>
+                      From <span className="text-blue-alt">{agentName} </span>
                     </p>
                   ) : notification_type === "agent" ? (
                     first_name + " " + last_name
@@ -94,11 +98,14 @@ const NotificationPane = ({ className, onClose }) => {
                     href={link}
                     onClick={onClose}
                   >
-                    {notification_type === "message" ? (
-                      <NotificationMessage />
-                    ) : (
-                      <NotificationBooking />
-                    )}
+                    <div className="w-[46px]">
+                      {notification_type === "message" ? (
+                        <NotificationMessage />
+                      ) : (
+                        <NotificationBooking />
+                      )}
+                    </div>
+
                     <div className="w-full flex flex-col justify-between items-start space-y-1">
                       <span className="text-sm text-black regular-font">
                         {title}

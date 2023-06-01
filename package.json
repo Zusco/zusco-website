@@ -17,6 +17,7 @@
     "date-fns": "^2.29.3",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
+    "file-loader": "^6.2.0",
     "firebase": "^9.17.1",
     "libphonenumber-js": "^1.10.30",
     "lodash": "^4.17.21",

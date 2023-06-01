@@ -11,7 +11,7 @@ import PhoneNumber from "components/general/phoneNumber/phoneNumber";
 import ImageModal from "components/general/modal/imageModal/ImageModal";
 import CircleLoader from "components/general/circleLoader/circleLoader";
 import cleanPayload from "utils/cleanPayload";
-
+import { isEmpty } from "lodash";
 
 const Profile = () => {
   const router = useRouter();
@@ -38,9 +38,9 @@ const Profile = () => {
 
   const handleSetForm = async () => {
     const data = await getMe();
+    if (isEmpty(data)) return;
     const { first_name, last_name, phone_number, profile_image_url, email } =
       data;
-
     const me = {
       first_name,
       last_name,

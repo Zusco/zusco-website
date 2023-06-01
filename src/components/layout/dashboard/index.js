@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { observer } from "mobx-react-lite";
 import Image from "next/image";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 import { DEFAULT_AVATAR } from "utils/constants";
 import { useAuth } from "hooks/auth";
@@ -12,7 +13,9 @@ import Logout from "assets/icons/dashboard/logoutLogo.svg";
 import Logo from "assets/icons/landing/Logo.svg";
 import Notification from "assets/icons/dashboard/notification.svg";
 import CommonStore from "store/common";
-
+import SettingsStore from "pages/dashboard/settings/store";
+import db from "services/firebase.config";
+import { getUserInfoFromStorage } from "utils/storage";
 import Toast from "../../general/toast/toast";
 import Hamburger from "../hamburger";
 import NotificationPane from "../notification";
@@ -20,11 +23,13 @@ import CommonFooter from "../footer";
 
 const DashboardLayout = ({ children, hasHeader }) => {
   const router = useRouter();
+  const userInfo = getUserInfoFromStorage();
   const { logout, isAuthenticated } = useAuth();
   const [sidenavOpen, setSidenavOpen] = useState(false);
   const [notificationPaneOpen, setNotificationPaneOpen] = useState(false);
-  const { getMe, me, notificationItems } = CommonStore;
-
+  const { getMe, me, notificationItems, handleSetNotificationItems } =
+    CommonStore;
+  const { getSettings, settings } = SettingsStore;
   const redirectUser = () => {
     if (!isAuthenticated) {
       router.push("/");
@@ -36,10 +41,60 @@ const DashboardLayout = ({ children, hasHeader }) => {
     redirectUser();
   }, [router?.pathname]);
 
+  const audioRef = useRef(null);
+
+  const playAudio = () => {
+    audioRef?.current?.play?.();
+  };
+
+  const getConversations = async () => {
+    let convos = [];
+    const convoRef = collection(db, "conversations");
+    const q = query(convoRef, where("userId", "==", userInfo?.id));
+    let loaded = false;
+    onSnapshot(q, (querySnapshot) => {
+      convos = [];
+
+      querySnapshot.forEach((item) => {
+        convos.push(item.data());
+      });
+
+      convos = convos.sort(
+        (a, b) =>
+          new Date(b?.lastMessageAt?.toDate()) -
+          new Date(a?.lastMessageAt?.toDate())
+      );
+
+      const unreadConvos = convos?.filter((item) => item?.unreadUserChats > 0);
+
+      if (unreadConvos.length > 0 && loaded) {
+        unreadConvos?.map((item) => {
+          const itemIsInNotificationItems = notificationItems?.find(
+            (ntf) =>
+              ntf.unreadUserChats + ntf.lastMessageAt?.toDate() ===
+              item.unreadUserChats + item.lastMessageAt?.toDate()
+          )?.lastMessageAt;
+          if (!itemIsInNotificationItems) {
+            handleSetNotificationItems([
+              {
+                ...item,
+                notification_type: "message",
+                link: `/dashboard/messages`,
+              },
+            ]);
+          }
+        });
+
+        settings?.chat_notification && playAudio();
+      }
+      loaded = true;
+    });
+  };
   useEffect(() => {
     !me && getMe();
+    getConversations();
+    getSettings();
   }, []);
-
   const dashboardLinks = [
     {
       title: "Explore",
@@ -113,6 +168,7 @@ const DashboardLayout = ({ children, hasHeader }) => {
                 <div className="absolute right-[15px] top-[17px] bg-red-alt rounded-full w-[5px] h-[5px]" />
               )}
               <Notification className="hover:fill-grey-lighter transition-all duration-300 ease-in-out cursor-pointer" />
+              <audio ref={audioRef} src="/quick-alert.wav" className="hidden" />
             </button>
 
             <Hamburger

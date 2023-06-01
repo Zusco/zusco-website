@@ -42,7 +42,12 @@ class CommonStore {
   // Actions
   // ====================================================
   handleSetNotificationItems = (items, reset) => {
-    this.notificationItems = reset ? [] : [...this.notificationItems, ...items];
+    this.notificationItems = reset
+      ? []
+      : [...this.notificationItems, ...items].filter(
+          (obj, index, self) =>
+            index === self.findIndex((o) => o?.agentId === obj?.agentId)
+        );
   };
   getMe = async () => {
     if (localStorage.getItem("zusco-token") !== null) {
