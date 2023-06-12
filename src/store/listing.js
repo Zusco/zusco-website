@@ -79,8 +79,8 @@ class ListingStore {
     if (this.filteredListing.length > 0) {
       res = this.filteredListing;
     }
-    res = res?.map(
-      ({ draft, occupied, zusco, featured, popular, ...items }) => {
+    res =
+      res?.map(({ draft, occupied, zusco, featured, popular, ...items }) => {
         const status = draft ? "draft" : occupied ? "occupied" : "unoccupied";
         const type = zusco
           ? "zusco"
@@ -92,8 +92,7 @@ class ListingStore {
           ? "new"
           : "regular";
         return { ...items, status, type };
-      }
-    );
+      }) || [];
     let newListings = [...this.allListings, ...res];
     newListings = newListings
       .filter(

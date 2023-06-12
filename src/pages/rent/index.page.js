@@ -12,14 +12,14 @@ export async function getServerSideProps() {
   } catch (error) {}
 
   return {
-    props: { metaListings }, // will be passed to the page component as props
+    props: { metaListings: metaListings || null }, // will be passed to the page component as props
   };
 }
 
 const DashboardHome = ({ metaListings }) => {
   const { handleAlllistings } = ListingStore;
   useEffect(() => {
-    handleAlllistings(metaListings);
+    handleAlllistings(metaListings || null);
   }, []);
   return (
     <div>

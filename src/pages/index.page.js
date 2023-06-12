@@ -15,7 +15,7 @@ export async function getServerSideProps() {
   } catch (error) {}
 
   return {
-    props: { metaListings }, // will be passed to the page component as props
+    props: { metaListings: metaListings || null }, // will be passed to the page component as props
   };
 }
 export default function Home({ metaListings }) {
@@ -24,7 +24,7 @@ export default function Home({ metaListings }) {
   const userIsAuthenticated = !!getToken() || isAuthenticated;
   const router = useRouter();
   useEffect(() => {
-    handleAlllistings(metaListings);
+    handleAlllistings(metaListings || null);
   }, []);
   useEffect(() => {
     userIsAuthenticated && router.push("/dashboard/explore");
