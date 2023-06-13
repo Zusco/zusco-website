@@ -51,7 +51,7 @@ const ContentHeader = ({
 
   const goToListing = () => {
     if (searchQuery?.value) {
-      router.push(`listing/${searchQuery?.value}`);
+      router.push(`booking/${searchQuery?.value}`);
     }
   };
 
