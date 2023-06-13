@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
+import { useRouter as useNavigation } from "next/navigation";
 import Link from "next/link";
 import { observer } from "mobx-react-lite";
 import Image from "next/image";
@@ -23,6 +24,8 @@ import CommonFooter from "../footer";
 
 const DashboardLayout = ({ children, hasHeader }) => {
   const router = useRouter();
+  const navigation = useNavigation();
+
   const userInfo = getUserInfoFromStorage();
   const { logout, isAuthenticated } = useAuth();
   const [sidenavOpen, setSidenavOpen] = useState(false);
@@ -32,7 +35,7 @@ const DashboardLayout = ({ children, hasHeader }) => {
   const { getSettings, settings } = SettingsStore;
   const redirectUser = () => {
     if (!isAuthenticated) {
-      router.push("/");
+      navigation.push("/");
       return;
     }
   };
@@ -144,7 +147,7 @@ const DashboardLayout = ({ children, hasHeader }) => {
       link: "#",
       click: () => {
         logout();
-        router.push("/otp/send");
+        navigation.push("/otp/send");
       },
       icon: <Logout className="fill-current" />,
     },
@@ -206,7 +209,7 @@ const DashboardLayout = ({ children, hasHeader }) => {
                 <Link href={link} key={title}>
                   <div
                     className={`flex justify-center items-center hover:text-blue text-grey text-sm space-x-2 ${
-                      router.pathname.includes(link) && "!text-blue-alt"
+                      router?.pathname?.includes(link) && "!text-blue-alt"
                     }`}
                   >
                     {icon}
@@ -227,14 +230,14 @@ const DashboardLayout = ({ children, hasHeader }) => {
                   >
                     <div
                       className={`flex justify-center items-center hover:text-blue text-grey text-sm space-x-2 ${
-                        router.pathname.includes(link) &&
+                        router?.pathname?.includes(link) &&
                         "!text-blue-alt !border-blue-alt"
                       }`}
                     >
                       <p
                         className={`${
                           link === "/dashboard/profile"
-                            ? router.pathname.includes(link) &&
+                            ? router?.pathname?.includes(link) &&
                               "border rounded-full border-blue-alt"
                             : ""
                         }`}
@@ -248,14 +251,14 @@ const DashboardLayout = ({ children, hasHeader }) => {
                   <a href={url} key={title} target="_blank" rel="noreferrer">
                     <div
                       className={`flex justify-center items-center hover:text-blue text-grey text-sm space-x-2 ${
-                        router.pathname.includes(link) &&
+                        router?.pathname?.includes(link) &&
                         "!text-blue-alt !border-blue-alt"
                       }`}
                     >
                       <p
                         className={`${
                           link === "/dashboard/profile"
-                            ? router.pathname.includes(link) &&
+                            ? router?.pathname?.includes(link) &&
                               "border rounded-full border-blue-alt"
                             : ""
                         }`}

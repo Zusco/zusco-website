@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { useRouter } from "next/router";
-import axios from "axios";
+import { useRouter } from "next/navigation";
 
 import {
   ZuscoShortlet,

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
+import { useRouter as useNavigation } from "next/navigation";
 import { FiArrowLeft } from "react-icons/fi";
 
 import Select from "components/general/input/select";
@@ -24,6 +25,7 @@ const ContentHeader = ({
 }) => {
   const isAuthenticated = useAuth();
   const router = useRouter();
+  const navigation = useNavigation();
   const {
     searchListings,
     getFavouriteListings,
@@ -51,7 +53,7 @@ const ContentHeader = ({
 
   const goToListing = () => {
     if (searchQuery?.value) {
-      router.push(`booking/${searchQuery?.value}`);
+      navigation.push(`booking/${searchQuery?.value}`);
     }
   };
 
@@ -121,7 +123,7 @@ const ContentHeader = ({
 
             <p
               onClick={() => {
-                router.push("/dashboard/bookings/favorite/shortlets");
+                navigation.push("/dashboard/bookings/favorite/shortlets");
               }}
               className="text-blue-alt text-[20px] flex items-center gap-1 underline cursor-pointer"
             >
@@ -133,11 +135,11 @@ const ContentHeader = ({
           </div>
         )}
 
-        {router.pathname.includes("favorite") && (
+        {router?.pathname?.includes("favorite") && (
           <div className="flex flex-col space-y-6">
             <p
               onClick={() => {
-                router.push("/dashboard/bookings");
+                navigation.push("/dashboard/bookings");
               }}
               className="flex items-center gap-1 cursor-pointer text-black"
             >
@@ -148,10 +150,10 @@ const ContentHeader = ({
             <div className="flex border-b-[0.5px] border-[#8B8E93]">
               <p
                 onClick={() =>
-                  router.push("/dashboard/bookings/favorite/shortlets")
+                  navigation.push("/dashboard/bookings/favorite/shortlets")
                 }
                 className={`${
-                  router.pathname.includes("shortlets")
+                  router?.pathname?.includes("shortlets")
                     ? "text-black font-medium border-black border-b-[1.5px]"
                     : "text-[#8B8E93] font-light"
                 } ml-4 mr-4`}
@@ -160,10 +162,10 @@ const ContentHeader = ({
               </p>
               <p
                 onClick={() =>
-                  router.push("/dashboard/bookings/favorite/hosts")
+                  navigation.push("/dashboard/bookings/favorite/hosts")
                 }
                 className={`${
-                  router.pathname.includes("hosts")
+                  router?.pathname?.includes("hosts")
                     ? "text-black font-medium border-black border-b-[1.5px]"
                     : "text-[#8B8E93] font-light"
                 } ml-4`}
@@ -189,7 +191,7 @@ const ContentHeader = ({
         </div>
       )}
 
-      {favouriteListings.length > 0 && favoriteShortlets && (
+      {favouriteListings?.length > 0 && favoriteShortlets && (
         <div
           className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-end items-start w-full px-6 
             `}
@@ -200,7 +202,7 @@ const ContentHeader = ({
         </div>
       )}
 
-      {favouriteListings.length > 0 && favoriteHosts && (
+      {favouriteListings?.length > 0 && favoriteHosts && (
         <div
           className={`flex flex-col gap-8 justify-start items-start w-full pt-6 px-6 
             `}

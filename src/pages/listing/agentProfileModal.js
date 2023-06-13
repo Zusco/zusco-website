@@ -11,7 +11,7 @@ import {
   Timestamp,
   addDoc,
 } from "firebase/firestore";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 import { getUserInfoFromStorage } from "utils/storage";
 import Button from "components/general/button/button";

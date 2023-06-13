@@ -21,7 +21,7 @@ const FavoriteShortlets = ({}) => {
       />
       <div className="flex flex-col gap-6 pt-10 sm:pt-4 md:pt-1">
         <Pagination
-          pageCount={Number(favouriteListings.length) / pageCount}
+          pageCount={Number(favouriteListings?.length) / pageCount}
           onPageChange={(page) => setCurrentPage(page)}
           currentPage={currentPage}
         />
