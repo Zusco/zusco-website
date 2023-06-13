@@ -39,7 +39,9 @@ export function apiInstance2(
   } else {
     url = `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`;
   }
-
+  if (!customConfig?.internal && !token) {
+    return;
+  }
   return axios(url, config)
     .then(async (response) => {
       const data = response.data;
