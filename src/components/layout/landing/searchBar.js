@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { BiSearch } from "react-icons/bi";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 
 import ListingStore from "store/listing";
@@ -16,7 +16,7 @@ const SearchBar = observer(({ ...rest }) => {
 
   const goToListing = () => {
     if (searchQuery?.value) {
-   router.push(`listing/${searchQuery?.value}`);
+      router.push(`listing/${searchQuery?.value}`);
     }
   };
 

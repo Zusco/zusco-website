@@ -12,6 +12,7 @@ import Card1 from "components/layout/cards/Card1";
 import HostCard from "components/layout/cards/hostCard";
 import { useAuth } from "hooks/auth";
 import BookingsStore from "../store";
+import moment from "moment";
 
 const ContentHeader = ({
   filter,
@@ -61,8 +62,19 @@ const ContentHeader = ({
       listings = listings?.map(({ id, name, address, ...item }) => {
         return { value: id, label: `${name}, ${address}`, ...item };
       });
+      const bookingOptions = bookings?.map(({ id, shortlet, ...item }) => {
+        return {
+          value: id,
+          label: `${shortlet?.name}, ${moment(item?.check_in_date).format(
+            "MMMM Do"
+          )} - ${moment(item?.check_out_date).format("MMMM Do")}, ${moment(
+            item?.check_out_date
+          ).format("YYYY")}`,
+          ...item,
+        };
+      });
       return new Promise((resolve) => {
-        return resolve(listings);
+        return resolve(bookingOptions);
       });
     } catch (e) {
       console.log(e);
