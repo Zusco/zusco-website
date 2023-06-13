@@ -92,8 +92,8 @@ const DashboardLayout = ({ children, hasHeader }) => {
   };
   useEffect(() => {
     !me && getMe();
-    getConversations();
-    getSettings();
+    isAuthenticated && getConversations();
+    isAuthenticated && getSettings();
   }, []);
   const dashboardLinks = [
     {
