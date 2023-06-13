@@ -39,7 +39,7 @@ export function apiInstance2(
   } else {
     url = `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`;
   }
-  if (!customConfig?.internal && !token) {
+  if (!customConfig?.internal && !token && !endpoint?.includes("auth/verify")) {
     return;
   }
   return axios(url, config)
