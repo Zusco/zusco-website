@@ -162,7 +162,7 @@ const PaymentModal = ({
               label="First Name"
               value={form?.first_name}
               onChangeFunc={(val) => handleChange("first_name", val)}
-              placeholder="Update Your Profile"
+              placeholder="Enter your first name"
               required
             />
 
@@ -170,7 +170,7 @@ const PaymentModal = ({
               label="Last Name"
               value={form?.last_name}
               onChangeFunc={(val) => handleChange("last_name", val)}
-              placeholder="Update Your Profile"
+              placeholder="Enter Your last name"
               required
             />
 
@@ -178,16 +178,16 @@ const PaymentModal = ({
               label="Email Address"
               value={form?.email}
               onChangeFunc={(val) => handleChange("email", val)}
-              placeholder="Update Your Profile"
+              placeholder="Enter your email address"
               type="email"
               required
             />
 
             <PhoneNumber
-              label="Contact Number"
+              label="Phone Number"
               value={form.phone_number}
               onPhoneChange={(val) => handleChange("phone_number", val)}
-              placeholder="Update Your Profile"
+              placeholder="Enter your phone number"
               labelClass="!text-black regular-font"
               required
             />
