@@ -64,9 +64,9 @@ export function apiInstance2(
           message = "Bad Request";
           break;
         case 401:
-          logout();
-          window.location.assign(window.location);
-          message = "You're not Authenticated. Kindly Login";
+          // logout();
+          // window.location.assign(window.location);
+          // message = "You're not Authenticated. Kindly Login";
           break;
         case 403:
           message = "UnAuthorised User";

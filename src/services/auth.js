@@ -9,7 +9,7 @@ const apis = {
     }),
 
   verifyOtp: (data) =>
-    apiInstance2("auth/verify", {
+    apiInstance2("auth/verify/web", {
       method: "POST",
       body: data,
     }),
