@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { observer } from "mobx-react-lite";
 
 import { handleFileType } from "utils/functions";
@@ -13,6 +13,8 @@ import FileInput from "components/general/input/fileInput";
 import ImageModal from "components/general/modal/imageModal/ImageModal";
 import CircleLoader from "components/general/circleLoader/circleLoader";
 import cleanPayload from "utils/cleanPayload";
+import { isEmail } from "utils/validations";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 const Form = () => {
   const router = useRouter();
@@ -94,8 +96,9 @@ const Form = () => {
     return (
       !form?.first_name ||
       !form?.last_name ||
-      !form?.email ||
+      !isEmail(form?.email) ||
       !form?.phone_number ||
+      (form?.phone_number && !isValidPhoneNumber(form?.phone_number)) ||
       !form?.profile_image_url
     );
   };

@@ -14,6 +14,8 @@ import { Button } from "components/general/button";
 import cleanPayload from "utils/cleanPayload";
 import ModalHeader from "components/general/modal/modalHeader/modalHeader";
 import { successToast } from "components/general/toast/toast";
+import { isEmail } from "utils/validations";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 const PaymentModal = ({
   toggleModal,
@@ -128,11 +130,14 @@ const PaymentModal = ({
     return (
       !form?.first_name ||
       !form?.last_name ||
-      !form?.email ||
-      !form?.phone_number
+      !isEmail(form?.email) ||
+      !form?.phone_number ||
+      (form?.phone_number && !isValidPhoneNumber(form?.phone_number))
     );
   };
   const onSubmit = () => {};
+
+  console.log("form?.phone_number: ", form?.phone_number);
   return (
     <Modal
       size="xl"

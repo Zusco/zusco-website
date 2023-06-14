@@ -12,6 +12,8 @@ import ImageModal from "components/general/modal/imageModal/ImageModal";
 import CircleLoader from "components/general/circleLoader/circleLoader";
 import cleanPayload from "utils/cleanPayload";
 import { isEmpty } from "lodash";
+import { isEmail } from "utils/validations";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 const Profile = () => {
   const router = useRouter();
@@ -70,8 +72,9 @@ const Profile = () => {
     return (
       !form?.first_name ||
       !form?.last_name ||
-      !form?.email ||
+      !isEmail(form?.email) ||
       !form?.phone_number ||
+      (form?.phone_number && !isValidPhoneNumber(form?.phone_number)) ||
       !form?.profile_image_url
     );
   };
