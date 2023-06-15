@@ -17,7 +17,7 @@ const ChatTile = ({
   const { currentChat } = MessagesStore;
   return (
     <div
-      className={`flex justify-between items-center w-full h-fit rounded-lg py-6 px-3 space-x-6 border-b-1/2 border-grey-border hover:bg-grey-alt cursor-pointer ${
+      className={`flex justify-between items-center w-full h-fit rounded-lg py-4 pl-0 pr-3 sm:py-6 sm:px-3 space-x-6 border-b-1/2 border-grey-border hover:bg-grey-alt cursor-pointer ${
         currentChat?.agentName === title ? "bg-grey-alte" : ""
       } ${className} transition-all duration-500 ease-in-out`}
       onClick={onClick}
@@ -26,7 +26,7 @@ const ChatTile = ({
         <div className="flex flex-col justify-center items-start space-y-1">
           <div className="w-fit h-fit p-[4px] rounded-full border border-blue-alt">
             <div
-              className="w-[50px] h-[50px] rounded-full"
+              className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full"
               style={{
                 backgroundImage: `url(${image})`,
                 backgroundSize: "cover",
@@ -38,7 +38,9 @@ const ChatTile = ({
         </div>
 
         <div className="flex flex-col justify-center items-start space-y-3">
-          <span className="text-xl text-black regular-font">{title}</span>
+          <span className="text-base sm:text-xl text-black regular-font">
+            {title}
+          </span>
 
           <span className="text-sm text-black flex justify-between items-center">
             {label}

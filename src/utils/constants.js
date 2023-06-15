@@ -101,10 +101,10 @@ export const STATES = [
 ].map((item) => {
   return { label: item, value: item };
 });
-export const minPriceValue = 1000;
-export const maxPriceValue = 400000;
+export const minPriceValue = "1000";
+export const maxPriceValue = "400000";
 export const defaultFilterValues = {
-  house_type: HOUSE_TYPES[0].value,
+  house_type: "",
   min_price: minPriceValue,
   max_price: maxPriceValue,
   number_of_bedrooms: 2,

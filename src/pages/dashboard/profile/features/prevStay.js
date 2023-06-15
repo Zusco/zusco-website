@@ -14,14 +14,17 @@ const Content = observer(({ store }) => {
   }, []);
 
   return (
-    <section className="flex flex-col gap-10 mmd:gap-5">
+    <section className="flex flex-col gap-10 mmd:gap-5 md:max-h-[100vh] md:overflow-y-auto">
       <h3 className="text-[#211D31] text-[20px]">Previous Stays</h3>
 
       {!loading && (
         <div className=" flex flex-wrap gap-6 w-full justify-center">
-          {bookings.slice(0, 6)?.map((data) => {
-            return <Card1 key={data?.id} listing={data.shortlet} />;
-          })}
+          {bookings
+            ?.filter(({ shortlet }) => !shortlet.blocked)
+            .slice(0, 6)
+            ?.map((data) => {
+              return <Card1 key={data?.id} listing={data.shortlet} />;
+            })}
         </div>
       )}
 

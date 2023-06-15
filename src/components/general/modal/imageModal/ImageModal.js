@@ -9,7 +9,7 @@ import ModalBody from "../modalBody/modalBody";
 const ImageModal = ({ active, toggler, photos }) => {
   return (
     <Modal
-      backdropClassName="!z-[99999999]"
+      backdropClassName="!z-[99999999] !top-[70px]"
       size="md"
       active={active}
       toggler={toggler}
@@ -29,11 +29,11 @@ const ImageModal = ({ active, toggler, photos }) => {
                 </span>
                 <div className="w-full h-full min-h-[400px]  max-h-[400px] ">
                   <Image
-                    className="w-full h-full z-99 min-h-[350px]  max-h-[350px] object-cover object-top"
+                    className="w-full h-full z-99 min-h-[350px]  max-h-[350px] object-contain object-top"
                     src={slideImage.url}
                     alt={slideImage.name}
                     fill
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "contain" }}
                   />
                 </div>
               </div>

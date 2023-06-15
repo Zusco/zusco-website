@@ -29,6 +29,8 @@ class ListingStore {
   searchedListings = [];
   currentListing = null;
   currentFeatures = [];
+  currentReviews = [];
+  currentReviewsValue = 0;
   pageCount = 1;
   pendingBookingForm = null;
   searchLoading = false;
@@ -44,9 +46,12 @@ class ListingStore {
 
   filterData = defaultFilterValues;
   filterLoading = false;
+  reviewsLoading = false;
   filteredListing = [];
   reloadFilters = false;
   showShareModal = false;
+
+  showFilteredListings = false;
   constructor() {
     makeAutoObservable(this);
 
@@ -62,29 +67,26 @@ class ListingStore {
   // Actions
   // ====================================================
 
+  setShowFilteredListings = (item) => {
+    this.showFilteredListings = item;
+  };
   setShowShareModal = (item) => {
     this.showShareModal = item;
   };
   setFilterData = (item) => {
     this.filterData = item;
   };
-  incrementPageCount = (item) => {
+  incrementPageCount = () => {
     this.pageCount += 1;
   };
 
-  handleAlllistings = (res) => {
-    this.listingsCount = res?.total - 1;
-    res = res?.data;
-
-    if (this.filteredListing.length > 0) {
-      res = this.filteredListing;
-    }
-    res =
+  handleSortlistings = (res) => {
+    const sortedListings =
       res?.map(({ draft, occupied, zusco, featured, popular, ...items }) => {
         const status = draft ? "draft" : occupied ? "occupied" : "unoccupied";
         const type = zusco
           ? "zusco"
-          : featured
+          : !zusco
           ? "featured"
           : popular
           ? "popular"
@@ -93,12 +95,18 @@ class ListingStore {
           : "regular";
         return { ...items, status, type };
       }) || [];
+
+    return sortedListings;
+  };
+  handleAlllistings = (res) => {
+    this.listingsCount = res?.total;
+    res = res?.data;
+
+    res = this.handleSortlistings(res);
     let newListings = [...this.allListings, ...res];
-    newListings = newListings
-      .filter(
-        (obj, index, self) => index === self.findIndex((o) => o.id === obj.id)
-      )
-      .filter((item) => item?.id !== "83e074f8-d8f0-4e0c-88a5-eaf606589be2");
+    newListings = newListings.filter(
+      (obj, index, self) => index === self.findIndex((o) => o.id === obj.id)
+    );
 
     this.allListings = newListings;
     this.reservedListings = newListings?.filter(
@@ -111,7 +119,9 @@ class ListingStore {
     this.popularListings = newListings?.filter(
       ({ type }) => type === "popular"
     );
-    this.newListings = newListings?.filter(({ type }) => type === "new");
+    this.newListings = newListings?.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
     this.loading = false;
     return res;
   };
@@ -125,6 +135,32 @@ class ListingStore {
       this.error = error;
     } finally {
       this.loading = false;
+    }
+  };
+
+  getReviews = async (shortlet_id) => {
+    this.reviewsLoading = true;
+    try {
+      let res = await apis.getReviews(shortlet_id);
+      const sortedRes = [];
+
+      for (const key in res) {
+        if (res.hasOwnProperty(key) && key !== "ok") {
+          sortedRes.push(res[key]);
+        }
+      }
+      const totalRate = sortedRes?.reduce(
+        (sum, obj) => sum + Number(obj.rate),
+        0
+      );
+      this.currentReviews = res;
+      this.currentReviewsValue = totalRate / sortedRes?.length;
+
+      return res;
+    } catch (error) {
+      this.error = error;
+    } finally {
+      this.reviewsLoading = false;
     }
   };
 
@@ -253,11 +289,18 @@ class ListingStore {
   };
 
   filterListings = async (data) => {
+    if (JSON.stringify(data) === JSON.stringify(defaultFilterValues)) {
+      return;
+    }
+
     this.filterLoading = true;
     try {
       let results = await apis2.filterListings(data);
       results = results?.data;
-      this.filteredListing = results;
+      results = this.handleSortlistings(results);
+      this.filteredListing = results?.sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
       return results;
     } catch (error) {
       this.error = error;
@@ -266,10 +309,12 @@ class ListingStore {
     }
   };
 
-  debouncedFilter = debounce((data) => this.filterListings(data), 3000);
+  debouncedFilter = debounce((data) => this.filterListings(data), 2000);
 
   clearFilter = (reload) => {
     this.filterData = defaultFilterValues;
+    this.showFilteredListings = false;
+    this.filteredListing = [];
     if (!reload) {
       this.reloadFilters = !this.reloadFilters;
     }

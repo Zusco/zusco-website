@@ -19,7 +19,7 @@ const ImageChatModal = ({
       active
       noPadding
       bodyClass=""
-      backdropClassName="!z-[999999]"
+      backdropClassName="!z-[999999] !top-[70px]"
     >
       <ModalBody>
         <div className="w-full text-center relative">

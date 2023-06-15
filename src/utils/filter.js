@@ -259,9 +259,12 @@ const FilterListings = observer(() => {
               <Slider
                 range
                 allowCross={false}
-                min={minPriceValue}
-                max={maxPriceValue}
-                defaultValue={[minPriceValue, maxPriceValue]}
+                min={parseInt(minPriceValue)}
+                max={parseInt(maxPriceValue)}
+                defaultValue={[
+                  parseInt(filterData.min_price),
+                  parseInt(filterData?.max_price),
+                ]}
                 onChange={(e) => {
                   setFilterData({
                     ...filterData,

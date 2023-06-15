@@ -3,8 +3,10 @@ import { PaystackConsumer } from "react-paystack";
 import PropTypes from "prop-types";
 import { observer } from "mobx-react-lite";
 import moment from "moment";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 import CommonStore from "store/common";
+import ListingStore from "store/listing";
 import GreenStar from "assets/icons/features/greenStar.svg";
 import PhoneNumber from "components/general/phoneNumber/phoneNumber";
 import Input from "components/general/input/input";
@@ -16,6 +18,8 @@ import ModalHeader from "components/general/modal/modalHeader/modalHeader";
 import { successToast } from "components/general/toast/toast";
 import { isEmail } from "utils/validations";
 import { isValidPhoneNumber } from "react-phone-number-input";
+import { isNaN, isNumber } from "lodash";
+import { FiCopy } from "react-icons/fi";
 
 const PaymentModal = ({
   toggleModal,
@@ -30,7 +34,8 @@ const PaymentModal = ({
     minimumFractionDigits: 2,
   });
 
-  const { loading, loadingFetchMe, getMe, updateMe, me } = CommonStore;
+  const { loading, getMe, updateMe, me } = CommonStore;
+  const { reviewsLoading, currentReviewsValue } = ListingStore;
   const { check_in_date, check_out_date, number_of_guests } = bookingForm;
   const [form, setForm] = useState({
     first_name: "",
@@ -137,7 +142,7 @@ const PaymentModal = ({
   };
   const onSubmit = () => {};
 
-  console.log("form?.phone_number: ", form?.phone_number);
+  console.log("formData: ", formData);
   return (
     <Modal
       size="xl"
@@ -192,12 +197,17 @@ const PaymentModal = ({
               required
             />
           </div>
-          <div className="flex flex-col gap-y-3 text-black w-full">
+          <div className="flex flex-col gap-y-3 text-black w-full pt-10 md:pt-0">
             <p className="flex gap-3 mxs:gap-1 text-xl pr-4 text-grey-label regular-font">
               {shortletdetails?.name}
-              <span className="text-[#7A8996] font-thin flex text-[13px] leading-[13px] items-center">
-                <GreenStar /> 4.21
-              </span>
+              {isNumber(currentReviewsValue) &&
+              !isNaN(currentReviewsValue) &&
+              !reviewsLoading ? (
+                <span className="text-[#7A8996] font-thin flex text-[13px] leading-[13px] items-center">
+                  <GreenStar className="" />{" "}
+                  {parseFloat(currentReviewsValue).toFixed(1)}
+                </span>
+              ) : null}
             </p>
             <div className="flex justify-between">
               <p className="font-light">
@@ -209,7 +219,7 @@ const PaymentModal = ({
                 {formatter.format(formData?.totalPrice || 0)}
               </p>
             </div>
-
+            {/* 
             <div className="flex justify-between">
               <p className="font-light">Other Fees</p>
               <p className="text-[20px]">
@@ -217,7 +227,7 @@ const PaymentModal = ({
                   shortletdetails?.addon_caution_fee_price || 0
                 )}
               </p>
-            </div>
+            </div> */}
 
             <div className="flex justify-between regular-font pb-2 sm:pb-4">
               <p>TOTAL</p>
@@ -225,6 +235,42 @@ const PaymentModal = ({
                 {formatter.format(formData?.grandTotal || 0)}
               </p>
             </div>
+
+            {formData.paymentMethod === "transfer" &&
+              shortletdetails?.zusco && (
+                <div className="flex flex-col gap-y-3 text-black w-full">
+                  <p className="flex gap-3 mxs:gap-1 text-xl pr-4 py-3 text-blue regular-font">
+                    Kindly Make Transfer to The Account Details Provided
+                  </p>
+
+                  <CopyToClipboard
+                    text={shortletdetails?.account_number}
+                    onCopy={() => {
+                      successToast(`Account number copied!`);
+                    }}
+                  >
+                    <div className="flex justify-between regular-font pb-2 sm:pb-4 cursor-pointer">
+                      <p>ACCOUNT NUMBER</p>
+                      <p className="text-[24px] flex justify-start items-center gap-1">
+                        <FiCopy className="text-grey" />
+                        {shortletdetails?.account_number}
+                      </p>
+                    </div>
+                  </CopyToClipboard>
+                  <div className="flex justify-between regular-font pb-2 sm:pb-4">
+                    <p>ACCOUNT NAME</p>
+                    <p className="text-[24px] capitalize">
+                      {shortletdetails?.account_name}
+                    </p>
+                  </div>
+                  <div className="flex justify-between regular-font pb-2 sm:pb-4">
+                    <p>ACCOUNT NUMBER</p>
+                    <p className="text-[24px] uppercase">
+                      {shortletdetails?.bank_name}
+                    </p>
+                  </div>
+                </div>
+              )}
 
             {formData.paymentMethod === "bankCard" && shortletdetails?.zusco ? (
               <PaystackConsumer {...componentProps}>

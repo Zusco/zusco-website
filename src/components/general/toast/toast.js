@@ -58,17 +58,19 @@ const Toast = () => {
                 icon
               );
             return (
-              <div className="bani-toast w-full">
+              <div className="w-full">
                 <div className="flex justify-between align-start w-full">
                   <div className="flex justify-between align-start">
-                    <div className="bani-toast-icon mr-[20px]">{toastIcon}</div>
-                    <div className="bani-toast-message">
-                      <span className="bani-toast-header helv-medium text-base">
+                    <div className="mr-[20px]">{toastIcon}</div>
+                    <div className="flex flex-col justify-center items-start">
+                      <span className="helv-medium text-base">
                         {message.props.title}
                       </span>
-                      <p className="helv-regular text-grey bani-toast-content text-sm mt-[9px]">
-                        {message.props.children}
-                      </p>
+                      {message.props.children && (
+                        <p className="helv-regular text-grey  text-sm mt-[9px]">
+                          {message.props.children}
+                        </p>
+                      )}
                     </div>
                   </div>
 

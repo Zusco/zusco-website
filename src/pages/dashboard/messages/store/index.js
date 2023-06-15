@@ -14,6 +14,7 @@ class MessagesStore {
   externalChat = null;
   error = null;
   loading = false;
+  searchQuery = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -27,6 +28,10 @@ class MessagesStore {
   // ====================================================
   // Actions
   // ====================================================
+
+  setSearchQuery = (data) => {
+    this.searchQuery = data;
+  };
 
   setConversations = (data) => {
     this.conversations = data;

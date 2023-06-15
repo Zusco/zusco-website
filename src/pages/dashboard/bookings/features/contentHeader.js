@@ -160,7 +160,7 @@ const ContentHeader = ({
               >
                 Shortlets
               </p>
-              <p
+              {/* <p
                 onClick={() =>
                   navigation.push("/dashboard/bookings/favorite/hosts")
                 }
@@ -171,7 +171,7 @@ const ContentHeader = ({
                 } ml-4`}
               >
                 Hosts
-              </p>
+              </p> */}
             </div>
           </div>
         )}

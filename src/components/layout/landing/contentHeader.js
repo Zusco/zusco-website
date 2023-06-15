@@ -13,6 +13,7 @@ import Card1 from "components/layout/cards/Card1";
 import FilterIcon from "assets/icons/features/filterIcon.svg";
 import ListingStore from "store/listing";
 import Select from "components/general/input/select";
+import CircleLoader from "components/general/circleLoader/circleLoader";
 import FilterListings from "utils/filter";
 import { useAuth } from "hooks/auth";
 
@@ -22,7 +23,7 @@ const ContentHeader = observer(
     const { isAuthenticated } = useAuth();
     const {
       allListings,
-      popularListings,
+      zuscoListings,
       newListings,
       featuredListings,
       searchListings,
@@ -30,30 +31,38 @@ const ContentHeader = observer(
       favouriteListings,
       filteredListing,
       clearFilter,
+      setShowFilteredListings,
+      showFilteredListings,
+      filterLoading,
     } = ListingStore;
     const containerRef = useRef(null);
 
     const [showFilter, setShowFilter] = useState(false);
     const tabs = [
       {
+        title: "All",
+        icon: <Popular className="stroke-current" />,
+        content: allListings,
+        value: "all",
+      },
+      {
         title: "Zusco Shorlets",
         icon: <ZuscoShortlet className="fill-current" />,
-        content: allListings,
+        content: zuscoListings,
+        value: "zusco",
       },
       {
         title: "New",
         icon: <NewShortlet className="stroke-current" />,
         content: newListings,
+        value: "new",
       },
-      {
-        title: "Popular",
-        icon: <Popular className="stroke-current" />,
-        content: popularListings,
-      },
+
       {
         title: "Featured",
         icon: <FeaturedShortlet className="stroke-current" />,
         content: featuredListings,
+        value: "featured",
       },
     ];
 
@@ -104,7 +113,10 @@ const ContentHeader = observer(
       const slidePosition = slideContainerWidth * activeTab?.index;
       setSliderPosition(slidePosition);
     };
+    const filteredListingsCount = filteredListing?.length;
 
+    console.log("activeTab: ", activeTab);
+    console.log("filteredListing: ", filteredListing);
     return (
       <div className="flex flex-col gap-6 ">
         <div className="px-2 py-[1.5rem]  flex justify-between gap-y-5 flex-wrap border-b-1/2 border-grey-border text-black">
@@ -179,10 +191,10 @@ const ContentHeader = observer(
                 ref={containerRef}
               >
                 <div className="flex justify-end items-end space-x-2 overflow-x-scroll w-full max-w-[calc(100vw-10px)] sm:max-w-fit ">
-                  {tabs?.map(({ title, icon }, index) => (
+                  {tabs?.map(({ title, icon, value }, index) => (
                     <button
                       key={title}
-                      onClick={() => setActiveTab({ title, index })}
+                      onClick={() => setActiveTab({ title, index, value })}
                       className={`cursor-pointer text-sm space-y-2 w-[115px] px-1
               flex flex-col justify-between items-center transition-all duration-500 ease-in-out
               ${activeTab?.title === title ? "text-blue-alt" : "text-grey"}`}
@@ -225,6 +237,7 @@ const ContentHeader = observer(
                     className="underline cursor-pointer text-blue-9"
                     onClick={() => {
                       clearFilter();
+                      setShowFilter(false);
                     }}
                   >
                     Clear all{" "}
@@ -237,13 +250,19 @@ const ContentHeader = observer(
                   <Button
                     whiteBg
                     text={`Show ${
-                      filteredListing.length > 0
-                        ? filteredListing.length
-                        : "all"
-                    } results`}
+                      filteredListingsCount > 0 ? filteredListingsCount : "all"
+                    } ${filteredListingsCount === 1 ? "result" : "results"}`}
                     btnClass="border-none sm:!border-[0.8px] sm:!border-black sm:border-solid text-black"
                     className="shadow-btn"
-                    onClick={() => setShowFilter(false)}
+                    onClick={() => {
+                      setActiveTab({
+                        title: "All",
+                        value: "all",
+                        index: 0,
+                      });
+                      setShowFilter(false);
+                      setShowFilteredListings(true);
+                    }}
                   />
                 </div>
               </div>
@@ -257,6 +276,55 @@ const ContentHeader = observer(
         </div>
         {/* content */}
 
+        {/* Filter loader */}
+
+        {filterLoading && (
+          <div className="w-full flex justify-center items-center h-[100px] absolute m-auto left-0 right-0 mt-[50px] z-[999]">
+            <CircleLoader blue size="xm" />
+          </div>
+        )}
+
+        {showFilteredListings && (
+          <p className="text-[26px] mt-[20px] text-blue regular-font px-6">
+            {filteredListingsCount > 0 ? filteredListingsCount : ""}{" "}
+            {filteredListingsCount < 1
+              ? "No listings were"
+              : filteredListingsCount === 1
+              ? "Listing"
+              : "Listings"}{" "}
+            found for your filter
+          </p>
+        )}
+
+        {showFilteredListings && filteredListing?.length > 0 && (
+          <div
+            className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-end items-start w-full
+  ${tabClass}
+  `}
+          >
+            {filteredListing
+              ?.filter(({ type }) =>
+                activeTab?.value === "new" || activeTab?.value === "all"
+                  ? type
+                  : type === activeTab?.value
+              )
+              ?.map((data) => {
+                return (
+                  <Card1
+                    allFavourites={favouriteListings}
+                    key={data.id}
+                    listing={data}
+                  />
+                );
+              })}
+          </div>
+        )}
+
+        {showFilteredListings && (
+          <p className="text-[18px] text-grey-textalt regular-font px-6">
+            Your might like these other listings!
+          </p>
+        )}
         {tabs
           .filter(({ title }) => title === activeTab?.title)
           .map(({ content }, index) => (
@@ -266,15 +334,19 @@ const ContentHeader = observer(
             ${tabClass}
             `}
             >
-              {content?.map((data) => {
-                return (
-                  <Card1
-                    allFavourites={favouriteListings}
-                    key={data.id}
-                    listing={data}
-                  />
-                );
-              })}
+              {content
+                ?.filter(
+                  (obj1) => !filteredListing.some((obj2) => obj2.id === obj1.id)
+                )
+                ?.map((data) => {
+                  return (
+                    <Card1
+                      allFavourites={favouriteListings}
+                      key={data.id}
+                      listing={data}
+                    />
+                  );
+                })}
             </div>
           ))}
       </div>

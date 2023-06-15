@@ -100,7 +100,14 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
   }, [shortletdetails]);
 
   const dateChange = (item) => {
-    setState(item);
+    console.log("itemitem: ", item);
+    setState([
+      {
+        key: item[0].key,
+        startDate: new Date(item[0].startDate),
+        endDate: new Date(item[0].endDate),
+      },
+    ]);
     setForm((prev) => {
       return {
         ...prev,
@@ -191,6 +198,8 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
 
   const isListing = !bookingdetails?.paid && !pathname?.includes("booking");
   const isBooking = pathname?.includes("booking");
+
+  console.log("state: ", state);
   return (
     <div className="w-full py-4 px-3 flex flex-col gap-y-8">
       <div>
@@ -199,15 +208,14 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
         </div>
         <DateRange
           onChange={(item) => dateChange([item.selection])}
-          moveRangeOnFirstSelection={false}
           ranges={state}
           startDatePlaceholder="CHECK IN"
           endDatePlaceholder="CHECK OUT"
           color="#000000"
           minDate={new Date()}
-          maxDate={isBooking && new Date()}
           className="text-blue-9 w-full"
           disabledDates={isBooking ? [new Date()] : []}
+          {...(isBooking ? { maxDate: new Date() } : {})}
         />
       </div>
 
@@ -243,12 +251,12 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
             </p>
           </div>
 
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <p className="font-light">Other Fees</p>
             <p className="text-[20px]">
               {formatter.format(shortletdetails?.addon_caution_fee_price || 0)}
             </p>
-          </div>
+          </div> */}
 
           <div className="flex justify-between regular-font">
             <p>TOTAL</p>

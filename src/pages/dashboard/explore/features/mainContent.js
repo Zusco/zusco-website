@@ -18,7 +18,8 @@ const Content = observer(() => {
     getFavouriteListings,
   } = ListingStore;
   const [activeTab, setActiveTab] = useState({
-    title: "Zusco Shorlets",
+    title: "All",
+    value: "all",
     index: 0,
   });
   useEffect(() => {

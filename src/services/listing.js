@@ -25,8 +25,12 @@ const apartments = {
       body: data,
     }),
 
+  getReviews: (shortlet_id) =>
+    apiInstance2(`shortlet/review/${shortlet_id}`, {
+      internal: true,
+    }),
   addReview: (shortlet_id, data) =>
-    apiInstance2(`/shortlet/review/${shortlet_id}`, {
+    apiInstance2(`shortlet/review/${shortlet_id}`, {
       method: "POST",
       body: data,
     }),

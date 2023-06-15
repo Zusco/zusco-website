@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Tippy from "@tippyjs/react";
 import { observer } from "mobx-react-lite";
 
-import  Hairpin from "assets/icons/hairpin.svg";
-import  Delete from "assets/icons/delete.svg";
+import Hairpin from "assets/icons/hairpin.svg";
 import {
   collection,
   where,
@@ -18,6 +17,7 @@ import {
 } from "firebase/firestore";
 
 import { ArrowButton } from "components/general/button";
+import ArrowBack from "assets/icons/arrow-back.svg";
 import Chat from "components/general/chat";
 import { getUserInfoFromStorage } from "utils/storage";
 import MessagesStore from "../store";
@@ -35,8 +35,14 @@ const emptyForm = { message: "", image: null };
 const ChatSection = () => {
   const chatBaseRef = useRef(null);
   const fileRef = useRef();
-  const { currentChat, chats, setChats, currentChatRef, setCurrentChatRef } =
-    MessagesStore;
+  const {
+    currentChat,
+    chats,
+    setChats,
+    currentChatRef,
+    setCurrentChatRef,
+    setCurrentChat,
+  } = MessagesStore;
   const [form, setForm] = useState(emptyForm);
   const [sending, setSending] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -198,6 +204,9 @@ const ChatSection = () => {
       {currentChat?.agentId && (
         <>
           <div className="bg-white flex justify-between items-center w-full space-x-4 py-4 px-6 absolute right-0 top-[0px] z-[99] border-1/2 border-grey-border">
+            <button onClick={() => setCurrentChat(null)} className="h-full">
+              <ArrowBack />
+            </button>
             <div
               className="flex justify-start items-center w-fit space-x-4 cursor-pointer"
               onClick={() => setShowProfileModal(true)}
@@ -222,8 +231,6 @@ const ChatSection = () => {
                 {currentChat?.agentPhoneNumber}
               </p>
             </div>
-
-            <Delete />
           </div>
           <div className="flex flex-col justify-start items-start w-full h-full bg-white py-8 px-7 my-[80px] border-b-1/2 border-grey-border relative overflow-y-scroll">
             {chats?.map(({ message, dateTime, senderId, url, type }, i) => {
@@ -325,6 +332,7 @@ const ChatSection = () => {
                 image: currentChat?.agentImage || DEFAULT_AVATAR,
                 phone_number: currentChat?.agentPhoneNumber,
                 created_at: currentChat?.userCreatedAt,
+                id: currentChat.agentId,
               }}
               handleOk={() => setShowProfileModal(false)}
             />
