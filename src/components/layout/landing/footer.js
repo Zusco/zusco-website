@@ -70,7 +70,8 @@ const Footer = () => {
           </div>
           <div className="flex flex-col justify-between h-full text-black space-y-3 sm:space-y-0 ">
             <Link
-              href={isAuthenticated ? "/dashboard/explore" : "/"}
+              href={"/#home_banner"}
+              scroll={false}
               className="flex text-base font-light hover:text-blue-alt cursor-pointer justify-between sm:justify-start"
             >
               Zusco

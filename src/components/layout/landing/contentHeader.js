@@ -34,6 +34,10 @@ const ContentHeader = observer(
       setShowFilteredListings,
       showFilteredListings,
       filterLoading,
+      filterData,
+      amenities,
+      allowances,
+      rules,
     } = ListingStore;
     const containerRef = useRef(null);
 
@@ -114,9 +118,29 @@ const ContentHeader = observer(
       setSliderPosition(slidePosition);
     };
     const filteredListingsCount = filteredListing?.length;
+    const formatter = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+    });
+    const formatMoney = (amount) => {
+      const apprx = Math.floor(amount / 1000) * 1000;
+      return formatter.format(apprx);
+    };
 
     console.log("activeTab: ", activeTab);
     console.log("filteredListing: ", filteredListing);
+
+    const filteredAmenities = amenities.filter((obj) =>
+      filterData?.amenities.includes(obj.id)
+    );
+    const filteredAllowances = allowances.filter((obj) =>
+      filterData?.allowances.includes(obj.id)
+    );
+    const filteredRules = rules.filter((obj) =>
+      filterData?.rules.includes(obj.id)
+    );
+
     return (
       <div className="flex flex-col gap-6 ">
         <div className="px-2 py-[1.5rem]  flex justify-between gap-y-5 flex-wrap border-b-1/2 border-grey-border text-black">
@@ -292,10 +316,81 @@ const ContentHeader = observer(
               : filteredListingsCount === 1
               ? "Listing"
               : "Listings"}{" "}
-            found for your filter
+            found for your filter:
           </p>
         )}
 
+        {
+          <div className="flex flex-wrap items-center justify-start regular-font px-6 gap-4 md:gap-7 text-xl">
+            <div className="flex items-center justify-start regular-font gap-1">
+              <p className="text-grey-textalt">Property Type: </p>
+              <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                {filterData?.house_type}
+              </p>
+            </div>
+            <div className="flex items-center justify-start regular-font gap-1">
+              <p className="text-grey-textalt">Number of Rooms: </p>
+              <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                {filterData?.number_of_bedrooms}
+              </p>
+            </div>
+            <div className="flex items-center justify-start regular-font gap-1">
+              <p className="text-grey-textalt">Amenities: </p>
+
+              <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                {filteredAmenities?.map(
+                  ({ name }, i, arr) =>
+                    `${name}${
+                      i === arr.length - 2
+                        ? " & "
+                        : i < arr.length - 1
+                        ? ", "
+                        : ""
+                    }`
+                )}
+              </p>
+            </div>
+            <div className="flex items-center justify-start regular-font gap-1">
+              <p className="text-grey-textalt">Price Range: </p>
+              <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                {formatMoney(filterData.min_price)} -{" "}
+                {formatMoney(filterData?.max_price)}
+              </p>
+            </div>
+            <div className="flex items-center justify-start regular-font gap-1">
+              <p className="text-grey-textalt">Allowances: </p>
+
+              <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                {filteredAllowances?.map(
+                  ({ name }, i, arr) =>
+                    `${name}${
+                      i === arr.length - 2
+                        ? " & "
+                        : i < arr.length - 1
+                        ? ", "
+                        : ""
+                    }`
+                )}
+              </p>
+            </div>
+            <div className="flex items-center justify-start regular-font gap-1">
+              <p className="text-grey-textalt">Rules: </p>
+
+              <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                {filteredRules?.map(
+                  ({ name }, i, arr) =>
+                    `${name}${
+                      i === arr.length - 2
+                        ? " & "
+                        : i < arr.length - 1
+                        ? ", "
+                        : ""
+                    }`
+                )}
+              </p>
+            </div>
+          </div>
+        }
         {showFilteredListings && filteredListing?.length > 0 && (
           <div
             className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-end items-start w-full

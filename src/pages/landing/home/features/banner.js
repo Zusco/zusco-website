@@ -35,8 +35,21 @@ const Banner = observer(() => {
               />
             </div>
             <div className="flex justify-between sm:justify-start gap-6 mmd:gap-3  mlg:pt-4 w-full -mt-28">
-              <GoogleStore className="msm:w-[50%] mxs:w-[70%]" />
-              <AppStore className="msm:w-[50%] mxs:w-[70%]" />
+              <a
+                href="https://play.google.com/store/apps/details?id=com.zusco.zusco_app"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <GoogleStore className="msm:w-[50%] mxs:w-[70%]" />
+              </a>
+
+              <a
+                href="https://apps.apple.com/ng/app/zusco/id1624362653"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AppStore className="msm:w-[50%] mxs:w-[70%]" />
+              </a>
             </div>
             <div className="w-full flex justify-center sm:justify-start">
               <Link href="#listings" scroll={false}>

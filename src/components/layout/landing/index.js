@@ -9,7 +9,10 @@ import Footer from "./footer";
 const LandingLayout = ({ children }) => {
   const { showAuthModal, setShowAuthModal } = AuthStore;
   return (
-    <div className="w-screen min-h-screen h-screen flex flex-grow flex-col">
+    <div
+      className="w-screen min-h-screen h-screen flex flex-grow flex-col"
+      id="home_banner"
+    >
       <Header />
       <section className="w-full flex flex-row flex-grow max-w-9xl mx-auto mt-[70px]">
         <main
