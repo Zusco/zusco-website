@@ -56,6 +56,8 @@ export default function App({ Component, pageProps }) {
           <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
           <link rel="icon" href="/favicon.ico" />
           <link rel="preload" href="/banner-image.png" as="image" />
+          <link rel="preload" href="/google-play-badge.png" as="image" />
+          <link rel="preload" href="/appstore-badge.png" as="image" />
         </Head>
       )}
       <Toast />

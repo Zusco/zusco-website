@@ -38,6 +38,7 @@ const Footer = () => {
               iconAfter={<BsArrowRight />}
               btnClass="text-black px-10 hover:bg-gray-200"
               textColor="black"
+              isLoading
             />
           </Link>
         </div>

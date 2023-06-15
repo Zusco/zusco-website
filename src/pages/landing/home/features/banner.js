@@ -4,16 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { images } from "utils/images";
 import SearchBar from "components/layout/landing/searchBar";
+import googleStore from "../../../../../public/google-play-badge.png";
+import appStore from "../../../../../public/appstore-badge.png";
 import BannerImage from "../../../../../public/banner-image.png";
 
 const Banner = observer(() => {
-  const { Scroll, AppStore, GoogleStore } = images;
+  const { Scroll } = images;
   const [searchQuery, setSearchQuery] = useState("");
   return (
     <div className="bg_image flex flex-col justify-between">
       <div className="h-full w-full pt-8  md:pt-[54px]">
         <div className="flex flex-col md:flex-row pl-0 md:pl-[42px] lg:pl-[62px] xl:pl-[72px]">
-          <div className="flex flex-col justify-start items-between md:items-start text-center md:pl-0 md:pr-10 md:text-left md:w-[55%] lg:w-[45%] w-full h-full z-[5] !ml-0 !mt-0 space-y-12">
+          <div className="flex flex-col justify-start items-between md:items-start text-center md:pl-0 md:pr-10 md:text-left md:w-[55%] lg:w-[45%] w-full h-full z-[5] !ml-0 !mt-0 gap-y-12">
             <div className="items-center flex flex-col gap-4  md:gap-8 px-6 sm:px-0">
               <h1 className="text-black  regular-font zusco-heading">
                 Your online marketplace for short-let homes.
@@ -34,13 +36,13 @@ const Banner = observer(() => {
                 alt="banner"
               />
             </div>
-            <div className="flex justify-between sm:justify-start gap-6 mmd:gap-3  mlg:pt-4 w-full -mt-28 px-6 sm:px-10 md:px-[4rem] lg:px-[6rem]">
+            <div className="flex justify-between sm:justify-start gap-6 mmd:gap-3  mlg:pt-4 w-full px-6 sm:px-10 md:px-0">
               <a
                 href="https://play.google.com/store/apps/details?id=com.zusco.zusco_app"
                 target="_blank"
                 rel="noreferrer"
               >
-                <GoogleStore className="msm:w-[50%] mxs:w-[70%]" />
+                <Image src={googleStore} width={200} height={60} />
               </a>
 
               <a
@@ -48,7 +50,7 @@ const Banner = observer(() => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <AppStore className="msm:w-[50%] mxs:w-[70%]" />
+                <Image src={appStore} width={200} height={60} />
               </a>
             </div>
             <div className="w-full flex justify-center md:justify-start">
