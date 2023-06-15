@@ -30,6 +30,7 @@ import BookingsStore from "pages/dashboard/bookings/store";
 import { useAuth } from "hooks/auth";
 import AgentProfileModal from "pages/listing/agentProfileModal";
 import SideBar from "pages/listing/aside";
+import { isNumber } from "lodash";
 
 export async function getServerSideProps({ query }) {
   const shortlet_id = query.id;
@@ -64,6 +65,9 @@ const ApartmentDetailsHome = ({ metadata }) => {
     currentFeatures,
     addToFavourite,
     setShowShareModal,
+    getReviews,
+    reviewsLoading,
+    currentReviewsValue,
   } = ListingStore;
   const { handleFindBooking, currentBooking, searchLoading } = BookingsStore;
   const userInfo = getUserInfoFromStorage();
@@ -101,6 +105,9 @@ const ApartmentDetailsHome = ({ metadata }) => {
     setBookingDetails(currentBooking);
   }, [router, currentListing, currentBooking]);
 
+  useEffect(() => {
+    getReviews(shortletdetails?.id);
+  }, [shortletdetails]);
   const showAbout = () => {
     setAboutView((prevState) => !prevState);
   };
@@ -187,8 +194,8 @@ const ApartmentDetailsHome = ({ metadata }) => {
           <meta property="og:image" content={metaImage} />
 
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@bani" />
-          <meta name="twitter:creator" content="@bani" />
+          <meta name="twitter:site" content="@zusco" />
+          <meta name="twitter:creator" content="@zusco" />
           <meta name="twitter:title" content={metaTitle} />
           <meta name="twitter:description" content={metaDescription} />
           <meta name="twitter:image" content={metaImage} />
@@ -301,9 +308,14 @@ const ApartmentDetailsHome = ({ metadata }) => {
                 <div>
                   <h1 className="flex gap-3 mxs:gap-1 text-[24px] pr-4 text-grey-label regular-font">
                     {shortletdetails?.name}
-                    <span className="text-[#7A8996] font-thin flex text-[13px] leading-[13px] items-center">
-                      <GreenStar className="" /> 4.21
-                    </span>
+                    {isNumber(currentReviewsValue) &&
+                    !isNaN(currentReviewsValue) &&
+                    !reviewsLoading ? (
+                      <span className="text-[#7A8996] font-thin flex text-[13px] leading-[13px] items-center">
+                        <GreenStar className="" />{" "}
+                        {parseFloat(currentReviewsValue).toFixed(1)}
+                      </span>
+                    ) : null}
                   </h1>
                   <div className="flex items-start sm:items-center text-[#8B8E93] gap-x-2">
                     <Location />

@@ -42,8 +42,8 @@ export default function App({ Component, pageProps }) {
           />
 
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@bani" />
-          <meta name="twitter:creator" content="@bani" />
+          <meta name="twitter:site" content="@zusco" />
+          <meta name="twitter:creator" content="@zusco" />
           <meta
             name="twitter:title"
             content="Zusco | Your online marketplace for short-let homes."
@@ -62,7 +62,7 @@ export default function App({ Component, pageProps }) {
       <div ref={topRef} />
       <Component {...pageProps} />
       <Script
-        src="https://bani-assets.s3.eu-west-2.amazonaws.com/static/widget/js/window.js"
+        src="https://zusco-assets.s3.eu-west-2.amazonaws.com/static/widget/js/window.js"
         strategy="lazyOnload"
       />
     </div>
