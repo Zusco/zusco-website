@@ -334,10 +334,10 @@ const ContentHeader = observer(
                 {filterData?.number_of_bedrooms}
               </p>
             </div>
-            <div className="flex items-center justify-start regular-font gap-1">
+            <div className="flex items-start justify-start regular-font gap-1">
               <p className="text-grey-textalt">Amenities: </p>
 
-              <p className="text-blue flex justify-start items-center gap-1 capitalize">
+              <p className="text-blue flex justify-start flex-wrap items-center gap-1 capitalize">
                 {filteredAmenities?.map(
                   ({ name }, i, arr) =>
                     `${name}${
@@ -357,7 +357,7 @@ const ContentHeader = observer(
                 {formatMoney(filterData?.max_price)}
               </p>
             </div>
-            <div className="flex items-center justify-start regular-font gap-1">
+            <div className="flex items-start justify-start regular-font gap-1">
               <p className="text-grey-textalt">Allowances: </p>
 
               <p className="text-blue flex justify-start items-center gap-1 capitalize">
@@ -373,7 +373,7 @@ const ContentHeader = observer(
                 )}
               </p>
             </div>
-            <div className="flex items-center justify-start regular-font gap-1">
+            <div className="flex items-start justify-start regular-font gap-1">
               <p className="text-grey-textalt">Rules: </p>
 
               <p className="text-blue flex justify-start items-center gap-1 capitalize">
