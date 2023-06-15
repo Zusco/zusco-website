@@ -16,6 +16,7 @@ import Select from "components/general/input/select";
 import CircleLoader from "components/general/circleLoader/circleLoader";
 import FilterListings from "utils/filter";
 import { useAuth } from "hooks/auth";
+import { isEmpty } from "lodash";
 
 const ContentHeader = observer(
   ({ setActiveTab, activeTab, filter, headerClass, tabClass }) => {
@@ -320,36 +321,42 @@ const ContentHeader = observer(
           </p>
         )}
 
-        {
+        {showFilteredListings && (
           <div className="flex flex-wrap items-center justify-start regular-font px-6 gap-4 md:gap-7 text-xl">
-            <div className="flex items-center justify-start regular-font gap-1">
-              <p className="text-grey-textalt">Property Type: </p>
-              <p className="text-blue flex justify-start items-center gap-1 capitalize">
-                {filterData?.house_type}
-              </p>
-            </div>
-            <div className="flex items-center justify-start regular-font gap-1">
-              <p className="text-grey-textalt">Number of Rooms: </p>
-              <p className="text-blue flex justify-start items-center gap-1 capitalize">
-                {filterData?.number_of_bedrooms}
-              </p>
-            </div>
-            <div className="flex items-start justify-start regular-font gap-1">
-              <p className="text-grey-textalt">Amenities: </p>
+            {!isEmpty(filterData?.house_type) && (
+              <div className="flex items-center justify-start regular-font gap-1">
+                <p className="text-grey-textalt">Property Type: </p>
+                <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                  {filterData?.house_type}
+                </p>
+              </div>
+            )}
+            {!isEmpty(filterData?.number_of_bedrooms) && (
+              <div className="flex items-center justify-start regular-font gap-1">
+                <p className="text-grey-textalt">Number of Rooms: </p>
+                <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                  {filterData?.number_of_bedrooms}
+                </p>
+              </div>
+            )}
+            {!isEmpty(filteredAmenities) && (
+              <div className="flex items-start justify-start regular-font gap-1">
+                <p className="text-grey-textalt">Amenities: </p>
 
-              <p className="text-blue flex justify-start flex-wrap items-center gap-1 capitalize">
-                {filteredAmenities?.map(
-                  ({ name }, i, arr) =>
-                    `${name}${
-                      i === arr.length - 2
-                        ? " & "
-                        : i < arr.length - 1
-                        ? ", "
-                        : ""
-                    }`
-                )}
-              </p>
-            </div>
+                <p className="text-blue flex justify-start flex-wrap items-center gap-1 capitalize">
+                  {filteredAmenities?.map(
+                    ({ name }, i, arr) =>
+                      `${name}${
+                        i === arr.length - 2
+                          ? " & "
+                          : i < arr.length - 1
+                          ? ", "
+                          : ""
+                      }`
+                  )}
+                </p>
+              </div>
+            )}
             <div className="flex items-center justify-start regular-font gap-1">
               <p className="text-grey-textalt">Price Range: </p>
               <p className="text-blue flex justify-start items-center gap-1 capitalize">
@@ -357,40 +364,45 @@ const ContentHeader = observer(
                 {formatMoney(filterData?.max_price)}
               </p>
             </div>
-            <div className="flex items-start justify-start regular-font gap-1">
-              <p className="text-grey-textalt">Allowances: </p>
 
-              <p className="text-blue flex justify-start items-center gap-1 capitalize">
-                {filteredAllowances?.map(
-                  ({ name }, i, arr) =>
-                    `${name}${
-                      i === arr.length - 2
-                        ? " & "
-                        : i < arr.length - 1
-                        ? ", "
-                        : ""
-                    }`
-                )}
-              </p>
-            </div>
-            <div className="flex items-start justify-start regular-font gap-1">
-              <p className="text-grey-textalt">Rules: </p>
+            {!isEmpty(filteredAllowances) && (
+              <div className="flex items-start justify-start regular-font gap-1">
+                <p className="text-grey-textalt">Allowances: </p>
 
-              <p className="text-blue flex justify-start items-center gap-1 capitalize">
-                {filteredRules?.map(
-                  ({ name }, i, arr) =>
-                    `${name}${
-                      i === arr.length - 2
-                        ? " & "
-                        : i < arr.length - 1
-                        ? ", "
-                        : ""
-                    }`
-                )}
-              </p>
-            </div>
+                <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                  {filteredAllowances?.map(
+                    ({ name }, i, arr) =>
+                      `${name}${
+                        i === arr.length - 2
+                          ? " & "
+                          : i < arr.length - 1
+                          ? ", "
+                          : ""
+                      }`
+                  )}
+                </p>
+              </div>
+            )}
+            {!isEmpty(filteredRules) && (
+              <div className="flex items-start justify-start regular-font gap-1">
+                <p className="text-grey-textalt">Rules: </p>
+
+                <p className="text-blue flex justify-start items-center gap-1 capitalize">
+                  {filteredRules?.map(
+                    ({ name }, i, arr) =>
+                      `${name}${
+                        i === arr.length - 2
+                          ? " & "
+                          : i < arr.length - 1
+                          ? ", "
+                          : ""
+                      }`
+                  )}
+                </p>
+              </div>
+            )}
           </div>
-        }
+        )}
         {showFilteredListings && filteredListing?.length > 0 && (
           <div
             className={`grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 justify-end items-start w-full
