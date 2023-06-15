@@ -46,9 +46,12 @@ const Content = ({ store }) => {
 
       <div className="flex flex-col gap-6 w-full">
         <ContentHeader
+          filter
           store={store}
           setActiveTab={setActiveTab}
           activeTab={activeTab}
+          tabClass="pt-6 px-6 "
+          isHome
         />
 
         {loading && (

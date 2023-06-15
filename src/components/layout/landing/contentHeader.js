@@ -18,8 +18,10 @@ import FilterListings from "utils/filter";
 import { useAuth } from "hooks/auth";
 import { isEmpty } from "lodash";
 
+const headerClassValue =
+  "fixed top-[65px] left-0 right-0 bg-white sm:bg-transparent z-[9] border-y-1/2 border-[#E0E3E8] ";
 const ContentHeader = observer(
-  ({ setActiveTab, activeTab, filter, headerClass, tabClass }) => {
+  ({ setActiveTab, activeTab, filter, headerClass, tabClass, isHome }) => {
     const router = useRouter();
     const { isAuthenticated } = useAuth();
     const {
@@ -149,7 +151,7 @@ const ContentHeader = observer(
             className={`flex flex-col justify-start items-start  w-full
             transition-all duration-500 ease-in-out
            
-        ${headerClass}
+        ${headerClass} ${isHome && showFilter ? headerClassValue : ""}
         `}
           >
             <div
