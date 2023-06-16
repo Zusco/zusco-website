@@ -17,7 +17,7 @@ import CommonStore from "store/common";
 import SettingsStore from "pages/dashboard/settings/store";
 import db from "services/firebase.config";
 import { getUserInfoFromStorage } from "utils/storage";
-import Toast, { successToast } from "../../general/toast/toast";
+import Toast, { warningToast } from "../../general/toast/toast";
 import Hamburger from "../hamburger";
 import NotificationPane from "../notification";
 import CommonFooter from "../footer";
@@ -159,7 +159,7 @@ const DashboardLayout = ({ children, hasHeader }) => {
 
   useEffect(() => {
     if (me?.blocked) {
-      successToast(
+      warningToast(
         "Your account has been blocked",
         me?.blocked_reason + "\n Kindly contact support."
       );
