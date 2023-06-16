@@ -137,7 +137,7 @@ const ChatSection = () => {
         setChats(convos);
       });
     } catch (error) {
-      console.log("ERRRRRRR: ", error);
+      console.log(error);
     } finally {
       setLoading(false);
     }

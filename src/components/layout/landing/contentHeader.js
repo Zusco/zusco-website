@@ -131,9 +131,6 @@ const ContentHeader = observer(
       return formatter.format(apprx);
     };
 
-    console.log("activeTab: ", activeTab);
-    console.log("filteredListing: ", filteredListing);
-
     const filteredAmenities = amenities.filter((obj) =>
       filterData?.amenities.includes(obj.id)
     );
@@ -156,7 +153,13 @@ const ContentHeader = observer(
           >
             <div
               className={`flex flex-col-reverse md:flex-row md:justify-between items-start md:items-center gap-x-8 gap-y-5 w-full z-[9]
-              bg-white ${filter ? "px-6" : ""} py-4 md:py-3
+              bg-white ${
+                filter && showFilter
+                  ? "px-6"
+                  : filter && !showFilter
+                  ? "md:px-6"
+                  : ""
+              } py-4 md:py-3
            
             `}
             >
@@ -194,10 +197,15 @@ const ContentHeader = observer(
                         <Button
                           whiteBg
                           text="Filter"
-                          icon={<FilterIcon />}
+                          icon={
+                            <div>
+                              <FilterIcon />
+                            </div>
+                          }
                           btnClass="border border-black hover:bg-black/[.1] text-black bg-white h-[50px]"
                           className="shadow-btn bg-white"
                           onClick={() => setShowFilter(true)}
+                          isHome={isHome}
                           xsmall
                         />
                       </div>

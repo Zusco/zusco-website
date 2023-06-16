@@ -183,7 +183,7 @@ const ApartmentDetailsHome = ({ metadata }) => {
       setShowShareModal(true);
     }
   };
-  console.log(" currentReviewsValue: ", currentReviewsValue);
+
   return (
     <>
       <CommonLayout>

@@ -100,7 +100,6 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
   }, [shortletdetails]);
 
   const dateChange = (item) => {
-    console.log("itemitem: ", item);
     setState([
       {
         key: item[0].key,
@@ -199,7 +198,6 @@ const SideBar = ({ shortletdetails, bookingdetails, pathname, path }) => {
   const isListing = !bookingdetails?.paid && !pathname?.includes("booking");
   const isBooking = pathname?.includes("booking");
 
-  console.log("state: ", state);
   return (
     <div className="w-full py-4 px-3 flex flex-col gap-y-8">
       <div>

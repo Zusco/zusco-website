@@ -77,7 +77,7 @@ const AgentProfileModal = ({ data, handleOk }) => {
         setStoreConversations(convos);
       });
     } catch (error) {
-      console.log("getConversations error: ", error);
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,7 @@ const AgentProfileModal = ({ data, handleOk }) => {
         console.log("startConversation error: ");
       }
     } catch (error) {
-      console.log("SENDING ERROR", error);
+      console.log(error);
     } finally {
       setSending(false);
     }

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { VscChevronRight } from "react-icons/vsc";
+import { useRouter } from "next/router";
 import Link from "next/link";
 
 import { images } from "utils/images";
-import AuthStore from "store/auth";
 import Button from "../../../components/general/button/button";
 
 const Footer = () => {
@@ -18,8 +18,14 @@ const Footer = () => {
     ZuscoIconBlue,
     FooterImg,
   } = images;
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { isAuthenticated } = AuthStore;
+  useEffect(() => {
+    if (router?.pathname?.includes("/rent")) {
+      setIsLoading(false);
+    }
+  }, [isLoading, router?.pathname]);
   return (
     <footer>
       <div className="w-full bg-black text-white text-center sm:text-left px-6 sm:px-10 md:px-[4rem] lg:px-[6rem] pt-[3rem] pb-[2rem] flex flex-col sm:flex-row gap-10 justify-between">
@@ -33,12 +39,13 @@ const Footer = () => {
           </p>
           <Link href="/rent">
             <Button
+              onClick={() => setIsLoading(true)}
               whiteBg
               text="Book your stay"
               iconAfter={<BsArrowRight />}
               btnClass="text-black px-10 hover:bg-gray-200"
               textColor="black"
-              isLoading
+              isLoading={isLoading}
             />
           </Link>
         </div>

@@ -142,7 +142,6 @@ const PaymentModal = ({
   };
   const onSubmit = () => {};
 
-  console.log("formData: ", formData);
   return (
     <Modal
       size="xl"

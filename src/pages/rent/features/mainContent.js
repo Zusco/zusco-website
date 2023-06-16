@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import Button from "components/general/button/button";
-import CircleLoader from "components/general/circleLoader/circleLoader";
+import { CircleSpinner } from "components/general/circleLoader/circleLoader";
 import ListingStore from "store/listing";
 import ContentHeader from "components/layout/landing/contentHeader";
 import ExploreStore from "pages/rent/store/index";
@@ -14,13 +14,15 @@ const Content = observer(() => {
     incrementPageCount,
     listingsCount,
   } = ListingStore;
+
   const [activeTab, setActiveTab] = useState({
     title: "All",
     value: "all",
     index: 0,
   });
+
   useEffect(() => {
-    getAllListing();
+    getAllListing(1);
   }, []);
 
   return (
@@ -37,7 +39,7 @@ const Content = observer(() => {
         <div className="w-full px-[3rem] mmd:px[2rem] msm:px-[1rem]">
           {loading && (
             <div className="w-full flex justify-center items-center h-[100px]">
-              <CircleLoader blue />
+              <CircleSpinner />
             </div>
           )}
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import ListingStore from "store/listing";
-import CircleLoader from "components/general/circleLoader/circleLoader";
+import { CircleSpinner } from "components/general/circleLoader/circleLoader";
 import ContentHeader from "components/layout/landing/contentHeader";
 import Button from "components/general/button/button";
 import { useAuth } from "hooks/auth";
@@ -24,6 +24,7 @@ const Content = ({ store }) => {
 
   useEffect(() => {
     getFavouriteListings(isAuthenticated);
+    getAllListing(1);
   }, []);
 
   return (
@@ -56,7 +57,7 @@ const Content = ({ store }) => {
 
         {loading && (
           <div className="w-full flex justify-center items-center h-[100px]">
-            <CircleLoader blue />
+            <CircleSpinner />
           </div>
         )}
 

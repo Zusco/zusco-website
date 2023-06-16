@@ -22,6 +22,7 @@ const Button = ({
   small,
   xsmall,
   btnClass,
+  isHome,
 }) => {
   const buttonClass = `
   flex justify-center items-center
@@ -67,11 +68,15 @@ const Button = ({
       ) : (
         <div
           className={`${
-            iconAfter ? "space-x-3 md:space-x-1" : "space-x-3"
+            iconAfter ? "gap-x-3 md:gap-x-1" : "gap-x-3"
           } ${buttonClass} ${btnClass}`}
         >
-          {icon && <div>{icon}</div>}
-          {text && <span className={`${textClass}`}>{text}</span>}
+          {icon}
+          {text && (
+            <span className={`${textClass} ${isHome ? "hidden md:block" : ""}`}>
+              {text}
+            </span>
+          )}
           {iconAfter && <div>{iconAfter}</div>}
         </div>
       )}
@@ -99,6 +104,7 @@ Button.propTypes = {
   small: PropTypes.bool,
   xsmall: PropTypes.bool,
   btnClass: PropTypes.string,
+  isHome: PropTypes.bool,
 };
 
 export default Button;

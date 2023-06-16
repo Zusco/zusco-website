@@ -11,11 +11,14 @@ const Loading = ({ icon, className, body, size = "small" }) => (
   </LoadingWrapper>
 );
 
+const CircleSpinner = () => {
+  return <div className="circle-spinner" />;
+};
 Loading.propTypes = {
   icon: PropTypes.elementType,
   className: PropTypes.string,
   body: PropTypes.elementType,
   size: PropTypes.oneOf(["tiny", "small", "medium", "large", "xm"]),
 };
-
+export { CircleSpinner };
 export default Loading;
