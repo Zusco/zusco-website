@@ -237,8 +237,8 @@ const PaymentModal = ({
 
             {formData.paymentMethod === "transfer" &&
               shortletdetails?.zusco && (
-                <div className="flex flex-col gap-y-3 text-black w-full">
-                  <p className="flex gap-3 mxs:gap-1 text-xl pr-4 py-3 text-blue regular-font">
+                <div className="flex flex-col gap-y-3 text-black w-full mb-10 mt-6">
+                  <p className="flex gap-3 mxs:gap-1 text-lg pr-4 py-3 text-blue regular-font">
                     Kindly Make Transfer to The Account Details Provided
                   </p>
 
@@ -248,7 +248,7 @@ const PaymentModal = ({
                       successToast(`Account number copied!`);
                     }}
                   >
-                    <div className="flex justify-between regular-font pb-2 sm:pb-4 cursor-pointer">
+                    <div className="flex justify-between regular-font pb-2 cursor-pointer">
                       <p>Account Number</p>
                       <p className="text-[24px] flex justify-start items-center gap-1 text-right">
                         <FiCopy className="text-grey" />
@@ -256,13 +256,13 @@ const PaymentModal = ({
                       </p>
                     </div>
                   </CopyToClipboard>
-                  <div className="flex justify-between regular-font pb-2 sm:pb-4">
+                  <div className="flex justify-between regular-font pb-2">
                     <p>Account Name</p>
                     <p className="text-[18px] capitalize text-right">
                       {shortletdetails?.account_name?.toLowerCase()}
                     </p>
                   </div>
-                  <div className="flex justify-between regular-font pb-2 sm:pb-4">
+                  <div className="flex justify-between regular-font pb-2">
                     <p>Bank Name</p>
                     <p className="text-[18px] capitalize text-right">
                       {shortletdetails?.bank_name}
