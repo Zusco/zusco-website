@@ -17,7 +17,7 @@ import CommonStore from "store/common";
 import SettingsStore from "pages/dashboard/settings/store";
 import db from "services/firebase.config";
 import { getUserInfoFromStorage } from "utils/storage";
-import Toast from "../../general/toast/toast";
+import Toast, { successToast } from "../../general/toast/toast";
 import Hamburger from "../hamburger";
 import NotificationPane from "../notification";
 import CommonFooter from "../footer";
@@ -98,6 +98,11 @@ const DashboardLayout = ({ children, hasHeader }) => {
     isAuthenticated && getConversations();
     getSettings();
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigation.push("/otp/send");
+  };
   const dashboardLinks = [
     {
       title: "Explore",
@@ -146,13 +151,21 @@ const DashboardLayout = ({ children, hasHeader }) => {
       title: "Logout",
       link: "#",
       click: () => {
-        logout();
-        navigation.push("/otp/send");
+        handleLogout();
       },
       icon: <Logout className="fill-current" />,
     },
   ];
 
+  useEffect(() => {
+    if (me?.blocked) {
+      successToast(
+        "Your account has been blocked",
+        me?.blocked_reason + "\n Kindly contact support."
+      );
+      handleLogout();
+    }
+  }, [me]);
   return (
     <div className="w-screen min-h-screen h-screen flex flex-grow flex-col relative">
       <header className="flex flex-row justify-between items-center w-full py-4 fixed left-0 right-0 top-0 border-b-1/2 border-grey-border z-[9999] h-[70px] bg-white">
