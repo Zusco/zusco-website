@@ -135,7 +135,7 @@ const Header = ({}) => {
               <Link href="/otp/send">
                 <Button
                   text="Sign Up"
-                  onClick={() => {}}
+                  onClick={() => setSidenavOpen(false)}
                   btnClass="text-white h-[48px]"
                   blueBg
                   shadow
@@ -152,7 +152,7 @@ const Header = ({}) => {
             <Link href="/otp/send">
               <Button
                 text="Sign in"
-                onClick={() => {}}
+                onClick={() => setSidenavOpen(false)}
                 btnClass="text-white h-[48px]"
                 blueBg
                 shadow
