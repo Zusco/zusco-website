@@ -37,7 +37,7 @@ const Footer = () => {
             Choose from a wide range of short let properties to rent, in a
             variety of locations across the country. Your comfort matters.
           </p>
-          <Link href="/rent">
+          <Link href="/rent#home_banner">
             <Button
               onClick={() => setIsLoading(true)}
               whiteBg

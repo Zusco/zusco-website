@@ -156,8 +156,10 @@ const ContentHeader = observer(
               bg-white ${
                 filter && showFilter
                   ? "px-6"
-                  : filter && !showFilter
+                  : filter && !showFilter && isHome
                   ? "md:px-6"
+                  : filter && !showFilter && !isHome
+                  ? "px-6"
                   : ""
               } py-4 md:py-3
            
