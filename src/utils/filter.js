@@ -140,7 +140,7 @@ const FilterListings = observer(() => {
       className={`overflow-y-scroll w-full max-h-[calc(100vh-300px)] md:max-h-[calc(100vh-220px)]
        bg-white z-[9] fade-in px-2 md:px-8 flex flex-col gap-10`}
     >
-      <form action="">
+      <form action="" className="px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-between items-start mb-6 w-full">
           <div className="w-full flex flex-col justify-start items-start gap-4">
             <h1 className="text-[#211D31] text-[20px]">Property Type</h1>
@@ -237,9 +237,9 @@ const FilterListings = observer(() => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-between items-start mb-6 w-full">
           <div className="w-full flex flex-col justify-start items-start gap-4">
-            <h1 className="text-[#211D31] text-[20px] px-4">Price Range</h1>
+            <h1 className="text-[#211D31] text-[20px] sm:px-4">Price Range</h1>
 
-            <div className="w-full flex flex-col px-4 gap-4">
+            <div className="w-full flex flex-col sm:px-4 gap-4">
               <div className="flex gap-4 justify-start lg:justify-end">
                 <p className="w-fit xs:px-3 px-1 border border-[#D0D5DD] bg-[#F3F8FF] text-blue-sky">
                   min: {formatMoney(filterData.min_price)}

@@ -51,7 +51,7 @@ const Content = ({ store }) => {
           store={store}
           setActiveTab={setActiveTab}
           activeTab={activeTab}
-          tabClass="pt-6 px-6 "
+          tabClass="pt-6 md:px-6 "
           isHome
         />
 

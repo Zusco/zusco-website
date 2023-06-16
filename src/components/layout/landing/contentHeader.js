@@ -21,7 +21,15 @@ import { isEmpty } from "lodash";
 const headerClassValue =
   "fixed top-[65px] left-0 right-0 bg-white sm:bg-transparent z-[9] border-y-1/2 border-[#E0E3E8] ";
 const ContentHeader = observer(
-  ({ setActiveTab, activeTab, filter, headerClass, tabClass, isHome }) => {
+  ({
+    setActiveTab,
+    activeTab,
+    filter,
+    headerClass,
+    tabClass,
+    isHome,
+    noPaddingInMdScreen,
+  }) => {
     const router = useRouter();
     const { isAuthenticated } = useAuth();
     const {
@@ -143,7 +151,11 @@ const ContentHeader = observer(
 
     return (
       <div className="flex flex-col gap-6 ">
-        <div className="px-2 py-[1.5rem]  flex justify-between gap-y-5 flex-wrap border-b-1/2 border-grey-border text-black">
+        <div
+          className={` ${
+            isHome ? "md:px-2" : "px-2"
+          } py-[1.5rem]  flex justify-between gap-y-5 flex-wrap border-b-1/2 border-grey-border text-black`}
+        >
           <div
             className={`flex flex-col justify-start items-start  w-full
             transition-all duration-500 ease-in-out
@@ -156,7 +168,9 @@ const ContentHeader = observer(
               bg-white ${
                 filter && showFilter
                   ? "px-6"
-                  : filter && !showFilter && isHome
+                  : !showFilter && noPaddingInMdScreen
+                  ? "px-6"
+                  : filter && !showFilter && (isHome || noPaddingInMdScreen)
                   ? "md:px-6"
                   : filter && !showFilter && !isHome
                   ? "px-6"
@@ -269,7 +283,7 @@ const ContentHeader = observer(
 
             {showFilter && (
               <div className="flex justify-between items-center gap-5 px-2 md:px-8 py-2 bg-white fade-in w-full border-t-1/2 border-grey-border z-[9]">
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1 px-4 sm:px-0">
                   <p
                     className="underline cursor-pointer text-blue-9"
                     onClick={() => {
@@ -322,7 +336,11 @@ const ContentHeader = observer(
         )}
 
         {showFilteredListings && (
-          <p className="text-[26px] mt-[20px] text-blue regular-font px-6">
+          <p
+            className={`text-[26px] mt-[20px] text-blue regular-font ${
+              isHome ? "md:px-6" : "px-6"
+            }`}
+          >
             {filteredListingsCount > 0 ? filteredListingsCount : ""}{" "}
             {filteredListingsCount < 1
               ? "No listings were"
@@ -334,7 +352,11 @@ const ContentHeader = observer(
         )}
 
         {showFilteredListings && (
-          <div className="flex flex-wrap items-center justify-start regular-font px-6 gap-4 md:gap-7 text-xl">
+          <div
+            className={`flex flex-wrap items-center justify-start regular-font md:px-6 gap-4 md:gap-7 text-xl ${
+              isHome ? "md:px-6" : "px-6"
+            }`}
+          >
             {!isEmpty(filterData?.house_type) && (
               <div className="flex items-center justify-start regular-font gap-1">
                 <p className="text-grey-textalt">Property Type: </p>

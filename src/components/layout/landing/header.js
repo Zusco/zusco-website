@@ -43,7 +43,11 @@ const Header = ({}) => {
         <div className="hidden md:flex justify-end items-center pl-6 w-fit space-x-12 transition-all duration-150 ease-in-out">
           {headerLinks.map(({ title, link, url }) =>
             link ? (
-              <Link href={link} key={title}>
+              <Link
+                onClick={() => setSidenavOpen(false)}
+                href={link}
+                key={title}
+              >
                 <div
                   className={`link-content flex justify-center items-center hover:text-blue text-black ${
                     router?.pathname === link && "regular-font underline"
@@ -90,7 +94,11 @@ const Header = ({}) => {
           </Link>
           {headerLinks.map(({ title, link, url }) =>
             link ? (
-              <Link href={link} key={title}>
+              <Link
+                href={link}
+                key={title}
+                onClick={() => setSidenavOpen(false)}
+              >
                 <div
                   className={`link-content flex justify-center items-center hover:text-blue text-black ${
                     router?.pathname === link && "regular-font underline"

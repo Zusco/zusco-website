@@ -6,7 +6,9 @@ const AuthHome = () => {
   return (
     <div>
       <LandingLayout>
-        <SendOtp />
+        <div className="px-6 md:px-12">
+          <SendOtp />
+        </div>
       </LandingLayout>
     </div>
   );
