@@ -13,7 +13,7 @@ import Card1 from "components/layout/cards/Card1";
 import FilterIcon from "assets/icons/features/filterIcon.svg";
 import ListingStore from "store/listing";
 import Select from "components/general/input/select";
-import CircleLoader from "components/general/circleLoader/circleLoader";
+import { CircleSpinner } from "components/general/circleLoader/circleLoader";
 import FilterListings from "utils/filter";
 import { useAuth } from "hooks/auth";
 import { isEmpty } from "lodash";
@@ -331,7 +331,7 @@ const ContentHeader = observer(
 
         {filterLoading && (
           <div className="w-full flex justify-center items-center h-[100px] absolute m-auto left-0 right-0 mt-[50px] z-[999]">
-            <CircleLoader blue size="xm" />
+            <CircleSpinner />
           </div>
         )}
 
