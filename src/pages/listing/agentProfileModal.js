@@ -151,7 +151,7 @@ const AgentProfileModal = ({ data, handleOk }) => {
         noPadding
         bodyClass=""
         toggler={handleOk}
-        backdropClassName="!z-[99999]"
+        backdropClassName="!z-[999]"
       >
         <ModalBody>
           <div className="w-full text-center relative">

@@ -25,7 +25,7 @@ const AuthModal = ({
       noPadding
       bodyClass="bg-white py-6 px-6"
       toggler={!loading && !loadingVerify && toggleModal}
-      backdropClassName="!z-[9999999]"
+      backdropClassName="!z-[9999]"
       onClick={!loading && !loadingVerify && toggleModal}
     >
       <ModalHeader>

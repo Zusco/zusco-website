@@ -249,22 +249,22 @@ const PaymentModal = ({
                     }}
                   >
                     <div className="flex justify-between regular-font pb-2 sm:pb-4 cursor-pointer">
-                      <p>ACCOUNT NUMBER</p>
-                      <p className="text-[24px] flex justify-start items-center gap-1">
+                      <p>Account Number</p>
+                      <p className="text-[24px] flex justify-start items-center gap-1 text-right">
                         <FiCopy className="text-grey" />
                         {shortletdetails?.account_number}
                       </p>
                     </div>
                   </CopyToClipboard>
                   <div className="flex justify-between regular-font pb-2 sm:pb-4">
-                    <p>ACCOUNT NAME</p>
-                    <p className="text-[24px] capitalize">
-                      {shortletdetails?.account_name}
+                    <p>Account Name</p>
+                    <p className="text-[18px] capitalize text-right">
+                      {shortletdetails?.account_name?.toLowerCase()}
                     </p>
                   </div>
                   <div className="flex justify-between regular-font pb-2 sm:pb-4">
-                    <p>ACCOUNT NUMBER</p>
-                    <p className="text-[24px] uppercase">
+                    <p>Bank Name</p>
+                    <p className="text-[18px] capitalize text-right">
                       {shortletdetails?.bank_name}
                     </p>
                   </div>
@@ -302,7 +302,7 @@ const PaymentModal = ({
               text="Cancel"
               textColor="text-red-alt"
               borderColor="border-red-alt"
-              className="sm:hidden"
+              className="sm:hidden mb-20 sm:mb-0"
               onClick={toggleModal}
             />
           </div>

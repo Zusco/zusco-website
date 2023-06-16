@@ -44,6 +44,7 @@ const Toast = () => {
             padding: "20px",
             boxSizing: "border-box",
             overflow: "hidden",
+            zIndex: "2147483647",
           }}
         >
           {({ icon, message }) => {
@@ -58,7 +59,7 @@ const Toast = () => {
                 icon
               );
             return (
-              <div className="w-full">
+              <div className="w-full toast-container">
                 <div className="flex justify-between align-start w-full">
                   <div className="flex justify-between align-start">
                     <div className="mr-[20px]">{toastIcon}</div>

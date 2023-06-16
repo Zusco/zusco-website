@@ -168,7 +168,7 @@ const DashboardLayout = ({ children, hasHeader }) => {
   }, [me]);
   return (
     <div className="w-screen min-h-screen h-screen flex flex-grow flex-col relative">
-      <header className="flex flex-row justify-between items-center w-full py-4 fixed left-0 right-0 top-0 border-b-1/2 border-grey-border z-[9999] h-[70px] bg-white">
+      <header className="flex flex-row justify-between items-center w-full py-4 fixed left-0 right-0 top-0 border-b-1/2 border-grey-border z-[998] h-[70px] bg-white">
         <div className="relative flex flex-row justify-between items-center mx-auto w-full px-10 ">
           <Link className="h-8 w-[110px] !my-0" href="/dashboard/explore">
             <Logo className="w-full h-full z-90" />
